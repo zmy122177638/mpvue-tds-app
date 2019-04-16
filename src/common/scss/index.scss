@@ -4,6 +4,11 @@ scss 公用样式
 
 */
 
+/*页面背景色*/
+@mixin page-bg{
+  background: rgba(246,248,250,1);
+}
+
 /*所有页面左右边距设置*/
 @mixin common-width{
   width: 92%;
