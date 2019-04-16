@@ -29,7 +29,7 @@
   .main{
     @include common-width;
     border: 1px solid red;
-    height: 200rpx;
+    height: 400rpx;
   }
 
 </style>

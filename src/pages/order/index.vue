@@ -1,10 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <section>
-    <h1>所有页面的page-demo</h1>
-    <p class="a">scss使用，下面引用了weUI组件</p>
-    <com-demo :str="'这是发送给组件的变量字符串'"></com-demo>
-=======
   <section class="ranking-container">
     <Tds-header></Tds-header>
     <div class="ranking-action">
@@ -59,7 +53,6 @@
         </div>
       </div>
     </div>
->>>>>>> 1a5145e7e6a66b0c2198c03ed0f2173fd82dde0b
   </section>
 </template>
 
