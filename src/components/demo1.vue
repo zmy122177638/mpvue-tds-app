@@ -4,7 +4,11 @@
 
 <script>
   export default {
-    name: 'demo1'
+    name: 'demo1',
+    props: {},
+    data () {
+      return {}
+    }
   }
 </script>
 

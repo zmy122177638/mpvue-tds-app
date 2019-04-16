@@ -1,0 +1,16 @@
+/*
+
+scss 公用样式
+
+*/
+
+/*所有页面左右边距设置*/
+@mixin common-width{
+  width: 92%;
+  height: auto;
+  margin: 0 auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
