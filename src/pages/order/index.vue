@@ -33,7 +33,10 @@
         </div>
       </div>
     </div>
-    <div class="ranking-content">
+    <scroll-view
+      class="ranking-content"
+      scroll-y
+    >
       <div class="ranking-list">
         <div
           class="ranking-item"
@@ -52,7 +55,7 @@
           <div class="item-right">{{item.orderNum}}单</div>
         </div>
       </div>
-    </div>
+    </scroll-view>
   </section>
 </template>
 
@@ -72,6 +75,11 @@ export default {
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
+        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
+        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
+        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
+        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
+        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黑凤梨黑凤梨黑凤', orderNum: 10 }
       ]
     }
@@ -82,6 +90,13 @@ export default {
   },
 
   methods: {
+    /**
+     * @description: 切换排行条件
+     * @param {Number}  category 排行分类
+     * @param {Number}  timer 排行时间
+     * @return: undefined
+     * @Date: 2019-04-16 11:08:04
+     */
     searchRankChange (category, timer) {
       this.queryData = { category, timer }
     }
@@ -96,6 +111,9 @@ img {
 .ranking-container {
   flex: 1;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   .ranking-action {
     border-bottom: 1px solid #f2f2f2;
   }
@@ -152,6 +170,7 @@ img {
   // 排行内容
   .ranking-content {
     flex: 1;
+    height: 100%;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     .ranking-list {
@@ -162,6 +181,9 @@ img {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        &:nth-last-child(1) {
+          margin-bottom: 0;
+        }
         .item-left {
           flex: 1;
           overflow: hidden;
