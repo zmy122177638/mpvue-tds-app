@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="container">
     <section class="top">
       <tds-header></tds-header>
     </section>
@@ -111,9 +111,17 @@
       }
     },
     methods: {
+      // 板块分类点击响应
       handleClickGo (linkUrl) {
         console.log(linkUrl)
         mpvue.switchTab({url: linkUrl})
+      },
+      // 商品点击跳转到详情响应
+      handleGoDetail (i) {
+        console.log('跳转到详情')
+        mpvue.navigateTo({
+          url: '#?id=' + i
+        })
       }
     },
     onPullDownRefresh () {

@@ -1,5 +1,5 @@
 <template>
-  <section class="item">
+  <section class="item" @click="handleGoDetail">
     <section class="c-1">
       <div class="left">
         <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg"/>
@@ -58,6 +58,15 @@
         type: this.itemTpye,
         // i表示下标，用于区分前三排名
         i: this.subIndex
+      }
+    },
+    methods: {
+      // 商品点击跳转到详情响应
+      handleGoDetail () {
+        console.log('跳转到详情');
+        mpvue.navigateTo({
+          url: '../productDetail/main'
+        })
       }
     }
 

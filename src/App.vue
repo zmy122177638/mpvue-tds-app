@@ -38,6 +38,7 @@ page {
   color:#282828;
   background: rgba(246,248,250,1);  /*所有页面初始背景颜色*/
   font-size: 28rpx;
+  padding-bottom: 100rpx;
 }
 /* this rule will be remove */
 * {

@@ -1,10 +1,13 @@
 {
   "pages": [
+
+    "pages/productDetail/main",
     "pages/home/main",
     "pages/order/main",
     "pages/manager/main",
     "pages/my/main",
     "pages/start/main"
+
   ],
   "subPackages": [
     {
