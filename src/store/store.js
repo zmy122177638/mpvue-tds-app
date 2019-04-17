@@ -7,7 +7,11 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  state: {},
+  state: {
+    systemInfo: wx.getSystemInfoSync() || {
+      name: 132
+    }
+  },
   mutations: {},
   getters: {},
   actions: {},
@@ -17,8 +21,7 @@ const store = new Vuex.Store({
       storage: {
         getItem: key => wx.getStorageSync(key),
         setItem: (key, value) => wx.setStorageSync(key, value),
-        removeItem: key => {
-        }
+        removeItem: key => {}
       }
     })
   ]

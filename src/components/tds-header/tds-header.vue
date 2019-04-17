@@ -58,8 +58,8 @@ export default {
   .tds-header-right {
     display: flex;
     .tds-header-shopicon {
-      width: 80px;
-      height: 20px;
+      width: 82px;
+      height: 24px;
       display: block;
     }
   }

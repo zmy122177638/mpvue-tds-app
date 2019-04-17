@@ -3,14 +3,13 @@
 
     "pages/productDetail/main",
     "pages/home/main",
-    "pages/order/main",
+    "pages/ranking/main",
     "pages/manager/main",
     "pages/my/main",
     "pages/start/main"
 
   ],
-  "subPackages": [
-    {
+  "subPackages": [{
       "root": "pages/sub_manager/",
       "pages": [
         "subDemo/main"
@@ -19,14 +18,15 @@
     {
       "root": "pages/sub_my/",
       "pages": [
-        "subDemo/main"
+        "my_order/main"
       ]
     }
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundColor": "#f8f8f8",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "团大师",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -41,7 +41,7 @@
       "selectedIconPath": "static/tabs/home-active.png"
     }, {
       "text": "排行",
-      "pagePath": "pages/order/main",
+      "pagePath": "pages/ranking/main",
       "iconPath": "static/tabs/orders.png",
       "selectedIconPath": "static/tabs/orders-active.png"
     }, {
