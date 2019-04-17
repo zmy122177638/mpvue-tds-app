@@ -90,22 +90,22 @@
           {
             name: '引流特供',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../order/main'
+            linkUrl: '../ranking/main'
           },
           {
             name: '今日团品',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../order/main'
+            linkUrl: '../ranking/main'
           },
           {
             name: '好物拼团',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../order/main'
+            linkUrl: '../ranking/main'
           },
           {
             name: '爆品返场',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../order/main'
+            linkUrl: '../ranking/main'
           }
         ]
       }
