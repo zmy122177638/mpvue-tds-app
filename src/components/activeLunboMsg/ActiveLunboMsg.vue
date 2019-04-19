@@ -14,7 +14,6 @@
       :display-multiple-items="displayMultipleItems"
       :previous-margin="previousMargin"
       :next-margin="nextMargin"
-
     >
       <block v-for="(item,i) in messageList" :key="i">
         <swiper-item :item-id="i" catchtouchmove="stopSwiper">

@@ -1,6 +1,9 @@
 <template>
   <section class="container">
-    <lunbo-images swiperH="500rpx"></lunbo-images>
+    <section><van-icon name="arrow-left" class="go-back" @click="handleGoBack" /></section>
+    <section class="lunbo-box">
+      <lunbo-images swiperH="600rpx"></lunbo-images>
+    </section>
     <section class="main">
       <section class="content">
         <header class="d-head">ins风全棉纯棉床上用品四件套宿舍床单人3三件套儿童网红被套床笠</header>
@@ -21,14 +24,14 @@
         </div>
         <div class="d-type-selecte" @click="handleShowProductType">
           <span class="d-tpye-s-l">选择</span>
-          <span class="d-tpye-s-r">规格选择 ></span>
+          <span v-if="specSelected.num" class="d-tpye-s-r"><span class="shenglue">{{specSelected.xuanze}}</span> * {{specSelected.num}}</span>
+          <span v-else class="d-tpye-s-r">规格选择 ></span>
         </div>
         <header class="ban-header">商品详情</header>
         <div class="img-list">
-            <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2273502388,3322259604&fm=11&gp=0.jpg" mode="widthFix" /><image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1323345190,1226122086&fm=27&gp=0.jpg" />
-            <image src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=353153124,1043237645&fm=27&gp=0.jpg" />
-            <image src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1253085446,1898506634&fm=26&gp=0.jpg" />
-            <image src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2052142394,3437240018&fm=26&gp=0.jpg" />
+          <block v-for="(item,i) in desImages" :key="i">
+            <image :src="item" mode="widthFix" />
+          </block>
         </div>
       </section>
     </section>
@@ -40,6 +43,7 @@
         ></pruduct-item>
       </block>
     </section>
+    <section class="kong"></section>
 
     <!--商品规格选择上拉菜单-->
     <van-action-sheet
@@ -47,8 +51,50 @@
       :close-on-click-overlay="true"
       @close="handleCloseProductType"
       >
-      <div style="height: 500rpx;">商品规格内容</div>
+      <spec-params-selected @submit-order="handleSubmitOrder"></spec-params-selected>
     </van-action-sheet>
+
+    <!--分享响应上拉菜单-->
+    <van-action-sheet
+      :show="shareBoxShow"
+      :close-on-click-overlay="true"
+      @close="handleCloseShareBox"
+    >
+      <section class="share-box">
+        <header class="share-header">选择分享渠道</header>
+        <div class="share-item-box">
+          <div class="share-item">
+            <div class="share-item-t">
+              <button class="share-btn"
+                      :plain="true"
+                      open-type="share"
+                      id="productShare"
+                >
+                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+              </button>
+            </div>
+            <div class="share-item-b">分享微信好友</div>
+          </div>
+          <div class="share-item">
+            <div class="share-item-t">
+              <button class="share-btn"
+                      :plain="true"
+                      @click="handleCreatePosterImg"
+              >
+                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+              </button>
+            </div>
+            <div class="share-item-b">生成分享海报</div>
+          </div>
+        </div>
+      </section>
+    </van-action-sheet>
+
+    <!--海报缩略图-->
+    <section class="haibao-img" v-if="showPosterImg">
+      <img @click="handleShowPreviewPosterImg" :src="posterImgUrl">
+    </section>
+
     <!--底部固定按钮栏-->
     <section class="fixld-bottom">
       <van-goods-action style="z-index: 19999;">
@@ -63,12 +109,8 @@
           info="5"
           @click="handleServiceCall"
         />
-        <van-goods-action-icon
-          v-if="!isManager"
-          disabled
-        />
         <van-goods-action-button
-          v-else
+          v-if="isManager"
           text="立即分享"
           type="warning"
           @click="handleGoShare"
@@ -85,43 +127,137 @@
 <script>
   import LunboImages from '@/components/lunboImages/LunboImages.vue'
   import PruductItem from '@/components/productItem/ProductItem.vue'
+  import SpecParamsSelected from '@/components/specParamsSelected/SpecParamsSelected.vue'
   export default {
     components: {
       LunboImages,
-      PruductItem
+      PruductItem,
+      SpecParamsSelected
     },
     data () {
       return {
         // 判断是否为掌柜、团长
         isManager: true,
         // 商品规格上拉弹窗是否显示
-        productTypeShow: false
+        productTypeShow: false,
+        // 分享上拉弹窗是否显示
+        shareBoxShow: true,
+        // 是否显示海报缩略图
+        showPosterImg:false,
+        // 商品详情图列表
+        desImages: [
+          'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2273502388,3322259604&fm=11&gp=0.jpg',
+          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1323345190,1226122086&fm=27&gp=0.jpg',
+          'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=353153124,1043237645&fm=27&gp=0.jpg',
+          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1253085446,1898506634&fm=26&gp=0.jpg',
+          'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2052142394,3437240018&fm=26&gp=0.jpg'
+        ],
+        // 规格选择子组件传回的数据
+        specSelected: {},
+        // 海报图片路径
+        posterImgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2624716811,1190583056&fm=26&gp=0.jpg'
       }
     },
     methods: {
+      // 返回上一页按钮响应
+      handleGoBack () {
+        // console.log('自定义返回按钮,返回上一页，若没有上一页则返回首页')
+        mpvue.navigateBack({
+          delta: 1
+        })
+      },
+      // 返回首页按钮响应
       handleGoHome () {
         console.log('返回首页')
         mpvue.reLaunch({
           url: '../home/main'
         })
       },
+      // 联系客服按钮响应
       handleServiceCall () {
         console.log('联系客服')
       },
+      // 分享按钮响应
       handleGoShare () {
         console.log('前往分享')
+        this.shareBoxShow = true
       },
+      // 关闭分享弹窗响应
+      handleCloseShareBox () {
+        this.shareBoxShow = false
+        this.showPosterImg = false
+      },
+      // 立即购买按钮响应
       handleGoBuy () {
-        console.log('前往付款')
+        console.log('选择规格然后跳转到订单页面')
+        this.productTypeShow = true
       },
+      // 规格选择按钮/立即购买按钮 响应
       handleShowProductType () {
         this.productTypeShow = true
       },
+      // 规格选择弹窗关闭响应
       handleCloseProductType () {
         this.productTypeShow = false
+      },
+      // 子组件提交订单响应
+      handleSubmitOrder (options) {
+        console.log('子组件数据')
+        console.log(options)
+        this.specSelected = options
+        this.productTypeShow = false
+      },
+      // 生成分享海报按钮响应
+      handleCreatePosterImg () {
+        let that = this
+        console.log('向后台请求生成海报')
+        mpvue.showLoading({
+          title: '正在生成海报...',
+          success: function (res) {
+            setTimeout(function () {
+              mpvue.hideLoading()
+              that.shareBoxShow = true
+              that.showPosterImg = true
+            }, 3000)
+          }
+        })
+      },
+      // 点击查看海报预览图
+      handleShowPreviewPosterImg () {
+        console.log('图片预览')
+        mpvue.previewImage({
+          urls: [this.posterImgUrl]
+        })
       }
     },
-
+    // 页面显示监听
+    onLoad () {
+      mpvue.showShareMenu({
+        withShareTicket: true
+      })
+    },
+    // 分享监听
+    onShareAppMessage (res) {
+      // console.log('进入分享逻辑111111111')
+      // console.log(res)
+      return {
+        title: '转发当前商品',
+        path: '/pages/productDetail/main?id=210',
+        success: function (res) {
+          console.log('分享成功')
+          // console.log(data)
+          // mpvue.getShareInfo({
+          //   success: function (d) {
+          //     console.log('获取到的群信息：')
+          //     console.log(d)
+          //   }
+          // })
+        },
+        fail: function (e) {
+          // 转发失败
+        }
+      }
+    },
     created () {
     }
   }
@@ -129,6 +265,22 @@
 
 <style scoped lang="scss">
   @import "../../common/scss/index.scss";
+
+    .kong{
+    height: 100rpx;
+  }
+  .go-back{
+    position: absolute;
+    top: 60rpx;
+    left: 20rpx;
+    z-index: 1000;
+    font-weight: bold;
+    font-size: 36rpx;
+    line-height: 50rpx;
+    /*border: 1px solid red;*/
+    padding: 5rpx 10rpx 0rpx;
+  }
+
 
   .ban-header{
     margin-top: 10rpx;
@@ -138,11 +290,16 @@
     border-top: 1px solid transparent;
   }
 
+  .lunbo-box{
+    width: 100%;
+    height: 600rpx;
+  }
+
   .main{
     width: 100%;
     height: auto;
     background: #fff;
-    padding-bottom: 50rpx;
+    padding-bottom: 20rpx;
     padding-top: 30rpx;
     .content{
       @include common-width;
@@ -229,10 +386,23 @@
         font-weight: bold;
         padding: 0 4%;
         .d-tpye-s-l{
+          display: inline-block;
         }
         .d-tpye-s-r{
+          display: inline-block;
+          width: 84%;
           float: right;
           color: #B1B1B1;
+          text-align: right;
+          .shenglue{
+            max-width: 90%;
+            vertical-align: middle;
+            display: inline-block;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
         &:hover{
            background: rgba(236,238,240,1);
@@ -250,8 +420,68 @@
   }
   .hw-pt{
     @include common-width;
-    margin-top: 20rpx;
+    margin-top: 10rpx;
   }
+
+  .share-box{
+    @include common-width;
+    .share-header{
+      text-align: center;
+      font-size: 40rpx;
+      font-weight: bold;
+      height: 130rpx;
+      line-height: 130rpx;
+    }
+    .share-item-box{
+      height: 180rpx;
+      margin-bottom: 40rpx;
+      display: -webkit-flex;
+      display: flex;
+      .share-item{
+        -webkit-flex: 1;
+        flex: 1;
+        text-align: center;
+        .share-item-t{
+          height: 120rpx;
+          .share-btn{
+            width: 60%;
+            padding: 0rpx;
+            border: none;
+          }
+          img{
+            width: 90rpx;
+            height: 90rpx;
+            margin-top: 10rpx;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+          }
+        }
+        .share-item-b{
+          font-size: 24rpx;
+        }
+      }
+    }
+  }
+
+  .haibao-img{
+    position: fixed;
+    top: 100rpx;
+    left: 0rpx;
+    right: 0rpx;
+    margin: auto;
+    z-index: 1000;
+    width: 75%;
+    height: 62%;
+    img{
+      height: 100%;
+      width: 100%;
+      -webkit-border-radius: 12rpx;
+      -moz-border-radius: 12rpx;
+      border-radius: 12rpx;
+    }
+  }
+
   .btn-class{
     margin-left: 50rpx;
   }

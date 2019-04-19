@@ -4,11 +4,12 @@
       <tds-header></tds-header>
     </section>
     <section class="main">
+      <section class="top-kong"></section>
       <section class="ban-1">
         <lunbo-images></lunbo-images>
         <div class="type-box">
             <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(item.linkUrl)">
-              <div class="type-item-t"><img :src="item.imgUrl"></div>
+              <div class="type-item-t"><img :src="item.imgUrl" :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.boxShadow "></div>
               <div class="type-item-t">{{item.name}}</div>
             </div>
         </div>
@@ -30,6 +31,7 @@
           ></pruduct-item>
         </block>
       </section>
+      <div style="height: 20rpx;"></div>
       <tomorrow-image></tomorrow-image>
       <section class="hw-pt">
         <header class="ban-header">好物拼团</header>
@@ -62,7 +64,6 @@
           ></pruduct-item>
         </block>
       </section>
-
     </section>
     <section class="kong"></section>
   </section>
@@ -85,27 +86,32 @@
     },
     data () {
       return {
+        //
         // 商品分类按钮信息
         typeInfoList: [
           {
             name: '引流特供',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../ranking/main'
+            linkUrl: '../productList/main?type=1',
+            boxShadow: 'rgba(255,174,77,0.35)'
           },
           {
             name: '今日团品',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../ranking/main'
+            linkUrl: '../productList/main?type=2',
+            boxShadow: 'rgba(255,102,102,0.35)'
           },
           {
             name: '好物拼团',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../ranking/main'
+            linkUrl: '../productList/main?type=3',
+            boxShadow: 'rgba(187,97,255,0.35)'
           },
           {
             name: '爆品返场',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../ranking/main'
+            linkUrl: '../productList/main?type=4',
+            boxShadow: 'rgba(255,116,199,0.35)'
           }
         ]
       }
@@ -113,8 +119,9 @@
     methods: {
       // 板块分类点击响应
       handleClickGo (linkUrl) {
+        // type== 1：引流，2,：团品，3：拼团，4：返场
         console.log(linkUrl)
-        mpvue.switchTab({url: linkUrl})
+        mpvue.navigateTo({url: linkUrl})
       },
       // 商品点击跳转到详情响应
       handleGoDetail (i) {
@@ -162,7 +169,9 @@
   }
   .main {
     border-top: 1px solid #fff;
-    margin-top: 108rpx;
+    .top-kong{
+      height: 108rpx;
+    }
     .ban-1{
       width: 100%;
       height: auto;

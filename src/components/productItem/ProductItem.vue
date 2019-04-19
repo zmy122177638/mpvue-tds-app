@@ -68,6 +68,20 @@
           url: '../productDetail/main'
         })
       }
+    },
+    watch:{
+      itemTpye:function (nVal, oVal) {
+        // console.log("值改变")
+        if(nVal != oVal){
+          this.type = nVal
+        }
+      },
+      subIndex:function (nVal, oVal) {
+        // console.log("值改变")
+        if(nVal != oVal){
+          this.i = nVal
+        }
+      }
     }
 
   }

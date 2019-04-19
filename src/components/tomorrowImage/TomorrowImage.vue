@@ -24,7 +24,7 @@
     -moz-border-radius: 15rpx;
     border-radius: 15rpx;
     box-shadow: 0rpx 10rpx 20rpx rgba(255,102,102,0.35);
-    margin-top: 60rpx;
+    margin-top: 30rpx;
     margin-bottom: 30rpx;
     img{
       width: 100%;

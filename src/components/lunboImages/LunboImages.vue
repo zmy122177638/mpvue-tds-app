@@ -30,7 +30,7 @@
     props: {
       swiperH: {
         type: String,
-        default: '300rpx'
+        default: '340rpx'
       }
     },
     data () {

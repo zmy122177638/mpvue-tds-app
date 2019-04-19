@@ -44,12 +44,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
-    // generate dist pageDemo.html with correct asset hash for caching.
-    // you can customize output by editing /pageDemo.html
+    // generate dist subDemo.html with correct asset hash for caching.
+    // you can customize output by editing /subDemo.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     // new HtmlWebpackPlugin({
-    //   filename: config.build.pageDemo,
-    //   template: 'pageDemo.html',
+    //   filename: config.build.subDemo,
+    //   template: 'subDemo.html',
     //   inject: true,
     //   minify: {
     //     removeComments: true,
