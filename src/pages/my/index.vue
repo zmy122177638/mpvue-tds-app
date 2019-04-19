@@ -63,27 +63,42 @@
           <div class="my-order-hh">我的订单</div>
           <div
             class="my-order-all"
-            @click="navigaToOrder()"
+            @click="navigaToOrder(0)"
           >查看全部订单</div>
         </div>
         <div class="my-order-model">
-          <div class="my-order-item">
+          <div
+            class="my-order-item"
+            @click="navigaToOrder(1)"
+          >
             <div class="item-icon"></div>
             <div class="item-name">代付款</div>
           </div>
-          <div class="my-order-item">
+          <div
+            class="my-order-item"
+            @click="navigaToOrder(2)"
+          >
             <div class="item-icon"></div>
             <div class="item-name">代发货</div>
           </div>
-          <div class="my-order-item">
+          <div
+            class="my-order-item"
+            @click="navigaToOrder(3)"
+          >
             <div class="item-icon"></div>
             <div class="item-name">代收货</div>
           </div>
-          <div class="my-order-item">
+          <div
+            class="my-order-item"
+            @click="navigaToOrder(4)"
+          >
             <div class="item-icon"></div>
             <div class="item-name">已完成</div>
           </div>
-          <div class="my-order-item">
+          <div
+            class="my-order-item"
+            @click="navigaToOrder(5)"
+          >
             <div class="item-icon"></div>
             <div class="item-name">退款退货</div>
           </div>
@@ -169,9 +184,9 @@ export default {
   },
 
   methods: {
-    navigaToOrder () {
+    navigaToOrder (current) {
       wx.navigateTo({
-        url: './../sub_my/my_order/main?type=all'
+        url: './../sub_my/my_order/main?current=' + current
       })
     }
   }
@@ -192,6 +207,7 @@ img {
   .scroll-content {
     flex: 1;
     height: 100%;
+    background-color: #ffffff;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }

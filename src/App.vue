@@ -37,9 +37,16 @@ page {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  color:#282828;
-  background: rgba(246,248,250,1);  /*所有页面初始背景颜色*/
+  color: #282828;
+  background: rgba(246, 248, 250, 1); /*所有页面初始背景颜色*/
   font-size: 28rpx;
+}
+// 去除滚动条
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+  display: none;
 }
 /* this rule will be remove */
 * {

@@ -11,6 +11,7 @@
     </div>
     <swiper
       class="order-swiper"
+      :skip-hidden-item-layout="true"
       :current="currentIndex"
       :duration="350"
       @change="handleSwiperChange"
@@ -47,20 +48,20 @@ export default {
   },
   data () {
     return {
-      params: {},
       navList: ['全部', '待付款', '待发货', '待收货', '已完成', '退货退款'],
       currentIndex: 0,
       orderList: [
         { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 }
+        { order_id: 1, order_num: 2018284658126516, status_str: '待发货', status: 2, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
+        { order_id: 1, order_num: 2018284658126516, status_str: '待收货', status: 3, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
+        { order_id: 1, order_num: 2018284658126516, status_str: '已完成', status: 4, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
+        { order_id: 1, order_num: 2018284658126516, status_str: '退款退货', status: 5, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 }
       ]
     }
   },
-  onShow (options) {
-    this.params = options
+  onLoad (options) {
+    console.log(options)
+    this.currentIndex = parseInt(options.current) || 0
   },
   mounted () {
 
@@ -87,6 +88,15 @@ export default {
      */
     handleSelChange (item) {
       console.log(item)
+      if (item.status === 1) {
+        wx.navigateTo({
+          url: '../my_unpaid/main?orderId=' + item.orderId
+        })
+      } else {
+        wx.navigateTo({
+          url: '../my_status/main?orderId=' + item.order_id
+        })
+      }
     },
 
     /**
@@ -110,7 +120,6 @@ export default {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #f6f8fa;
   // nav-header
   .nav-list {
     display: flex;
@@ -160,6 +169,7 @@ export default {
   // scroll-view
   .scroll-view {
     height: 100%;
+    overflow: scroll;
   }
   // order
   .order-list {

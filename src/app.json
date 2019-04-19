@@ -19,7 +19,10 @@
     {
       "root": "pages/sub_my/",
       "pages": [
-        "my_order/main"
+        "my_order/main",
+        "my_unpaid/main",
+        "my_status/main",
+        "my_service/main"
       ]
     }
   ],
