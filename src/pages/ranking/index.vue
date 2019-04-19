@@ -154,6 +154,7 @@ img {
   flex-direction: column;
   overflow: hidden;
   .ranking-action {
+    background-color: #ffffff;
     border-bottom: 1px solid #f2f2f2;
   }
   // 排行分类
@@ -213,6 +214,7 @@ img {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
     .ranking-list {
+      background-color: #ffffff;
       padding-top: 25px;
       .ranking-item {
         padding: 0 30px;
@@ -265,6 +267,7 @@ img {
                 padding: 0px 5px;
                 background-color: #ff6666;
                 color: #ffffff;
+                line-height: 16px;
                 font-size: 12px;
                 font-weight: 500;
                 border-radius: 3px;
@@ -285,6 +288,7 @@ img {
     .ranking-ponint {
       font-size: 14px;
       color: #b1b1b1;
+      background-color: #ffffff;
       text-align: center;
       padding: 25px 0;
       &.on {
