@@ -11,16 +11,8 @@
           >
           <div class="my-show">
             <div class="my-name">王多多</div>
-            <img
-              src="../../../static/img/user_type.png"
-              class="my-status"
-              alt=""
-            >
+            <div class="my-status">普通用户</div>
           </div>
-        </div>
-        <div class="my-info-right">
-          <div class="info-tag">店</div>
-          <div class="info-status">Lv.4</div>
         </div>
       </div>
       <div class="my-upgrade">
@@ -106,23 +98,29 @@
       </div>
 
       <!-- 我的团队 -->
-      <div class="my-team">
+      <!-- <div class="my-team">
         <div class="my-team-title">我的团队</div>
         <div class="my-team-list">
-          <div class="my-team-item">
+          <div
+            class="my-team-item"
+            @click="navigaToTeam(0)"
+          >
             <div class="item-value">36</div>
             <div class="item-key">团长数量</div>
           </div>
-          <div class="my-team-item">
+          <div
+            class="my-team-item"
+            @click="navigaToTeam(1)"
+          >
             <div class="item-value">36</div>
             <div class="item-key">团队收益</div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- nav -->
       <div class="my-nav">
-        <div class="my-nav-item">
+        <!-- <div class="my-nav-item">
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">我的邀请码</div>
@@ -131,20 +129,17 @@
             <div class="item-fn-txt">DA31EW</div>
             <div class="item-fn-icon"></div>
           </div>
-        </div>
+        </div> -->
         <div class="my-nav-item">
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">我的拼团</div>
           </div>
         </div>
-        <div class="my-nav-item">
-          <div class="item-left">
-            <div class="item-icon"></div>
-            <div class="item-title">我的拼团</div>
-          </div>
-        </div>
-        <div class="my-nav-item">
+        <div
+          class="my-nav-item"
+          @click="navigaToAddress()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">收货地址</div>
@@ -154,12 +149,6 @@
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">在线客服</div>
-          </div>
-        </div>
-        <div class="my-nav-item">
-          <div class="item-left">
-            <div class="item-icon"></div>
-            <div class="item-title">帮助中心</div>
           </div>
         </div>
         <div class="my-nav-item">
@@ -176,17 +165,27 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {}
   },
-  mounted () {
+  mounted() {
 
   },
 
   methods: {
-    navigaToOrder (current) {
+    navigaToOrder(current) {
       wx.navigateTo({
         url: './../sub_my/my_order/main?current=' + current
+      })
+    },
+    navigaToTeam(current) {
+      wx.navigateTo({
+        url: './../sub_my/my_team/main?current=' + current
+      })
+    },
+    navigaToAddress() {
+      wx.navigateTo({
+        url: './../sub_my/my_address/main'
       })
     }
   }
@@ -214,15 +213,13 @@ img {
 
   // 用户信息
   .my-info-box {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 102, 102, 1) 0%,
-      rgba(255, 131, 111, 1) 100%
-    );
+    background: #ff6666;
     .my-info {
       display: flex;
       align-items: center;
-      padding: 10px 20px 20px;
+      padding: 0px 15px 20px;
+      background-color: #ffffff;
+      border-radius: 0 0 12px 12px;
       .my-info-left {
         display: flex;
         flex: 1;
@@ -230,10 +227,10 @@ img {
         overflow: hidden;
       }
       .my-img {
-        width: 64px;
-        height: 64px;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
-        margin-right: 15px;
+        margin-right: 20px;
       }
       .my-show {
         flex: 1;
@@ -241,53 +238,28 @@ img {
         display: flex;
         flex-direction: column;
         .my-name {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
-          color: #ffffff;
+          color: #282828;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
         }
         .my-status {
-          width: 82px;
-          height: 24px;
-        }
-      }
-      .my-info-right {
-        width: 60px;
-        height: 18px;
-        border: 1px solid #ffffff;
-        border-radius: 17px;
-        display: flex;
-        align-items: center;
-        align-self: flex-end;
-        .info-tag {
-          border-radius: 50%;
-          width: 18px;
+          margin-top: 14.5px;
+          width: 72px;
           height: 18px;
           line-height: 18px;
-          font-size: 15px;
-          background-color: #ffffff;
-          color: #ff6666;
-        }
-        .info-status {
-          flex: 1;
-          font-size: 15px;
+          background-color: #5c5050;
+          border-radius: 11px;
           color: #ffffff;
+          font-size: 12px;
           text-align: center;
         }
       }
     }
     .my-upgrade {
-      margin: 0 15px;
-      background: linear-gradient(
-        179deg,
-        rgba(82, 82, 82, 1) 0%,
-        rgba(48, 48, 48, 1) 100%
-      );
-      box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.25);
-      border-radius: 6px 6px 0px 0px;
-      padding: 12px 15px;
+      padding: 20px;
       box-sizing: border-box;
       display: flex;
       align-items: center;
@@ -296,23 +268,28 @@ img {
         flex: 1;
         display: flex;
         align-items: center;
+        overflow: hidden;
       }
       .my-upgrade-icon {
-        width: 29px;
-        height: 29px;
+        width: 34px;
+        height: 34px;
         border: 1px solid #ffffff;
-        margin-right: 10px;
+        margin-right: 15px;
         border-radius: 50%;
+        align-self: flex-start;
       }
       .my-upgrade-ct {
+        flex: 1;
+        overflow: hidden;
         .my-upgrade-t {
-          font-size: 15px;
+          font-size: 18px;
           color: #ffffff;
+          font-weight: bold;
         }
         .my-upgrade-f {
+          margin-top: 3px;
           font-size: 12px;
-          color: #d9d9d9;
-          font-weight: 300;
+          color: #ffffff;
         }
       }
       .my-upgrade-btn {
@@ -320,9 +297,9 @@ img {
         height: 24px;
         line-height: 24px;
         text-align: center;
-        color: #ffffff;
+        color: #ff6666;
         font-size: 12px;
-        background-color: #ff6666;
+        background-color: #ffffff;
         border-radius: 12.5px;
       }
     }

@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "订单待发货"
+  "navigationBarTitleText": "订单待发货",
+  "enablePullDownRefresh": true
 }
