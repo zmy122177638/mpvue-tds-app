@@ -42,18 +42,23 @@ export default {
   },
   data() {
     return {
+      // 订单Id
       orderId: 0,
+      // 服务数据
       serviceList: [
         { label: '仅退款', title: '退款原因', status: 1, content: '未收到货(包含未签收)，或团大师客服协商同意', placeholder: '请输入不超过140字的退款说明！' },
         { label: '退货退款', title: '退货原因', status: 2, content: '已收到货，需要退换已收到的货物', placeholder: '请输入不超过140字的退货说明！' },
         { label: '换货', title: '换货原因', status: 3, content: '商品存在质量问题，与团大师协商换货', placeholder: '请输入不超过140字的换货说明！' },
         { label: '正在退款中...', title: '换货原因', status: 4, content: '退款将在72小时退回您的微信钱包，请耐心等待！', placeholder: '请输入不超过140字的换货说明！' }
       ],
+      // 是否显示弹窗
       isShow: false,
+      // 弹窗props
       popupProps: {}
     }
   },
   onLoad(options) {
+    // 接收订单Id
     this.orderId = options.orderId
     console.log(options)
   },
@@ -75,7 +80,7 @@ export default {
      */
     questSubmit(formData) {
       console.log(formData)
-      wx.showToast({
+      mpvue.showToast({
         title: `提交成功 客服人员将在24小时内与您联系 谢谢您的理解与支持！`,
         icon: 'none',
         duration: 1500

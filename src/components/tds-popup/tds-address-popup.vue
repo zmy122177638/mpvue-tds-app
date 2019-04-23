@@ -176,35 +176,35 @@ export default {
     submit() {
       const { name, phone, region, address } = this.formData_v;
       if (!name) {
-        wx.showToast({
+        mpvue.showToast({
           title: '请输入收货人姓名',
           icon: 'none',
           duration: 1000
         })
         return false;
       } else if (!phone) {
-        wx.showToast({
+        mpvue.showToast({
           title: '请输入收货人手机号码',
           icon: 'none',
           duration: 1000
         })
         return false;
       } else if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(phone)) {
-        wx.showToast({
+        mpvue.showToast({
           title: '请输入正确手机号码',
           icon: 'none',
           duration: 1000
         })
         return false;
       } else if (!region) {
-        wx.showToast({
+        mpvue.showToast({
           title: '请选择收货人地址',
           icon: 'none',
           duration: 1000
         })
         return false;
       } else if (!address) {
-        wx.showToast({
+        mpvue.showToast({
           title: '请输入收货人详细街道、门牌号',
           icon: 'none',
           duration: 1000
@@ -354,15 +354,15 @@ export default {
   }
   &.on {
     .address-popup-cont {
-      animation: movescale 0.35s ease-out;
+      animation: movescale 0.45s ease-out;
     }
   }
   @keyframes movescale {
     0% {
-      transform: translate3d(-50%, -50%, 0) scale(0.3);
+      opacity: 0;
     }
     100% {
-      transform: translate3d(-50%, -50%, 0) scale(1);
+      opacity: 1;
     }
   }
 }

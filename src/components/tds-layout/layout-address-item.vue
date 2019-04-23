@@ -4,7 +4,7 @@
     @click="$emit('click',item)"
   >
     <div class="address-normal" v-if="item.isNormal">默认</div>
-    <div class="address-icon" v-if="item.isNormal"></div>
+    <div class="address-icon"></div>
     <div class="address-content">
       <p class="address-name">{{item.name}}&nbsp;&nbsp;&nbsp;{{item.phone}}</p>
       <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.region + ',' + item.address}}</p>

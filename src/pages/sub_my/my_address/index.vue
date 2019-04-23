@@ -35,8 +35,11 @@ export default {
   },
   data() {
     return {
-      type: 0, // 0修改 1选择
+      // 0修改 1选择
+      type: 0,
+      // 是否弹窗
       isShow: false,
+      // 地址列表
       addressList: [
         {
           name: 'anles',
@@ -47,10 +50,12 @@ export default {
           isNormal: false
         }
       ],
+      // 弹窗表单
       formData: {}
     }
   },
   onLoad(options) {
+    // 获取传入值
     this.type = options.type || 0;
     console.log(this.type)
   },
@@ -62,13 +67,14 @@ export default {
      */
     handleAddressItem(formData) {
       console.log(formData)
+      // 判断是否选择
       if (this.type) {
         // 存入缓存
-        wx.setStorage({
+        mpvue.setStorage({
           key: 'selAddress',
           data: formData,
           success: function () {
-            wx.navigateBack(); // 返回上一个页面
+            mpvue.navigateBack(); // 返回上一个页面
           }
         })
       } else {

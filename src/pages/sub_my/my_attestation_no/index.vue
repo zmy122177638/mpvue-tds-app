@@ -55,7 +55,9 @@
 export default {
   data() {
     return {
+      // 身份类型
       atteList: ['身份证', '居住证', '驾驶证', '港澳通行证', '护照'],
+      // 表单数据
       formData: {
         activeIndex: '',
         name: '',

@@ -68,7 +68,7 @@ export default {
         this.serviceQuest = '';
         this.isShow_v = !this.isShow_v;
       } else {
-        wx.showToast({
+        mpvue.showToast({
           title: '所填内容不能为空',
           icon: 'none',
           duration: 1500

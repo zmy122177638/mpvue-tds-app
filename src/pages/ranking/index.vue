@@ -1,41 +1,41 @@
 <template>
   <section class="ranking-container">
     <Tds-header></Tds-header>
-    <div
-      class="ranking-action"
-      :style="queryData.category === 0 ?'border:none':''"
-    >
+    <div class="ranking-action">
       <div class="ranking-category">
         <div
           :class="['ranking-category-item',{on: queryData.category === 0}]"
           @click="searchRankChange(0,queryData.timer)"
-        >本月热卖</div>
+        >用户排行</div>
         <div
           :class="['ranking-category-item',{on: queryData.category === 1}]"
           @click="searchRankChange(1,queryData.timer)"
-        >优秀团长</div>
+        >小店排行</div>
       </div>
-      <div
-        class="ranking-timer"
-        v-if="queryData.category === 1"
-      >
+      <div class="ranking-timer">
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 0}]"
           @click="searchRankChange(queryData.category,0)"
         >
-          今日
+          今天
         </div>
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 1}]"
           @click="searchRankChange(queryData.category,1)"
         >
-          周
+          昨天
         </div>
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 2}]"
           @click="searchRankChange(queryData.category,2)"
         >
-          月
+          本月累计
+        </div>
+        <div
+          :class="['ranking-timer-item',{on: queryData.timer === 3}]"
+          @click="searchRankChange(queryData.category,3)"
+        >
+          上月总榜
         </div>
       </div>
     </div>
@@ -49,12 +49,13 @@
         v-if="queryData.category === 1"
       >
         <div class="ranking-title-txt">排名</div>
-        <div class="ranking-title-txt">小店名称</div>
+        <div class="ranking-title-txt">小店信息</div>
         <div class="ranking-title-txt">销售额</div>
       </div>
+
       <div
         class="ranking-list"
-        :style="queryData.category === 1?'padding-top:0;':''"
+        :style="queryData.category === 1?'padding-top:0':''"
       >
         <div
           class="ranking-item"
@@ -63,34 +64,37 @@
         >
           <div class="item-left">
             <div class="item-num">No.{{index+1}}</div>
-            <div class="item-img-box">
-              <img
-                class="item-img"
-                :src="item.img"
-                :style="queryData.category === 1?'border-radius:50%':''"
-                alt=""
-              >
-              <div
-                class="item-grade"
-                v-if="item.grade"
-              >Lv.{{item.grade}}</div>
-            </div>
-
+            <img
+              class="item-img"
+              :src="item.img"
+              alt=""
+            >
             <div class="item-info">
               <div class="item-name">
                 <div class="item-tx">{{item.name}}</div>
-                <img
-                  class="item-grade-icon"
+                <div
+                  class="item-grade"
                   v-if="item.grade"
-                  src="../../../static/img/grade_icon.png"
-                />
+                >Lv.{{item.grade}}</div>
               </div>
+              <div
+                class="item-status"
+                v-if="item.status"
+              >{{item.status}}</div>
             </div>
           </div>
           <div class="item-right">{{item.orderNum}}</div>
         </div>
       </div>
-      <div class="ranking-ponint">仅显示前二十名排行</div>
+      <div :class="['ranking-ponint',{'on':queryData.category === 1}]">仅显示前二十名用户排行</div>
+      <!-- 悬浮店铺排名 -->
+      <div
+        class="ranking-self"
+        v-if="queryData.category === 1"
+      >
+        <div class="ranking-rknum">我的小店排名: <span>No.351</span></div>
+        <div class="ranking-rkmoney">金额: 357</div>
+      </div>
     </scroll-view>
   </section>
 </template>
@@ -105,7 +109,9 @@ export default {
         category: 0,
         timer: 0
       },
+      // scrollTop位置
       scrollTopNum: '',
+      // 排行列表
       rankingList: [
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
@@ -258,34 +264,14 @@ img {
             font-size: 15px;
             color: #ff0a0a;
             font-weight: 500;
+            font-style: italic;
             font-family: Avenir Next;
-          }
-          .item-img-box {
-            position: relative;
-            margin-right: 15px;
           }
           .item-img {
             width: 44px;
             height: 44px;
-            border-radius: 6px;
-          }
-          .item-grade {
-            font-family: Avenir Next;
-            padding: 0px 5px;
-            background-color: #ff6666;
-            color: #ffffff;
-            line-height: 14px;
-            font-size: 10px;
-            font-weight: 500;
-            border-radius: 10.5px 10.5px 10.5px 0;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-          }
-          .item-grade-icon {
-            width: 27px;
-            height: 27px;
-            margin-left: 10px;
+            border-radius: 50%;
+            margin-right: 15px;
           }
           .item-info {
             display: flex;
@@ -304,6 +290,17 @@ img {
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
+              }
+              .item-grade {
+                margin-left: 10px;
+                font-family: Avenir Next;
+                padding: 0px 5px;
+                background-color: #ff6666;
+                color: #ffffff;
+                line-height: 16px;
+                font-size: 12px;
+                font-weight: 500;
+                border-radius: 3px;
               }
             }
             .item-status {
@@ -328,6 +325,31 @@ img {
         padding-bottom: 70px;
       }
     }
+    .ranking-self {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11.5px 30px;
+      box-sizing: border-box;
+      background-color: rgba(255, 102, 102, 0.9);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      .ranking-rknum {
+        font-size: 15px;
+        color: #ffffff;
+        span {
+          font-family: Avenir Next;
+          font-weight: 500;
+        }
+      }
+      .ranking-rkmoney {
+        font-size: 15px;
+        color: #ffffff;
+      }
+    }
   }
 }
 </style>
+

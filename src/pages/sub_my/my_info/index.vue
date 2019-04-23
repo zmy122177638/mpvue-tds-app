@@ -69,6 +69,7 @@
 export default {
   data() {
     return {
+      // 是否验证
       isAttestation: false
     }
   },
@@ -79,11 +80,11 @@ export default {
   methods: {
     navigateToAttestation() {
       if (this.isAttestation) {
-        wx.navigateTo({
+        mpvue.navigateTo({
           url: '../my_attestation/main'
         })
       } else {
-        wx.navigateTo({
+        mpvue.navigateTo({
           url: '../my_attestation_no/main'
         })
       }

@@ -7,7 +7,7 @@
       <div class="unpaid-content">
         <!-- 商品信息 -->
         <Layout-goods-item></Layout-goods-item>
-        
+
         <!-- 有默认地址 -->
         <div class="section-item">
           <div class="section-title">
@@ -78,7 +78,7 @@ export default {
   },
   onShow() {
     let _that = this;
-    wx.getStorage({
+    mpvue.getStorage({
       key: 'selAddress',
       success(res) {
         _that.addressData = res.data;
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     navigateToAddress() {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: '../my_address/main?type=1'
       })
     },
@@ -101,7 +101,7 @@ export default {
     }
   },
   onUnload() {
-    wx.removeStorage({
+    mpvue.removeStorage({
       key: 'selAddress'
     })
   }
