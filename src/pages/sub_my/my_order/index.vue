@@ -6,7 +6,6 @@
         v-for="(item,index) in navList"
         @click="currentIndex = index"
         :key="index"
-        :skip-hidden-item-layout="true"
       >{{item}}</div>
     </div>
     <swiper
@@ -46,7 +45,7 @@ export default {
   components: {
     LayoutOrderItem
   },
-  data () {
+  data() {
     return {
       navList: ['全部', '待付款', '待发货', '待收货', '已完成', '退货退款'],
       currentIndex: 0,
@@ -59,14 +58,14 @@ export default {
       ]
     }
   },
-  onLoad (options) {
+  onLoad(options) {
     console.log(options)
     this.currentIndex = parseInt(options.current) || 0
   },
-  mounted () {
+  mounted() {
 
   },
-  onPullDownRefresh () {
+  onPullDownRefresh() {
     // console.log(wx)
     setTimeout(() => {
       wx.stopPullDownRefresh()
@@ -77,7 +76,7 @@ export default {
      * @description: 切换swiper
      * @Date: 2019-04-17 16:27:17
      */
-    handleSwiperChange (event) {
+    handleSwiperChange(event) {
       this.currentIndex = event.target.current
     },
 
@@ -86,7 +85,7 @@ export default {
      * @param {Object} item 订单
      * @Date: 2019-04-17 16:27:58
      */
-    handleSelChange (item) {
+    handleSelChange(item) {
       console.log(item)
       if (item.status === 1) {
         wx.navigateTo({
@@ -105,7 +104,7 @@ export default {
      * @return: undefined
      * @Date: 2019-04-17 17:13:38
      */
-    handleScrollTolower () {
+    handleScrollTolower() {
       console.log('加载中...')
     }
   }

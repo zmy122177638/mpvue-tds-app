@@ -1,8 +1,8 @@
 <template>
   <section class="my-container">
     <!-- 用户信息 -->
-    <div class="my-info-box">
-      <div class="my-info">
+    <div :class="['my-info-box',{'vip':isVip}]">
+      <div :class="['my-info',{'vip':isVip}]">
         <div class="my-info-left">
           <img
             src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg"
@@ -11,19 +11,15 @@
           >
           <div class="my-show">
             <div class="my-name">王多多</div>
-            <img
-              src="../../../static/img/user_type.png"
-              class="my-status"
-              alt=""
-            >
+            <div class="my-status">普通用户</div>
           </div>
         </div>
-        <div class="my-info-right">
-          <div class="info-tag">店</div>
-          <div class="info-status">Lv.4</div>
-        </div>
       </div>
-      <div class="my-upgrade">
+      <!-- 升级 -->
+      <div
+        class="my-upgrade"
+        v-if="!isVip"
+      >
         <div class="upgrade-left">
           <div class="my-upgrade-icon"></div>
           <div class="my-upgrade-ct">
@@ -32,6 +28,45 @@
           </div>
         </div>
         <div class="my-upgrade-btn">立即开通</div>
+      </div>
+      <!-- progress -->
+      <div
+        class="progress-container"
+        v-else
+      >
+        <div class="progress-assert">
+          <div class="progress-count">上月店铺等级<span class="progress-grade">Lv.2</span></div>
+        </div>
+        <div class="progress-box">
+          <div class="progress-pack">
+            <div
+              class="progress-active"
+              style="width:40%"
+            >
+              <img
+                src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+                class="user-avator"
+                alt=""
+              >
+              <div class="user-money">￥1680</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.1</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.2</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.3</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.4</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.5</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -48,7 +83,10 @@
             <div class="item-point">签到赚积分</div>
           </div>
         </div>
-        <div class="my-activity-item">
+        <div
+          class="my-activity-item"
+          @click="handlePoint()"
+        >
           <div class="item-icon"></div>
           <div class="item-cont">
             <div class="item-title">我的积分</div>
@@ -106,23 +144,29 @@
       </div>
 
       <!-- 我的团队 -->
-      <div class="my-team">
+      <!-- <div class="my-team">
         <div class="my-team-title">我的团队</div>
         <div class="my-team-list">
-          <div class="my-team-item">
+          <div
+            class="my-team-item"
+            @click="navigaToTeam(0)"
+          >
             <div class="item-value">36</div>
             <div class="item-key">团长数量</div>
           </div>
-          <div class="my-team-item">
+          <div
+            class="my-team-item"
+            @click="navigaToTeam(1)"
+          >
             <div class="item-value">36</div>
             <div class="item-key">团队收益</div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- nav -->
       <div class="my-nav">
-        <div class="my-nav-item">
+        <!-- <div class="my-nav-item">
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">我的邀请码</div>
@@ -131,38 +175,38 @@
             <div class="item-fn-txt">DA31EW</div>
             <div class="item-fn-icon"></div>
           </div>
-        </div>
-        <div class="my-nav-item">
+        </div> -->
+        <div
+          class="my-nav-item"
+          @click="handlePoint()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">我的拼团</div>
           </div>
         </div>
-        <div class="my-nav-item">
-          <div class="item-left">
-            <div class="item-icon"></div>
-            <div class="item-title">我的拼团</div>
-          </div>
-        </div>
-        <div class="my-nav-item">
+        <div
+          class="my-nav-item"
+          @click="navigaToAddress()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">收货地址</div>
           </div>
         </div>
-        <div class="my-nav-item">
+        <button
+          class="my-nav-item"
+          open-type="contact"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">在线客服</div>
           </div>
-        </div>
-        <div class="my-nav-item">
-          <div class="item-left">
-            <div class="item-icon"></div>
-            <div class="item-title">帮助中心</div>
-          </div>
-        </div>
-        <div class="my-nav-item">
+        </button>
+        <div
+          class="my-nav-item"
+          @click="navigaToSetting()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">系统设置</div>
@@ -176,17 +220,41 @@
 
 <script>
 export default {
-  data () {
-    return {}
+  data() {
+    return {
+      isVip: false
+    }
   },
-  mounted () {
+  mounted() {
 
   },
 
   methods: {
-    navigaToOrder (current) {
+    navigaToOrder(current) {
       wx.navigateTo({
         url: './../sub_my/my_order/main?current=' + current
+      })
+    },
+    navigaToTeam(current) {
+      wx.navigateTo({
+        url: './../sub_my/my_team/main?current=' + current
+      })
+    },
+    navigaToAddress() {
+      wx.navigateTo({
+        url: './../sub_my/my_address/main'
+      })
+    },
+    navigaToSetting() {
+      wx.navigateTo({
+        url: './../sub_my/my_setting/main'
+      })
+    },
+    handlePoint() {
+      wx.showToast({
+        title: '暂未开放',
+        icon: 'none',
+        duration: 2000
       })
     }
   }
@@ -195,6 +263,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+  background-color: transparent;
+}
 img {
   display: block;
 }
@@ -209,20 +284,28 @@ img {
     height: 100%;
     background-color: #ffffff;
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
   }
 
   // 用户信息
   .my-info-box {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 102, 102, 1) 0%,
-      rgba(255, 131, 111, 1) 100%
-    );
+    background: #ff6666;
+    &.vip {
+      background-color: #ffffff;
+      position: relative;
+      z-index: 12;
+      border-radius: 0px 0px 12px 12px;
+      box-sizing: border-box;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.05);
+    }
     .my-info {
       display: flex;
       align-items: center;
-      padding: 10px 20px 20px;
+      padding: 0px 15px 20px;
+      background-color: #ffffff;
+      border-radius: 0 0 12px 12px;
+      &.vip {
+        padding: 0px 15px 0px;
+      }
       .my-info-left {
         display: flex;
         flex: 1;
@@ -230,10 +313,10 @@ img {
         overflow: hidden;
       }
       .my-img {
-        width: 64px;
-        height: 64px;
+        width: 54px;
+        height: 54px;
         border-radius: 50%;
-        margin-right: 15px;
+        margin-right: 20px;
       }
       .my-show {
         flex: 1;
@@ -241,53 +324,28 @@ img {
         display: flex;
         flex-direction: column;
         .my-name {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
-          color: #ffffff;
+          color: #282828;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
         }
         .my-status {
-          width: 82px;
-          height: 24px;
-        }
-      }
-      .my-info-right {
-        width: 60px;
-        height: 18px;
-        border: 1px solid #ffffff;
-        border-radius: 17px;
-        display: flex;
-        align-items: center;
-        align-self: flex-end;
-        .info-tag {
-          border-radius: 50%;
-          width: 18px;
+          margin-top: 14.5px;
+          width: 72px;
           height: 18px;
           line-height: 18px;
-          font-size: 15px;
-          background-color: #ffffff;
-          color: #ff6666;
-        }
-        .info-status {
-          flex: 1;
-          font-size: 15px;
+          background-color: #5c5050;
+          border-radius: 11px;
           color: #ffffff;
+          font-size: 12px;
           text-align: center;
         }
       }
     }
     .my-upgrade {
-      margin: 0 15px;
-      background: linear-gradient(
-        179deg,
-        rgba(82, 82, 82, 1) 0%,
-        rgba(48, 48, 48, 1) 100%
-      );
-      box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.25);
-      border-radius: 6px 6px 0px 0px;
-      padding: 12px 15px;
+      padding: 20px;
       box-sizing: border-box;
       display: flex;
       align-items: center;
@@ -296,23 +354,28 @@ img {
         flex: 1;
         display: flex;
         align-items: center;
+        overflow: hidden;
       }
       .my-upgrade-icon {
-        width: 29px;
-        height: 29px;
+        width: 34px;
+        height: 34px;
         border: 1px solid #ffffff;
-        margin-right: 10px;
+        margin-right: 15px;
         border-radius: 50%;
+        align-self: flex-start;
       }
       .my-upgrade-ct {
+        flex: 1;
+        overflow: hidden;
         .my-upgrade-t {
-          font-size: 15px;
+          font-size: 18px;
           color: #ffffff;
+          font-weight: bold;
         }
         .my-upgrade-f {
+          margin-top: 3px;
           font-size: 12px;
-          color: #d9d9d9;
-          font-weight: 300;
+          color: #ffffff;
         }
       }
       .my-upgrade-btn {
@@ -320,10 +383,89 @@ img {
         height: 24px;
         line-height: 24px;
         text-align: center;
-        color: #ffffff;
+        color: #ff6666;
         font-size: 12px;
-        background-color: #ff6666;
+        background-color: #ffffff;
         border-radius: 12.5px;
+      }
+    }
+  }
+
+  // progress
+  .progress-container {
+    padding: 20px 15px;
+    .progress-assert {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .progress-count {
+        font-size: 10px;
+        color: #282828;
+        font-weight: bold;
+        .progress-grade {
+          color: #ff6666;
+          font-weight: normal;
+        }
+      }
+    }
+    .progress-box {
+      padding: 22px 0;
+      .progress-pack {
+        height: 8px;
+        background-color: #f2f2f2;
+        border-radius: 4.5px;
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        .progress-active {
+          transition: all 0.3s ease-out;
+          width: 0%;
+          height: 8px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          border-radius: 4.5px;
+          background: rgba(255, 102, 102, 1);
+          box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+          .user-avator {
+            width: 22px;
+            height: 22px;
+            box-sizing: border-box;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            right: -11px;
+            top: 50%;
+            margin-top: -11px;
+            box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+          }
+          .user-money {
+            font-size: 10px;
+            color: #ff6666;
+            font-weight: bold;
+            position: absolute;
+            top: -28px;
+            right: -14px;
+          }
+        }
+        .progress-grade-item {
+          width: 2px;
+          height: 2px;
+          background-color: #ffffff;
+          border-radius: 50%;
+          position: relative;
+          .grade-txt {
+            font-size: 10px;
+            color: #b1b1b1;
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
       }
     }
   }
@@ -449,7 +591,12 @@ img {
       border-bottom: 1px solid #f2f2f2;
       display: flex;
       align-items: center;
+      line-height: initial;
+      background-color: #ffffff;
       justify-content: space-between;
+      &::after {
+        border: none;
+      }
       .item-left {
         width: 100%;
         flex: 1;

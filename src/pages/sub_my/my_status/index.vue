@@ -1,20 +1,17 @@
 <template>
   <section class="status-container">
-    <scroll-view
-      scroll-y
-      class="scroll-view"
-    >
-      <div class="status-content">
 
-        <!-- 商品信息 -->
-        <Layout-goods-item></Layout-goods-item>
-        <Layout-buyer-item @setAddress="handleAddress"></Layout-buyer-item>
-        <Layout-logistics-item @onService="handleService"></Layout-logistics-item>
+    <div class="status-content">
 
-      </div>
-    </scroll-view>
+      <!-- 商品信息 -->
+      <Layout-goods-item></Layout-goods-item>
+      <Layout-buyer-item @setAddress="handleAddress"></Layout-buyer-item>
+      <Layout-logistics-item @onService="handleService"></Layout-logistics-item>
+
+    </div>
+
     <!-- 修改收货 -->
-    <Tds-address-popup :isShow="isShow"></Tds-address-popup>
+    <Tds-address-popup :isShow.sync="isShow" :formData="{name:'132',phone:18588419510,address:'wwww'}"></Tds-address-popup>
   </section>
 </template>
 
@@ -33,13 +30,11 @@ export default {
   data() {
     return {
       orderId: 0,
-      isShow: true
+      isShow: false
     }
   },
   onLoad(options) {
     this.orderId = options.orderId
-    console.log(options)
-    console.log(wx)
   },
 
   methods: {
