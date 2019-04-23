@@ -87,15 +87,20 @@ export default {
   },
   data() {
     return {
+      // 选中的导航
       currentIndex: 0,
+      // 导航列表
       navList: ['团长团员', '团队收益'],
+      // 是否悬浮
       isFixed: false,
+      // 填充高度
       fillHeight: ''
     }
   },
 
   onLoad(options) {
     console.log(options)
+    // 接收导航默认选中参数，current
     this.currentIndex = parseInt(options.current) || 0
   },
   mounted() {
@@ -114,13 +119,13 @@ export default {
   },
   methods: {
     /**
-     * @description: 获取节点信息 wxAPI
+     * @description: 获取节点信息 mpvueAPI
      * @param {String} node 节点选择器
      * @param {Function} cb 回调函数
      * @Date: 2019-04-22 09:23:50
      */
     getBoundingClientRect(node, cb) {
-      let query = wx.createSelectorQuery();
+      let query = mpvue.createSelectorQuery();
       query.select(node).boundingClientRect()
       query.selectViewport().scrollOffset()
       query.exec((res) => {
@@ -260,7 +265,7 @@ export default {
     font-weight: bold;
     border-radius: 17px;
     border: 1px solid rgba(112, 112, 112, 1);
-    margin: 0 auto 15px;;
+    margin: 0 auto 15px;
   }
 }
 </style>

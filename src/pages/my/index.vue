@@ -234,27 +234,27 @@ export default {
 
   methods: {
     navigaToOrder(current) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: './../sub_my/my_order/main?current=' + current
       })
     },
     navigaToTeam(current) {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: './../sub_my/my_team/main?current=' + current
       })
     },
     navigaToAddress() {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: './../sub_my/my_address/main'
       })
     },
     navigaToSetting() {
-      wx.navigateTo({
+      mpvue.navigateTo({
         url: './../sub_my/my_setting/main'
       })
     },
     handlePoint() {
-      wx.showToast({
+      mpvue.showToast({
         title: '暂未开放',
         icon: 'none',
         duration: 2000

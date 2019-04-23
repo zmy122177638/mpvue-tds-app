@@ -29,11 +29,14 @@ export default {
   },
   data() {
     return {
+      // 订单Id
       orderId: 0,
+      // 是否显示弹窗
       isShow: false
     }
   },
   onLoad(options) {
+    // 接受orderId参数
     this.orderId = options.orderId
   },
 
@@ -43,7 +46,7 @@ export default {
      * @Date: 2019-04-19 11:01:46
      */
     handleService() {
-      wx.navigateTo({ url: '../my_service/main' })
+      mpvue.navigateTo({ url: '../my_service/main' })
     },
     /**
      * @description: 修改收货地址
