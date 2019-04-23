@@ -76,7 +76,10 @@
     >
       <!-- 活动 -->
       <div class="my-activity">
-        <div class="my-activity-item">
+        <div
+          class="my-activity-item"
+          @click="handlePoint()"
+        >
           <div class="item-icon"></div>
           <div class="item-cont">
             <div class="item-title">签到有奖</div>
