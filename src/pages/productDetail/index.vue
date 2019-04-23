@@ -61,8 +61,8 @@
       @close="handleCloseShareBox"
     >
       <section class="share-box">
-        <header class="share-header">选择分享渠道</header>
-        <div class="share-item-box">
+        <header class="share-header"  v-if="!showPosterImg">选择分享渠道</header>
+        <div class="share-item-box" v-if="showPosterImg">
           <div class="share-item">
             <div class="share-item-t">
               <button class="share-btn"
@@ -70,6 +70,31 @@
                       open-type="share"
                       id="productShare"
                 >
+                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+              </button>
+            </div>
+            <div class="share-item-b">保存到本地相册</div>
+          </div>
+          <div class="share-item">
+            <div class="share-item-t">
+              <button class="share-btn"
+                      :plain="true"
+                      @click="handleCreatePosterImg"
+              >
+                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+              </button>
+            </div>
+            <div class="share-item-b">分享微信好友</div>
+          </div>
+        </div>
+        <div class="share-item-box" v-else>
+          <div class="share-item">
+            <div class="share-item-t">
+              <button class="share-btn"
+                      :plain="true"
+                      open-type="share"
+                      id="productShare"
+              >
                 <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
               </button>
             </div>
@@ -141,9 +166,9 @@
         // 商品规格上拉弹窗是否显示
         productTypeShow: false,
         // 分享上拉弹窗是否显示
-        shareBoxShow: true,
+        shareBoxShow: false,
         // 是否显示海报缩略图
-        showPosterImg:false,
+        showPosterImg: false,
         // 商品详情图列表
         desImages: [
           'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2273502388,3322259604&fm=11&gp=0.jpg',
@@ -200,13 +225,6 @@
       handleCloseProductType () {
         this.productTypeShow = false
       },
-      // 子组件提交订单响应
-      handleSubmitOrder (options) {
-        console.log('子组件数据')
-        console.log(options)
-        this.specSelected = options
-        this.productTypeShow = false
-      },
       // 生成分享海报按钮响应
       handleCreatePosterImg () {
         let that = this
@@ -227,6 +245,17 @@
         console.log('图片预览')
         mpvue.previewImage({
           urls: [this.posterImgUrl]
+        })
+      },
+      // 子组件提交订单响应
+      handleSubmitOrder (options) {
+        console.log('子组件数据')
+        console.log(options)
+        this.specSelected = options
+        this.productTypeShow = false
+        // 跳转到未付款订单页面
+        mpvue.navigateTo({
+          url: '../sub_my/my_unpaid/main'
         })
       }
     },
@@ -259,6 +288,9 @@
       }
     },
     created () {
+    },
+    beforeMount () {
+      console.log('productDetail挂载')
     }
   }
 </script>
@@ -429,28 +461,30 @@
       text-align: center;
       font-size: 40rpx;
       font-weight: bold;
-      height: 130rpx;
-      line-height: 130rpx;
+      height: 90rpx;
+      line-height: 90rpx;
+      margin-top: 30rpx;
     }
     .share-item-box{
       height: 180rpx;
       margin-bottom: 40rpx;
       display: -webkit-flex;
       display: flex;
+      margin-top: 30rpx;
       .share-item{
         -webkit-flex: 1;
         flex: 1;
         text-align: center;
         .share-item-t{
-          height: 120rpx;
+          height: 135rpx;
           .share-btn{
             width: 60%;
             padding: 0rpx;
             border: none;
           }
           img{
-            width: 90rpx;
-            height: 90rpx;
+            width: 100rpx;
+            height: 100rpx;
             margin-top: 10rpx;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
@@ -471,8 +505,8 @@
     right: 0rpx;
     margin: auto;
     z-index: 1000;
-    width: 75%;
-    height: 62%;
+    width: 76%;
+    height: 70%;
     img{
       height: 100%;
       width: 100%;

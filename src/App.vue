@@ -12,11 +12,16 @@ export default {
   },
   // 下面为小程序APP生命周期
   onLaunch (options) {
-    // 获取wx系统信息
-    console.log(this.$store.state.systemInfo)
+    // 获取store中的ssid，判断用户是否已经授权登录，若已经授权登录，则直接跳转到首页面
+    // if (this.$store.state.ssid) {
+    //   mpvue.reLaunch({
+    //     url: './pages/home/main'
+    //   })
+    // }
+
     // console.log('进入小程序')
     // console.log(options)
-    console.log(App)
+    // console.log(App)
   },
   onShow (options) {
     // console.log('小程序进入前台')
@@ -26,7 +31,7 @@ export default {
     // console.log('小程序进入后台')
   },
   onError (msg) {
-    console.log(msg)
+    // console.log(msg)
   }
 }
 </script>

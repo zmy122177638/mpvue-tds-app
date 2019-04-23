@@ -86,7 +86,6 @@
     },
     data () {
       return {
-        //
         // 商品分类按钮信息
         typeInfoList: [
           {
@@ -140,6 +139,10 @@
     },
     onReachBottom () {
       console.log('上拉拉触底')
+    },
+    onShow () {
+      console.log('home 页面 onShow 读取 ssid ：')
+      console.log(this.$store.state.ssid)
     },
     created () {
     }

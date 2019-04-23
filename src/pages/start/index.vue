@@ -3,11 +3,12 @@
     <div class="meng-ban"></div>
     <section class="main">
       <div class="logo-box">
-        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=434680365,2593445656&fm=26&gp=0.jpg">
+        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1260160982,2387406845&fm=26&gp=0.jpg">
       </div>
       <div class="des">团大师，您身边的好物管家</div>
       <div class="home-bnt">
-        <button type="warn" @click="goHome" open-type="getUserInfo" @getuserinfo="handleGetUserInfo">立即登录</button>
+        <button v-if="!hasOpenId" type="warn" open-type="getUserInfo" @getuserinfo="handleGetUserInfo">立即登录</button>
+        <button v-else type="warn" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber">微信登录</button>
       </div>
       <div class="bottom-des">
         <p>轻轻松松卖货，不费精力</p>
@@ -21,48 +22,68 @@
 <script>
   export default {
     data () {
-      return {}
+      return {
+        // 判断是否登录成功
+        hasOpenId: false,
+        // 是否已绑定手机号
+        hasPhoneNumber: false
+      }
     },
 
     components: {},
 
     methods: {
+      // 授权完毕，跳转到首页面
       goHome () {
-        // console.log(111)
-        // const url = '../home/main'
-        // mpvue.reLaunch({ url })
-      },
-      handleGetUserInfo (data) {
-        //检查登录状态是否有效，如果有效则不进行信息获取
-        // mpvue.checkSession({
-        //   success:function () {
-        //     console.log('登录态有效')
-        //   },
-        //   fail:function () {
-        //     console.log('登录态过期')
-        //     mpvue.login({
-        //       success:function (ress) {
-        //         console.log(ress)
-        //         mpvue.getUserInfo({
-        //           success:function (res) {
-        //             console.log(res)
-        //           },
-        //           fail:function (e) {
-        //             console.log('0000')
-        //           }
-        //         })
-        //       },
-        //       fail:function (e) {
-        //         console.log('0000')
-        //       }
-        //     })
-        //   }
-        // })
         const url = '../home/main'
         mpvue.reLaunch({ url })
+      },
+
+      // 用户点击授权按钮响应
+      handleGetUserInfo (e) {
+        this.$http.loginFlow().then(res => {
+          console.log('async返回的内容');
+          console.log(res)
+          // 用户ssid写入state
+          this.$store.commit({
+            type: 'setSsid',
+            ssid: 'hqetqehqertq4r8548qwer123456789'
+          });
+          this.hasOpenId = true;
+        });
+      },
+      // 用户点击绑定手机号事件响应
+      handleGetPhoneNumber (e) {
+        if (e.mp.detail.encryptedData) {
+          console.log('手机号信息：');
+          console.log(e.mp.detail);
+        } else {
+          console.log('用户拒绝了绑定手机号');
+        }
+        this.hasPhoneNumber = true;
+        // this.goHome();
       }
     },
-
+    onShow () {
+      // 判断openId是否存在
+      if (this.$store.state.ssid) {
+        this.hasOpenId = true;
+      }
+      this.$http.get('goods/detail', {id: 391}).then(res => {
+        console.log('商品信息请求成功');
+        console.log(res);
+      }).catch(e => {
+        console.log('商品信息请求失败');
+        console.log(e)
+      })
+      this.$http.get('goods/detail', {id: 391}).then(res => {
+        console.log('商品信息请求成功');
+        console.log(res);
+      }).catch(e => {
+        console.log('商品信息请求失败');
+        console.log(e)
+      })
+    },
     created () {
     }
   }

@@ -54,7 +54,7 @@
     },
     data () {
       return {
-        // type表示不同类型显示的商品信息，1：引流，2,：团品，3：拼团，4：返场
+        // type表示不同类型显示的商品信息，type：1：引流，2,：团品，3：拼团，4：返场
         type: this.itemTpye,
         // i表示下标，用于区分前三排名
         i: this.subIndex

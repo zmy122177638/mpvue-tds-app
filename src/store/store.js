@@ -8,19 +8,27 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    systemInfo: wx.getSystemInfoSync() || {
-      name: 132
+    // 用户唯一ssid
+    ssid: '',
+    // 用户信息
+    userInfo: {}
+  },
+  mutations: {
+    // 写入登录 ssid ,作为用户是否已登录的唯一凭证
+    setSsid (state, data) {
+      // console.log('写入ssid:');
+      // console.log(data.ssid);
+      state.ssid = data.ssid;
     }
   },
-  mutations: {},
   getters: {},
   actions: {},
   // 设置store本地存储,这里使用的是微信同步本地读写方式
   plugins: [
     createPersistedState({
       storage: {
-        getItem: key => wx.getStorageSync(key),
-        setItem: (key, value) => wx.setStorageSync(key, value),
+        getItem: key => mpvue.getStorageSync(key),
+        setItem: (key, value) => mpvue.setStorageSync(key, value),
         removeItem: key => {}
       }
     })

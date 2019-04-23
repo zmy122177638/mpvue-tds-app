@@ -38,7 +38,7 @@
         <span class="cout-key">合计</span>
         <span class="cout-value">￥ <span>49.00</span></span>
       </div>
-      <div class="footer-btn">立即支付</div>
+      <div class="footer-btn" @click="handleGotoBuy">立即支付</div>
     </div>
   </section>
 </template>
@@ -57,7 +57,11 @@ export default {
     return {}
   },
 
-  methods: {}
+  methods: {
+    handleGotoBuy () {
+      console.log("调起支付接口")
+    }
+  }
 }
 </script>
 
