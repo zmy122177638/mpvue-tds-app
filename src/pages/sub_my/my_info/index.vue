@@ -1,51 +1,63 @@
 <template>
-  <section class="setting-container">
+  <section class="info-container">
     <div class="setting-list">
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">头像</div>
+        </div>
+        <div class="item-right">
+          <img
+            class="item-avator"
+            src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+          />
+          <div class="item-more-icon"></div>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">昵称</div>
+        </div>
+        <div class="item-right">
+          <div class="item-value">我在人民广场</div>
+          <div class="item-more-icon"></div>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">微信号</div>
+        </div>
+        <div class="item-right">
+          <div class="item-value">wdd001</div>
+          <div class="item-more-icon"></div>
+        </div>
+      </div>
       <div
         class="setting-item"
-        @click="navigateToInfo()"
+        @click="navigateToAttestation"
       >
         <div class="item-left">
-          <div class="item-label">个人信息</div>
+          <div class="item-label">实名认证</div>
         </div>
         <div class="item-right">
-          <div class="item-value"></div>
+          <div class="item-value">未实名</div>
           <div class="item-more-icon"></div>
         </div>
       </div>
       <div class="setting-item">
         <div class="item-left">
-          <div class="item-label">手机号码</div>
+          <div class="item-label">性别</div>
         </div>
         <div class="item-right">
-          <div class="item-value">136****5989</div>
+          <div class="item-value">女</div>
           <div class="item-more-icon"></div>
         </div>
       </div>
       <div class="setting-item">
         <div class="item-left">
-          <div class="item-label">绑定微信</div>
+          <div class="item-label">所在地区</div>
         </div>
         <div class="item-right">
-          <div class="item-value">江湖一点光</div>
-          <div class="item-more-icon"></div>
-        </div>
-      </div>
-      <div class="setting-item">
-        <div class="item-left">
-          <div class="item-label">我的邀请人</div>
-        </div>
-        <div class="item-right">
-          <div class="item-value">三千零一页</div>
-          <div class="item-more-icon"></div>
-        </div>
-      </div>
-      <div class="setting-item">
-        <div class="item-left">
-          <div class="item-label">我的授权书</div>
-        </div>
-        <div class="item-right">
-          <div class="item-value"></div>
+          <div class="item-value">广东省广州市</div>
           <div class="item-more-icon"></div>
         </div>
       </div>
@@ -56,17 +68,25 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      isAttestation: false
+    }
   },
 
   components: {
   },
 
   methods: {
-    navigateToInfo() {
-      wx.navigateTo({
-        url: '../my_info/main'
-      })
+    navigateToAttestation() {
+      if (this.isAttestation) {
+        wx.navigateTo({
+          url: '../my_attestation/main'
+        })
+      } else {
+        wx.navigateTo({
+          url: '../my_attestation_no/main'
+        })
+      }
     }
   },
 
@@ -79,7 +99,8 @@ export default {
 .setting-list {
   .setting-item {
     background-color: #ffffff;
-    padding: 13.5px 30px 13px;
+    height: 64px;
+    padding: 0 30px;
     border-bottom: 1px solid #f2f2f2;
     display: flex;
     justify-content: space-between;
@@ -106,6 +127,13 @@ export default {
         font-size: 15px;
         color: #b1b1b1;
         margin-right: 15px;
+      }
+      .item-avator {
+        width: 39px;
+        height: 39px;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: block;
       }
       .item-more-icon {
         width: 7px;

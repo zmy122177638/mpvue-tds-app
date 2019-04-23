@@ -7,20 +7,32 @@
       <div class="unpaid-content">
         <!-- 商品信息 -->
         <Layout-goods-item></Layout-goods-item>
-        <!-- <Layout-buyer-item></Layout-buyer-item>
-        <Layout-logistics-item></Layout-logistics-item> -->
-
+        
+        <!-- 有默认地址 -->
         <div class="section-item">
           <div class="section-title">
             <div class="title-left">收货信息</div>
           </div>
-          <div class="receiver-info">
+          <div
+            class="receiver-info"
+            @click="navigateToAddress()"
+          >
             <div class="receiver-icon"></div>
-            <div class="receiver-name">薛之谦&nbsp;&nbsp;&nbsp;13013240009</div>
-            <div class="receiver-location">上海市徐汇区华山路1954号（上海交通)上海市徐汇区华山路1954号（上海交通)</div>
+            <div class="receiver-name">{{addressData.name}}&nbsp;&nbsp;&nbsp;{{addressData.phone}}</div>
+            <div class="receiver-location">{{addressData.address}}</div>
           </div>
         </div>
-
+        <!-- 没有默认地址 -->
+        <div
+          class="section-item"
+          @click="navigateToAddress()"
+        >
+          <div class="no-address">
+            <div class="no-address-icon"></div>
+            <div class="no-address-txt">选择收货地址</div>
+          </div>
+        </div>
+        <!-- 备注 -->
         <div class="section-item">
           <div class="remarks-box">
             <div class="box-label">备注</div>
@@ -38,29 +50,60 @@
         <span class="cout-key">合计</span>
         <span class="cout-value">￥ <span>49.00</span></span>
       </div>
-      <div class="footer-btn" @click="handleGotoBuy">立即支付</div>
+      <div
+        class="footer-btn"
+        @click="handleGotoBuy"
+      >立即支付</div>
     </div>
   </section>
 </template>
 
 <script>
 import LayoutGoodsItem from '@/components/tds-layout/layout-goods-item'
-import LayoutBuyerItem from '@/components/tds-layout/layout-buyer-item'
-import LayoutLogisticsItem from '@/components/tds-layout/layout-logistics-item'
 export default {
   components: {
-    LayoutGoodsItem,
-    LayoutBuyerItem,
-    LayoutLogisticsItem
+    LayoutGoodsItem
   },
-  data () {
-    return {}
-  },
-
-  methods: {
-    handleGotoBuy () {
-      console.log("调起支付接口")
+  data() {
+    return {
+      addressData: {
+        name: '十里桃花',
+        phone: '18588425165',
+        address: '上海市徐汇区华山路1954号（上海交通)上海市徐汇区华山路1954号（上海交通)'
+      }
     }
+  },
+  mounted() {
+    console.log('mounted')
+  },
+  onShow() {
+    let _that = this;
+    wx.getStorage({
+      key: 'selAddress',
+      success(res) {
+        _that.addressData = res.data;
+        console.log(res.data)
+      },
+      fail(err) {
+        // 查询默认地址
+        console.log(err)
+      }
+    })
+  },
+  methods: {
+    navigateToAddress() {
+      wx.navigateTo({
+        url: '../my_address/main?type=1'
+      })
+    },
+    handleGotoBuy() {
+      console.log('调起支付接口')
+    }
+  },
+  onUnload() {
+    wx.removeStorage({
+      key: 'selAddress'
+    })
   }
 }
 </script>
@@ -130,6 +173,24 @@ export default {
     .box-value {
       margin-left: 15px;
       flex: 1;
+    }
+  }
+
+  // 收货信息
+  .no-address {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .no-address-icon {
+      width: 12px;
+      height: 12px;
+      background-color: red;
+      margin-right: 10px;
+    }
+    .no-address-txt {
+      font-size: 16px;
+      color: #282828;
+      font-weight: bold;
     }
   }
 

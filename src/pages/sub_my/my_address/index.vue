@@ -52,6 +52,7 @@ export default {
   },
   onLoad(options) {
     this.type = options.type || 0;
+    console.log(this.type)
   },
   methods: {
     /**
@@ -61,8 +62,19 @@ export default {
      */
     handleAddressItem(formData) {
       console.log(formData)
-      this.formData = { ...formData, use: 'set' };
-      this.isShow = !this.isShow;
+      if (this.type) {
+        // 存入缓存
+        wx.setStorage({
+          key: 'selAddress',
+          data: formData,
+          success: function () {
+            wx.navigateBack(); // 返回上一个页面
+          }
+        })
+      } else {
+        this.formData = { ...formData, use: 'set' };
+        this.isShow = !this.isShow;
+      }
     },
 
     /**
