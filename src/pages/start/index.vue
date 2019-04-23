@@ -57,11 +57,11 @@
         if (e.mp.detail.encryptedData) {
           console.log('手机号信息：');
           console.log(e.mp.detail);
+          this.hasPhoneNumber = true;
+          this.goHome();
         } else {
           console.log('用户拒绝了绑定手机号');
         }
-        this.hasPhoneNumber = true;
-        // this.goHome();
       }
     },
     onShow () {
@@ -69,13 +69,6 @@
       if (this.$store.state.ssid) {
         this.hasOpenId = true;
       }
-      this.$http.get('goods/detail', {id: 391}).then(res => {
-        console.log('商品信息请求成功');
-        console.log(res);
-      }).catch(e => {
-        console.log('商品信息请求失败');
-        console.log(e)
-      })
       this.$http.get('goods/detail', {id: 391}).then(res => {
         console.log('商品信息请求成功');
         console.log(res);
