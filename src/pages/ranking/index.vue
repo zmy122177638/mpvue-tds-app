@@ -1,41 +1,41 @@
 <template>
   <section class="ranking-container">
     <Tds-header></Tds-header>
-    <div class="ranking-action">
+    <div
+      class="ranking-action"
+      :style="queryData.category === 0 ?'border:none':''"
+    >
       <div class="ranking-category">
         <div
           :class="['ranking-category-item',{on: queryData.category === 0}]"
           @click="searchRankChange(0,queryData.timer)"
-        >用户排行</div>
+        >本月热卖</div>
         <div
           :class="['ranking-category-item',{on: queryData.category === 1}]"
           @click="searchRankChange(1,queryData.timer)"
-        >店铺排行</div>
+        >优秀团长</div>
       </div>
-      <div class="ranking-timer">
+      <div
+        class="ranking-timer"
+        v-if="queryData.category === 1"
+      >
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 0}]"
           @click="searchRankChange(queryData.category,0)"
         >
-          今天
+          今日
         </div>
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 1}]"
           @click="searchRankChange(queryData.category,1)"
         >
-          昨天
+          周
         </div>
         <div
           :class="['ranking-timer-item',{on: queryData.timer === 2}]"
           @click="searchRankChange(queryData.category,2)"
         >
-          本月累计
-        </div>
-        <div
-          :class="['ranking-timer-item',{on: queryData.timer === 3}]"
-          @click="searchRankChange(queryData.category,3)"
-        >
-          上月总榜
+          月
         </div>
       </div>
     </div>
@@ -44,7 +44,18 @@
       scroll-y
       :scroll-top="scrollTopNum"
     >
-      <div class="ranking-list">
+      <div
+        class="ranking-list-title"
+        v-if="queryData.category === 1"
+      >
+        <div class="ranking-title-txt">排名</div>
+        <div class="ranking-title-txt">小店名称</div>
+        <div class="ranking-title-txt">销售额</div>
+      </div>
+      <div
+        class="ranking-list"
+        :style="queryData.category === 1?'padding-top:0;':''"
+      >
         <div
           class="ranking-item"
           v-for="(item,index) in rankingList"
@@ -52,37 +63,34 @@
         >
           <div class="item-left">
             <div class="item-num">No.{{index+1}}</div>
-            <img
-              class="item-img"
-              :src="item.img"
-              alt=""
-            >
+            <div class="item-img-box">
+              <img
+                class="item-img"
+                :src="item.img"
+                :style="queryData.category === 1?'border-radius:50%':''"
+                alt=""
+              >
+              <div
+                class="item-grade"
+                v-if="item.grade"
+              >Lv.{{item.grade}}</div>
+            </div>
+
             <div class="item-info">
               <div class="item-name">
                 <div class="item-tx">{{item.name}}</div>
-                <div
-                  class="item-grade"
+                <img
+                  class="item-grade-icon"
                   v-if="item.grade"
-                >Lv.{{item.grade}}</div>
+                  src="../../../static/img/grade_icon.png"
+                />
               </div>
-              <div
-                class="item-status"
-                v-if="item.status"
-              >{{item.status}}</div>
             </div>
           </div>
           <div class="item-right">{{item.orderNum}}</div>
         </div>
       </div>
-      <div :class="['ranking-ponint',{'on':queryData.category === 1}]">仅显示前二十名用户排行</div>
-      <!-- 悬浮店铺排名 -->
-      <div
-        class="ranking-self"
-        v-if="queryData.category === 1"
-      >
-        <div class="ranking-rknum">我的小店排名: <span>No.351</span></div>
-        <div class="ranking-rkmoney">金额: 357</div>
-      </div>
+      <div class="ranking-ponint">仅显示前二十名排行</div>
     </scroll-view>
   </section>
 </template>
@@ -90,7 +98,7 @@
 <script>
 import TdsHeader from '@/components/tds-header/tds-header'
 export default {
-  data () {
+  data() {
     return {
       // category 排行类别  timer 排行时间
       queryData: {
@@ -126,7 +134,7 @@ export default {
      * @return: undefined
      * @Date: 2019-04-16 11:08:04
      */
-    searchRankChange (category, timer) {
+    searchRankChange(category, timer) {
       this.queryData = { category, timer }
       console.log(this.queryData)
       this.scrollTopNum = 0
@@ -207,6 +215,21 @@ img {
       }
     }
   }
+
+  // 排行头
+  .ranking-list-title {
+    display: flex;
+    padding: 20px 30px 15px;
+    align-items: center;
+    background-color: #ffffff;
+    justify-content: space-between;
+    .ranking-title-txt {
+      font-size: 15px;
+      color: #282828;
+      font-weight: bold;
+    }
+  }
+
   // 排行内容
   .ranking-content {
     flex: 1;
@@ -237,11 +260,32 @@ img {
             font-weight: 500;
             font-family: Avenir Next;
           }
+          .item-img-box {
+            position: relative;
+            margin-right: 15px;
+          }
           .item-img {
             width: 44px;
             height: 44px;
-            border-radius: 50%;
-            margin-right: 15px;
+            border-radius: 6px;
+          }
+          .item-grade {
+            font-family: Avenir Next;
+            padding: 0px 5px;
+            background-color: #ff6666;
+            color: #ffffff;
+            line-height: 14px;
+            font-size: 10px;
+            font-weight: 500;
+            border-radius: 10.5px 10.5px 10.5px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+          }
+          .item-grade-icon {
+            width: 27px;
+            height: 27px;
+            margin-left: 10px;
           }
           .item-info {
             display: flex;
@@ -260,17 +304,6 @@ img {
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-              }
-              .item-grade {
-                margin-left: 3px;
-                font-family: Avenir Next;
-                padding: 0px 5px;
-                background-color: #ff6666;
-                color: #ffffff;
-                line-height: 16px;
-                font-size: 12px;
-                font-weight: 500;
-                border-radius: 3px;
               }
             }
             .item-status {
@@ -293,30 +326,6 @@ img {
       padding: 25px 0;
       &.on {
         padding-bottom: 70px;
-      }
-    }
-    .ranking-self {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 11.5px 30px;
-      box-sizing: border-box;
-      background-color: rgba(255, 102, 102, 0.9);
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      .ranking-rknum {
-        font-size: 15px;
-        color: #ffffff;
-        span {
-          font-family: Avenir Next;
-          font-weight: 500;
-        }
-      }
-      .ranking-rkmoney {
-        font-size: 15px;
-        color: #ffffff;
       }
     }
   }

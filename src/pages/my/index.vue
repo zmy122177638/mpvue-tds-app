@@ -1,8 +1,8 @@
 <template>
   <section class="my-container">
     <!-- 用户信息 -->
-    <div class="my-info-box">
-      <div class="my-info">
+    <div :class="['my-info-box',{'vip':isVip}]">
+      <div :class="['my-info',{'vip':isVip}]">
         <div class="my-info-left">
           <img
             src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg"
@@ -15,7 +15,11 @@
           </div>
         </div>
       </div>
-      <div class="my-upgrade">
+      <!-- 升级 -->
+      <div
+        class="my-upgrade"
+        v-if="!isVip"
+      >
         <div class="upgrade-left">
           <div class="my-upgrade-icon"></div>
           <div class="my-upgrade-ct">
@@ -24,6 +28,45 @@
           </div>
         </div>
         <div class="my-upgrade-btn">立即开通</div>
+      </div>
+      <!-- progress -->
+      <div
+        class="progress-container"
+        v-else
+      >
+        <div class="progress-assert">
+          <div class="progress-count">上月店铺等级<span class="progress-grade">Lv.2</span></div>
+        </div>
+        <div class="progress-box">
+          <div class="progress-pack">
+            <div
+              class="progress-active"
+              style="width:40%"
+            >
+              <img
+                src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+                class="user-avator"
+                alt=""
+              >
+              <div class="user-money">￥1680</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.1</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.2</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.3</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.4</div>
+            </div>
+            <div class="progress-grade-item">
+              <div class="grade-txt">Lv.5</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -40,7 +83,10 @@
             <div class="item-point">签到赚积分</div>
           </div>
         </div>
-        <div class="my-activity-item">
+        <div
+          class="my-activity-item"
+          @click="handlePoint()"
+        >
           <div class="item-icon"></div>
           <div class="item-cont">
             <div class="item-title">我的积分</div>
@@ -130,7 +176,10 @@
             <div class="item-fn-icon"></div>
           </div>
         </div> -->
-        <div class="my-nav-item">
+        <div
+          class="my-nav-item"
+          @click="handlePoint()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">我的拼团</div>
@@ -145,13 +194,19 @@
             <div class="item-title">收货地址</div>
           </div>
         </div>
-        <div class="my-nav-item">
+        <button
+          class="my-nav-item"
+          open-type="contact"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">在线客服</div>
           </div>
-        </div>
-        <div class="my-nav-item">
+        </button>
+        <div
+          class="my-nav-item"
+          @click="navigaToSetting()"
+        >
           <div class="item-left">
             <div class="item-icon"></div>
             <div class="item-title">系统设置</div>
@@ -166,7 +221,9 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      isVip: false
+    }
   },
   mounted() {
 
@@ -187,6 +244,18 @@ export default {
       wx.navigateTo({
         url: './../sub_my/my_address/main'
       })
+    },
+    navigaToSetting() {
+      wx.navigateTo({
+        url: './../sub_my/my_setting/main'
+      })
+    },
+    handlePoint() {
+      wx.showToast({
+        title: '暂未开放',
+        icon: 'none',
+        duration: 2000
+      })
     }
   }
 
@@ -194,6 +263,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+  background-color: transparent;
+}
 img {
   display: block;
 }
@@ -208,18 +284,28 @@ img {
     height: 100%;
     background-color: #ffffff;
     overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
   }
 
   // 用户信息
   .my-info-box {
     background: #ff6666;
+    &.vip {
+      background-color: #ffffff;
+      position: relative;
+      z-index: 12;
+      border-radius: 0px 0px 12px 12px;
+      box-sizing: border-box;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.05);
+    }
     .my-info {
       display: flex;
       align-items: center;
       padding: 0px 15px 20px;
       background-color: #ffffff;
       border-radius: 0 0 12px 12px;
+      &.vip {
+        padding: 0px 15px 0px;
+      }
       .my-info-left {
         display: flex;
         flex: 1;
@@ -301,6 +387,85 @@ img {
         font-size: 12px;
         background-color: #ffffff;
         border-radius: 12.5px;
+      }
+    }
+  }
+
+  // progress
+  .progress-container {
+    padding: 20px 15px;
+    .progress-assert {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .progress-count {
+        font-size: 10px;
+        color: #282828;
+        font-weight: bold;
+        .progress-grade {
+          color: #ff6666;
+          font-weight: normal;
+        }
+      }
+    }
+    .progress-box {
+      padding: 22px 0;
+      .progress-pack {
+        height: 8px;
+        background-color: #f2f2f2;
+        border-radius: 4.5px;
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        .progress-active {
+          transition: all 0.3s ease-out;
+          width: 0%;
+          height: 8px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          border-radius: 4.5px;
+          background: rgba(255, 102, 102, 1);
+          box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+          .user-avator {
+            width: 22px;
+            height: 22px;
+            box-sizing: border-box;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            right: -11px;
+            top: 50%;
+            margin-top: -11px;
+            box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+          }
+          .user-money {
+            font-size: 10px;
+            color: #ff6666;
+            font-weight: bold;
+            position: absolute;
+            top: -28px;
+            right: -14px;
+          }
+        }
+        .progress-grade-item {
+          width: 2px;
+          height: 2px;
+          background-color: #ffffff;
+          border-radius: 50%;
+          position: relative;
+          .grade-txt {
+            font-size: 10px;
+            color: #b1b1b1;
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translate3d(-50%, 0, 0);
+          }
+        }
       }
     }
   }
@@ -426,7 +591,12 @@ img {
       border-bottom: 1px solid #f2f2f2;
       display: flex;
       align-items: center;
+      line-height: initial;
+      background-color: #ffffff;
       justify-content: space-between;
+      &::after {
+        border: none;
+      }
       .item-left {
         width: 100%;
         flex: 1;

@@ -23,7 +23,8 @@
         "my_status/main",
         "my_service/main",
         "my_team/main",
-        "my_address/main"
+        "my_address/main",
+        "my_setting/main"
       ]
     }
   ],

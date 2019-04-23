@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from '.'
+import App from './index'
 
 // 这个页面无需修改
 // add this to handle exception

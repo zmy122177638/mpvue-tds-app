@@ -3,11 +3,15 @@
     <div class="tds-header-box">
       <div class="tds-header-left">
         <slot name="left">
-          <img
-            src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3272199364,3404297250&fm=27&gp=0.jpg"
-            class="tds-header-img"
-            alt=""
-          >
+          <div class="tds-header-figure">
+            <img
+              src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3272199364,3404297250&fm=27&gp=0.jpg"
+              class="tds-header-img"
+              alt=""
+            >
+            <div class="user-grade">Lv.2</div>
+          </div>
+
           <h2 class="tds-header-shopname"><span class="tds-header-name">王多多</span>的团大师小店</h2>
         </slot>
       </div>
@@ -40,12 +44,28 @@ export default {
     flex: 1;
     display: flex;
     align-items: center;
+    .tds-header-figure {
+      position: relative;
+      margin-right: 10px;
+    }
+    .user-grade {
+      font-family: Avenir Next;
+      padding: 0px 5px;
+      background-color: #ff6666;
+      color: #ffffff;
+      line-height: 14px;
+      font-size: 10px;
+      font-weight: 500;
+      border-radius: 10.5px 10.5px 10.5px 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
     .tds-header-img {
       display: block;
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      margin-right: 10px;
     }
     .tds-header-shopname {
       font-size: 18px;
