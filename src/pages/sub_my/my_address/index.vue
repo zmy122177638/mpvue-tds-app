@@ -13,7 +13,7 @@
       class="add-btn-box"
       @click="handleAddAddress()"
     >
-      <div class="add-icon"></div>
+      <img src="../../../../static/images/add.png" class="add-icon">
       <div class="add-txt">新增地址</div>
     </div>
     <!-- 弹窗 -->
@@ -68,7 +68,7 @@ export default {
     handleAddressItem(formData) {
       console.log(formData)
       // 判断是否选择
-      if (this.type) {
+      if (this.type === 1) {
         // 存入缓存
         mpvue.setStorage({
           key: 'selAddress',
@@ -138,10 +138,10 @@ export default {
     justify-content: center;
     align-items: center;
     .add-icon {
-      width: 15px;
-      height: 15px;
+      width: 20px;
+      height: 20px;
       margin-right: 10px;
-      background-color: #ff6666;
+      display:flex;
     }
     .add-txt {
       font-size: 15px;

@@ -17,7 +17,7 @@
             class="receiver-info"
             @click="navigateToAddress()"
           >
-            <div class="receiver-icon"></div>
+            <img class="receiver-icon" src="../../../../static/images/Dingwei_iCon.png">
             <div class="receiver-name">{{addressData.name}}&nbsp;&nbsp;&nbsp;{{addressData.phone}}</div>
             <div class="receiver-location">{{addressData.address}}</div>
           </div>
@@ -28,7 +28,7 @@
           @click="navigateToAddress()"
         >
           <div class="no-address">
-            <div class="no-address-icon"></div>
+            <img class="no-address-icon" src="../../../../static/images/add.png">
             <div class="no-address-txt">选择收货地址</div>
           </div>
         </div>
@@ -148,8 +148,7 @@ export default {
       position: relative;
       .receiver-icon {
         width: 15px;
-        height: 15px;
-        background-color: rgb(233, 174, 14);
+        height: 18px;
         position: absolute;
         left: 0;
         top: 4px;
@@ -182,10 +181,10 @@ export default {
     justify-content: center;
     align-items: center;
     .no-address-icon {
-      width: 12px;
-      height: 12px;
-      background-color: red;
+      width: 20px;
+      height: 20px;
       margin-right: 10px;
+      display: block;
     }
     .no-address-txt {
       font-size: 16px;
