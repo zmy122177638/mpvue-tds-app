@@ -5,7 +5,7 @@
   >
     <section class="c-1">
       <div class="left">
-        <img src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg" />
+        <img class="custom-bg-img" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg"/>
       </div>
       <div class="right">
         <div class="t">每日吃播·不能吃还不能看嘛不能吃还不能看不能吃还不能看嘛不能吃还不能看​</div>
@@ -142,6 +142,8 @@ export default {
         -webkit-border-radius: 15rpx;
         -moz-border-radius: 15rpx;
         border-radius: 15rpx;
+        background: url("../../../static/images/CommodityNull.png");
+        background-size: 100% 100%;
       }
     }
     .right {

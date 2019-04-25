@@ -22,12 +22,12 @@
       >
         <block v-if="isLink">
           <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
-            <image :src="item.imgurl" class="slide-image" style="width: 100%;height: 100%;" @click="handleLinkPage(item.linkUrl)"/>
+            <image :src="item.imgurl" class="slide-image custom-bg-img" style="width: 100%;height: 100%;" @click="handleLinkPage(item.linkUrl)"/>
           </swiper-item>
         </block>
         <block v-else>
           <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
-            <image :src="item" class="slide-image" style="width: 100%;height: 100%;"/>
+            <image :src="item" class="slide-image custom-bg-img" style="width: 100%;height: 100%;"/>
           </swiper-item>
         </block>
       </swiper>
@@ -96,11 +96,13 @@
       }
     },
     methods: {
+      // 点击轮播图片响应
       handleLinkPage (url) {
         console.log('点击轮播图，根据链接地址跳转到不同的页面：');
         console.log(url)
         mpvue.navigateTo({url})
       },
+      // 轮播图改变响应
       handleChange (detail) {
         // console.log('改变');
         // console.log(detail.target.current);
@@ -111,6 +113,9 @@
       imgArr: function (val) {
         this.imgUrls = val;
       }
+    },
+    created () {
+      console.log('aaaaaaaaaa激活')
     }
   }
 </script>
@@ -140,6 +145,10 @@
         font-size: 22rpx;
         opacity: .5;
       }
+    }
+    .custom-bg-img{
+      background: url("../../../static/images/BannerNull.png");
+      background-size: 100% 100%;
     }
   }
 </style>

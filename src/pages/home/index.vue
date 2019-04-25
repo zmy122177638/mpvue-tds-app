@@ -215,6 +215,8 @@
               margin-top: 10rpx;
               height: 100rpx;
               width: 100rpx;
+              background: url("../../../static/images/CommodityNull.png");
+              background-size: 100% 100%;
               -webkit-border-radius: 50%;
               -moz-border-radius: 50%;
               border-radius: 50%;

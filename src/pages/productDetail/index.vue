@@ -1,6 +1,9 @@
 <template>
   <section class="container">
-    <section><van-icon name="arrow-left" class="go-back" @click="handleGoBack" /></section>
+    <section>
+      <!--<van-icon name="arrow-left" class="go-back" @click="handleGoBack" />-->
+      <img src="../../../static/images/Return_iCon.png" class="go-back" @click="handleGoBack" />
+    </section>
     <section class="lunbo-box">
       <lunbo-images
         swiperH="600rpx"
@@ -172,7 +175,7 @@
           goods_id: 391,
           goods_name: '测试商品请勿下单',
           small_image: [
-            'http://oss.baidichan.com/store/images/20190325/63EVxE6CM431kXfxQcfnO7RSoOjPyYSjQi7laHfa.jpeg',
+            '',
             'http://oss.baidichan.com/store/images/20190325/5izy0JXzXnumKgnHNK0AQIuQgLHqJYFFkDGqLavu.jpeg',
             'http://oss.baidichan.com/store/images/20190325/09AT8wCGqY2sZbeDWDuCSnPMVq6PY0IajG0ikQlw.jpeg',
             'http://oss.baidichan.com/store/images/20190325/KkuUL9uMpByx8y00iA7KzS9zRQUcTAR9yMRJI8aG.jpeg'
@@ -460,8 +463,10 @@
     font-weight: bold;
     font-size: 36rpx;
     line-height: 50rpx;
+    height: 30rpx;
+    width: 18rpx;
     /*border: 1px solid red;*/
-    padding: 5rpx 10rpx 0rpx;
+    padding: 15rpx 20rpx;
   }
 
 
