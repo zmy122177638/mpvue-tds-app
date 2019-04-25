@@ -79,6 +79,9 @@ export default {
       mpvue.stopPullDownRefresh()
     }, 2000)
   },
+  onReachBottom() {
+    console.log(123)
+  },
   methods: {
     /**
      * @description: 点击item
@@ -143,6 +146,7 @@ export default {
       color: #b1b1b1;
       text-align: center;
       padding: 12px 0;
+      position: relative;
       transition: all 0.3s;
       &:nth-last-child(1) {
         margin-right: 0;
@@ -161,7 +165,6 @@ export default {
       &.on {
         font-size: 14px;
         color: #282828;
-        position: relative;
         font-weight: bold;
         &::after {
           content: '';

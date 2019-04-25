@@ -43,24 +43,35 @@
           <div class="item-more-icon"></div>
         </div>
       </div>
-      <div class="setting-item">
-        <div class="item-left">
-          <div class="item-label">性别</div>
+      <picker
+        @change="selectSexChange"
+        :value="sexActive"
+        :range="sexList"
+      >
+        <div class="setting-item">
+          <div class="item-left">
+            <div class="item-label">性别</div>
+          </div>
+          <div class="item-right">
+            <div class="item-value">{{sexList[sexActive]}}</div>
+            <div class="item-more-icon"></div>
+          </div>
         </div>
-        <div class="item-right">
-          <div class="item-value">女</div>
-          <div class="item-more-icon"></div>
+      </picker>
+      <picker
+        mode="region"
+        @change="selectAddressChange"
+      >
+        <div class="setting-item">
+          <div class="item-left">
+            <div class="item-label">所在地区</div>
+          </div>
+          <div class="item-right">
+            <div class="item-value">{{region}}</div>
+            <div class="item-more-icon"></div>
+          </div>
         </div>
-      </div>
-      <div class="setting-item">
-        <div class="item-left">
-          <div class="item-label">所在地区</div>
-        </div>
-        <div class="item-right">
-          <div class="item-value">广东省广州市</div>
-          <div class="item-more-icon"></div>
-        </div>
-      </div>
+      </picker>
     </div>
   </section>
 </template>
@@ -70,7 +81,13 @@ export default {
   data() {
     return {
       // 是否验证
-      isAttestation: false
+      isAttestation: false,
+      // 性别列表
+      sexList: ['女', '男'],
+      // 选中性别index
+      sexActive: 0,
+      // 当前地址
+      region: ['广东省', '广州市', '海珠区']
     }
   },
 
@@ -78,6 +95,24 @@ export default {
   },
 
   methods: {
+    /**
+     * @description: 选择性别
+     * @Date: 2019-04-25 17:31:18
+     */
+    selectSexChange(ev) {
+      this.sexActive = ev.target.value;
+    },
+    /**
+     * @description: 选择性别
+     * @Date: 2019-04-25 17:31:18
+     */
+    selectAddressChange(ev) {
+      this.region = ev.target.value;
+    },
+    /**
+     * @description: 身份认证
+     * @Date: 2019-04-25 17:39:35
+     */
     navigateToAttestation() {
       if (this.isAttestation) {
         mpvue.navigateTo({
