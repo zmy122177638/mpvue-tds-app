@@ -83,7 +83,10 @@
           class="my-activity-item"
           @click="handlePoint()"
         >
-          <img class="item-icon" src="">
+          <img
+            class="item-icon"
+            src="../../../static/images/Qiandao_iCon.png"
+          >
           <div class="item-cont">
             <div class="item-title">签到有奖</div>
             <div class="item-point">签到赚积分</div>
@@ -93,7 +96,10 @@
           class="my-activity-item"
           @click="handlePoint()"
         >
-          <div class="item-icon"></div>
+          <img
+            class="item-icon"
+            src="../../../static/images/Jifen_iCon.png"
+          >
           <div class="item-cont">
             <div class="item-title">我的积分</div>
             <div class="item-point">积分抽奖买买买</div>
@@ -115,35 +121,50 @@
             class="my-order-item"
             @click="navigaToOrder(1)"
           >
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Pay_iCon.png"
+            >
             <div class="item-name">代付款</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(2)"
           >
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Shipment_iCon.png"
+            >
             <div class="item-name">代发货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(3)"
           >
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Collection_iCon.png"
+            >
             <div class="item-name">代收货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(4)"
           >
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Completed_iCon.png"
+            >
             <div class="item-name">已完成</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(5)"
           >
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Refund_iCon.png"
+            >
             <div class="item-name">退款退货</div>
           </div>
         </div>
@@ -187,7 +208,10 @@
           @click="handlePoint()"
         >
           <div class="item-left">
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/WodePintuan_iCon.png"
+            >
             <div class="item-title">我的拼团</div>
           </div>
         </div>
@@ -196,7 +220,10 @@
           @click="navigaToAddress()"
         >
           <div class="item-left">
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/Address_iCon.png"
+            >
             <div class="item-title">收货地址</div>
           </div>
         </div>
@@ -205,7 +232,10 @@
           open-type="contact"
         >
           <div class="item-left">
-            <div class="item-icon"></div>
+            <img
+              class="item-icon"
+              src="../../../static/images/ContactUs_iCon.png"
+            >
             <div class="item-title">在线客服</div>
           </div>
         </button>
@@ -214,7 +244,10 @@
           @click="navigaToSetting()"
         >
           <div class="item-left">
-            <div class="item-icon"></div>
+           <img
+              class="item-icon"
+              src="../../../static/images/Setting_iCon.png"
+            >
             <div class="item-title">系统设置</div>
           </div>
         </div>
