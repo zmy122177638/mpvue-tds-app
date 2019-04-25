@@ -342,6 +342,7 @@ img {
         span {
           font-family: Avenir Next;
           font-weight: 500;
+          font-style: italic;
         }
       }
       .ranking-rkmoney {

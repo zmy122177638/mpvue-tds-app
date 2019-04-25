@@ -21,10 +21,13 @@
         v-if="!isVip"
       >
         <div class="upgrade-left">
-          <div class="my-upgrade-icon"></div>
+          <img
+            class="my-upgrade-icon"
+            src="../../../static/images/LOGO3.png"
+          />
           <div class="my-upgrade-ct">
             <div class="my-upgrade-t">成为团大师尊享团长</div>
-            <div class="my-upgrade-f">单单享优惠，笔笔赚佣金</div>
+            <div class="my-upgrade-f">自购省钱，开团赚钱</div>
           </div>
         </div>
         <div class="my-upgrade-btn">立即开通</div>
@@ -80,7 +83,7 @@
           class="my-activity-item"
           @click="handlePoint()"
         >
-          <div class="item-icon"></div>
+          <img class="item-icon" src="">
           <div class="item-cont">
             <div class="item-title">签到有奖</div>
             <div class="item-point">签到赚积分</div>
@@ -362,9 +365,9 @@ img {
       .my-upgrade-icon {
         width: 34px;
         height: 34px;
-        border: 1px solid #ffffff;
         margin-right: 15px;
         border-radius: 50%;
+        display: block;
         align-self: flex-start;
       }
       .my-upgrade-ct {
@@ -490,7 +493,7 @@ img {
       .item-icon {
         width: 18px;
         height: 18px;
-        background-color: #ff6666;
+        display: block;
         margin-right: 15px;
       }
       .item-cont {
@@ -537,7 +540,7 @@ img {
         .item-icon {
           width: 22px;
           height: 22px;
-          background-color: #ff6666;
+          display: block;
           margin-bottom: 10px;
         }
         .item-name {
@@ -609,7 +612,7 @@ img {
         .item-icon {
           width: 20px;
           height: 20px;
-          background-color: #ff6666;
+          display: block;
           margin-right: 20px;
         }
         .item-title {

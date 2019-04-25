@@ -18,7 +18,7 @@
       <div class="tds-header-right">
         <slot name="right">
           <img
-            src="../../common/img/status01.png"
+            src="../../../static/images/VVIP_1.png"
             class="tds-header-shopicon"
             alt=""
           >
