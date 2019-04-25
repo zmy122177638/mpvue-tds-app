@@ -1,9 +1,9 @@
-function formatNumber (n) {
+function formatNumber(n) {
   const str = n.toString()
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime (date) {
+export function formatTime(date) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -19,7 +19,7 @@ export function formatTime (date) {
 }
 
 // mpvue 微信地址接口调用
-function getWxAddress () {
+function getWxAddress() {
   mpvue.getSetting({
     success: res => {
       if (res.authSetting['scope.address']) {
@@ -35,8 +35,7 @@ function getWxAddress () {
         })
       } else {
         mpvue.chooseAddress({
-          success: function (res) {
-          },
+          success: function (res) {},
           fail: function (e) {
             console.log('失败222222')
             mpvue.showModal({
@@ -48,7 +47,8 @@ function getWxAddress () {
                 mpvue.openSetting({});
               }
             });
-          }});
+          }
+        });
       }
     },
     fail: (err) => {

@@ -40,7 +40,10 @@
           <div class="item-more-icon"></div>
         </div>
       </div>
-      <div class="setting-item">
+      <div
+        class="setting-item"
+        @click="handleAuthorizeChange"
+      >
         <div class="item-left">
           <div class="item-label">我的授权书</div>
         </div>
@@ -50,16 +53,28 @@
         </div>
       </div>
     </div>
+    <!-- 授权书弹窗 -->
+    <Tds-public-popup v-model="isShow">
+      <img
+        src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2153937626,1074119156&fm=27&gp=0.jpg"
+        style="width:100%;"
+        alt=""
+      >
+    </Tds-public-popup>
   </section>
 </template>
 
 <script>
+import TdsPublicPopup from '@/components/tds-popup/tds-public-popup'
 export default {
   data() {
-    return {}
+    return {
+      isShow: false
+    }
   },
 
   components: {
+    TdsPublicPopup
   },
 
   methods: {
@@ -67,6 +82,9 @@ export default {
       mpvue.navigateTo({
         url: '../my_info/main'
       })
+    },
+    handleAuthorizeChange() {
+      this.isShow = !this.isShow;
     }
   },
 

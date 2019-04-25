@@ -18,7 +18,7 @@
       <div class="tds-header-right">
         <slot name="right">
           <img
-            src="../../../static/img/user_type.png"
+            src="../../common/img/status01.png"
             class="tds-header-shopicon"
             alt=""
           >

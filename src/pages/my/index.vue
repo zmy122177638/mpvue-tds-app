@@ -590,7 +590,7 @@ img {
     padding: 0 15px;
     .my-nav-item {
       box-sizing: border-box;
-      padding: 15px;
+      padding: 20px 15px;
       border-bottom: 1px solid #f2f2f2;
       display: flex;
       align-items: center;

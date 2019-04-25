@@ -11,7 +11,7 @@
     </div>
 
     <!-- 修改收货 -->
-    <Tds-address-popup :isShow.sync="isShow" :formData="{name:'132',phone:18588419510,address:'wwww'}"></Tds-address-popup>
+    <Tds-address-popup :isShow.sync="isShow" :data.sync="formData"></Tds-address-popup>
   </section>
 </template>
 
@@ -32,7 +32,8 @@ export default {
       // 订单Id
       orderId: 0,
       // 是否显示弹窗
-      isShow: false
+      isShow: false,
+      formData: { name: '132', tag: '', isNormal: '', phone: 18588419510, address: 'wwww' }
     }
   },
   onLoad(options) {

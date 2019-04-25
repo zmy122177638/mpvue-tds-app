@@ -91,6 +91,7 @@ export default {
       type: Boolean,
       default: false
     },
+    // tag 和 isNormal 必传
     data: {
       type: Object,
       default: {
