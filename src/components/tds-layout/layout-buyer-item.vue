@@ -38,10 +38,16 @@
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">圆通速递：</div>
-            <div class="item-value">165465631354 <span class="vehicle-icon"></span></div>
+            <div class="item-value">165465631354 <img
+                class="vehicle-icon"
+                src="../../../static/images/vehicle.png"
+              /></div>
           </div>
-          
-          <div class="buyer-pipe-set" @click="$emit('setAddress')">修改收货地址</div>
+
+          <div
+            class="buyer-pipe-set"
+            @click="$emit('setAddress')"
+          >修改收货地址</div>
         </div>
       </div>
     </div>
@@ -110,10 +116,9 @@ export default {
           .vehicle-icon {
             margin-top: -2px;
             width: 18px;
-            height: 14px;
+            height: 18px;
             display: inline-block;
-            margin-left: 10xp;
-            background-color: #ff6666;
+            margin-left: 5px;
             vertical-align: middle;
           }
         }
@@ -129,7 +134,7 @@ export default {
         box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
         font-size: 15px;
         color: #ffffff;
-        margin-bottom:10px;
+        margin-bottom: 10px;
         margin-top: 20px;
       }
     }

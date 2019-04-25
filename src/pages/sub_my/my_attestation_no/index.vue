@@ -11,7 +11,7 @@
           v-if="formData.activeIndex === ''"
         >
           <div class="select-label">请选择证件类型</div>
-          <div class="select-icon"></div>
+          <img src="../../../../static/images/DownGray_iCon.png" class="select-icon"/>
         </div>
 
         <div
@@ -110,7 +110,7 @@ export default {
     .select-icon {
       width: 11px;
       height: 7px;
-      background-color: #b1b1b1;
+      display:block;
     }
     .select-value {
       font-size: 16px;

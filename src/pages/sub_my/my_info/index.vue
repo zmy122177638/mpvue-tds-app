@@ -10,7 +10,10 @@
             class="item-avator"
             src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
           />
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div class="setting-item">
@@ -19,7 +22,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">我在人民广场</div>
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div class="setting-item">
@@ -28,7 +34,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">wdd001</div>
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div
@@ -40,7 +49,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">未实名</div>
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <picker
@@ -54,7 +66,10 @@
           </div>
           <div class="item-right">
             <div class="item-value">{{sexList[sexActive]}}</div>
-            <div class="item-more-icon"></div>
+            <img
+              src="../../../../static/images/ToRightGray_iCon.png"
+              class="item-more-icon"
+            />
           </div>
         </div>
       </picker>
@@ -68,7 +83,10 @@
           </div>
           <div class="item-right">
             <div class="item-value">{{region}}</div>
-            <div class="item-more-icon"></div>
+            <img
+              src="../../../../static/images/ToRightGray_iCon.png"
+              class="item-more-icon"
+            />
           </div>
         </div>
       </picker>
@@ -81,7 +99,7 @@ export default {
   data() {
     return {
       // 是否验证
-      isAttestation: false,
+      isAttestation: true,
       // 性别列表
       sexList: ['女', '男'],
       // 选中性别index
@@ -174,7 +192,7 @@ export default {
       .item-more-icon {
         width: 7px;
         height: 11px;
-        background-color: red;
+        display: block;
       }
     }
   }

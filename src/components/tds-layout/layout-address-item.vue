@@ -3,13 +3,23 @@
     class="address-item"
     @click="$emit('click',item)"
   >
-    <div class="address-normal" v-if="item.isNormal">默认</div>
-    <div class="address-icon"></div>
+    <div
+      class="address-normal"
+      v-if="item.isNormal"
+    >默认</div>
+    <img
+      src="../../../static/images/select_on.png"
+      class="address-icon"
+    />
     <div class="address-content">
       <p class="address-name">{{item.name}}&nbsp;&nbsp;&nbsp;{{item.phone}}</p>
       <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.region + ',' + item.address}}</p>
     </div>
-    <div class="address-more-icon"></div>
+    <img
+      class="address-more-icon"
+      src="../../../static/images/ToRightGray_iCon.png"
+      alt=""
+    >
   </div>
 </template>
 
@@ -49,10 +59,10 @@ export default {
   }
   .address-tag {
     display: inline-block;
-    width: 28px;
+    width: 30px;
     margin-right: 5px;
     line-height: 15px;
-    font-size: 13px;
+    font-size: 12px;
     color: #ff6666;
     text-align: center;
     background-color: rgba(255, 102, 102, 0.1);
@@ -60,9 +70,8 @@ export default {
     box-sizing: border-box;
   }
   .address-icon {
-    width: 18px;
-    height: 18px;
-    background-color: #ff6666;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     margin-right: 12px;
     align-self: flex-start;
@@ -89,7 +98,7 @@ export default {
   .address-more-icon {
     width: 7px;
     height: 13px;
-    background-color: #ff6666;
+    display: block;
   }
 }
 </style>

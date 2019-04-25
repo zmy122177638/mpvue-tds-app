@@ -10,10 +10,11 @@
     ></div>
     <div class="address-popup-cont">
       <div class="address-title">{{formData_v.use === 'add' ? '新增售后地址' : '修改售后地址'}}</div>
-      <div
+      <img
+        src="../../../static/images/delete.png"
         class="address-close"
         @click="closePopupChange"
-      ></div>
+      />
       <div class="address-info-list">
         <div class="address-info-item">
           <div class="item-label">姓名</div>
@@ -73,7 +74,8 @@
         </div>
       </div>
       <div class="set-normal" @click="formData_v.isNormal = !formData_v.isNormal">
-        <span :class="['set-icon',{on:formData_v.isNormal}]"></span>
+        <!-- <span :class="['set-icon',{on:formData_v.isNormal}]"></span> -->
+        <img :src="'../../../static/images/select_'+(formData_v.isNormal?'on':'no')+'.png'" class="set-icon"/>
         <span class="set-txt">设为默认</span>
       </div>
       <div
@@ -251,9 +253,8 @@ export default {
       padding: 20px 0;
     }
     .address-close {
-      width: 12px;
-      height: 12px;
-      background-color: #ff6666;
+      width: 18px;
+      height: 18px;
       position: absolute;
       right: 15px;
       top: 15px;
@@ -323,14 +324,10 @@ export default {
     }
     .set-normal {
       .set-icon {
-        width: 18px;
-        height: 18px;
-        background-color: #cccccc;
+        width: 20px;
+        height: 20px;
         display: inline-block;
         vertical-align: middle;
-        &.on {
-          background-color: indianred;
-        }
       }
       .set-txt {
         margin-left: 10px;

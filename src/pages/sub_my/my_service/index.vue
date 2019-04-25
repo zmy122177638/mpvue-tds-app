@@ -13,7 +13,10 @@
           :key="index"
           @click="handleQuestChange(item)"
         >
-          <div class="item-icon"></div>
+          <img
+            class="item-icon"
+            :src="item.iconPath"
+          />
           <div class="item-box">
             <div class="item-label">{{item.label}}</div>
             <div class="item-point">{{item.content}}</div>
@@ -46,10 +49,10 @@ export default {
       orderId: 0,
       // 服务数据
       serviceList: [
-        { label: '仅退款', title: '退款原因', status: 1, content: '未收到货(包含未签收)，或团大师客服协商同意', placeholder: '请输入不超过140字的退款说明！' },
-        { label: '退货退款', title: '退货原因', status: 2, content: '已收到货，需要退换已收到的货物', placeholder: '请输入不超过140字的退货说明！' },
-        { label: '换货', title: '换货原因', status: 3, content: '商品存在质量问题，与团大师协商换货', placeholder: '请输入不超过140字的换货说明！' },
-        { label: '正在退款中...', title: '换货原因', status: 4, content: '退款将在72小时退回您的微信钱包，请耐心等待！', placeholder: '请输入不超过140字的换货说明！' }
+        { label: '仅退款', title: '退款原因', status: 1, content: '未收到货(包含未签收)，或团大师客服协商同意', iconPath: require('../../../../static/images/Refund_iCon.png'), placeholder: '请输入不超过140字的退款说明！' },
+        { label: '退货退款', title: '退货原因', status: 2, content: '已收到货，需要退换已收到的货物', iconPath: require('../../../../static/images/Tuihuo_iCon.png'), placeholder: '请输入不超过140字的退货说明！' },
+        { label: '换货', title: '换货原因', status: 3, content: '商品存在质量问题，与团大师协商换货', iconPath: require('../../../../static/images/Huanhuo_iCon.png'), placeholder: '请输入不超过140字的换货说明！' },
+        { label: '正在退款中...', title: '换货原因', status: 4, content: '退款将在72小时退回您的微信钱包，请耐心等待!', iconPath: require('../../../../static/images/Tuikuan_iCon.png'), placeholder: '请输入不超过140字的换货说明！' }
       ],
       // 是否显示弹窗
       isShow: false,
@@ -119,7 +122,7 @@ export default {
       .item-icon {
         width: 18px;
         height: 18px;
-        background-color: #ff6666;
+        display: block;
         margin-right: 10px;
       }
       .item-box {

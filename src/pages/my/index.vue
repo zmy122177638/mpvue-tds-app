@@ -121,50 +121,66 @@
             class="my-order-item"
             @click="navigaToOrder(1)"
           >
-            <img
-              class="item-icon"
-              src="../../../static/images/Pay_iCon.png"
-            >
+            <div class="img-figure">
+              <span class="item-num">12</span>
+              <img
+                class="item-icon"
+                src="../../../static/images/Pay_iCon.png"
+              >
+            </div>
+
             <div class="item-name">代付款</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(2)"
           >
-            <img
-              class="item-icon"
-              src="../../../static/images/Shipment_iCon.png"
-            >
+            <div class="img-figure">
+              <span class="item-num">12</span>
+              <img
+                class="item-icon"
+                src="../../../static/images/Shipment_iCon.png"
+              >
+            </div>
             <div class="item-name">代发货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(3)"
           >
-            <img
+            <div class="img-figure">
+              <span class="item-num">12</span>
+              <img
               class="item-icon"
               src="../../../static/images/Collection_iCon.png"
             >
+            </div>
             <div class="item-name">代收货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(4)"
           >
-            <img
+            <div class="img-figure">
+              <span class="item-num">12</span>
+              <img
               class="item-icon"
               src="../../../static/images/Completed_iCon.png"
             >
+            </div>
             <div class="item-name">已完成</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder(5)"
           >
-            <img
+            <div class="img-figure">
+              <span class="item-num">12</span>
+              <img
               class="item-icon"
               src="../../../static/images/Refund_iCon.png"
             >
+            </div>
             <div class="item-name">退款退货</div>
           </div>
         </div>
@@ -244,7 +260,7 @@
           @click="navigaToSetting()"
         >
           <div class="item-left">
-           <img
+            <img
               class="item-icon"
               src="../../../static/images/Setting_iCon.png"
             >
@@ -252,7 +268,6 @@
           </div>
         </div>
       </div>
-
     </scroll-view>
   </section>
 </template>
@@ -308,6 +323,9 @@ export default {
   height: 0;
   color: transparent;
   background-color: transparent;
+}
+.img-figure {
+  position: relative;
 }
 img {
   display: block;
@@ -570,6 +588,19 @@ img {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        .item-num {
+          width: 15px;
+          height: 15px;
+          line-height: 15px;
+          text-align: center;
+          background-color: #ff0000;
+          border-radius: 50%;
+          font-size: 10px;
+          color: #ffffff;
+          position: absolute;
+          right: -7px;
+          top: -7px;
+        }
         .item-icon {
           width: 22px;
           height: 22px;

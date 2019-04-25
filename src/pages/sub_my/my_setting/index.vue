@@ -10,7 +10,7 @@
         </div>
         <div class="item-right">
           <div class="item-value"></div>
-          <div class="item-more-icon"></div>
+          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
         </div>
       </div>
       <div class="setting-item">
@@ -19,7 +19,7 @@
         </div>
         <div class="item-right">
           <div class="item-value">136****5989</div>
-          <div class="item-more-icon"></div>
+          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
         </div>
       </div>
       <div class="setting-item">
@@ -28,7 +28,7 @@
         </div>
         <div class="item-right">
           <div class="item-value">江湖一点光</div>
-          <div class="item-more-icon"></div>
+          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
         </div>
       </div>
       <div class="setting-item">
@@ -37,7 +37,7 @@
         </div>
         <div class="item-right">
           <div class="item-value">三千零一页</div>
-          <div class="item-more-icon"></div>
+          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
         </div>
       </div>
       <div
@@ -49,7 +49,7 @@
         </div>
         <div class="item-right">
           <div class="item-value"></div>
-          <div class="item-more-icon"></div>
+          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
         </div>
       </div>
     </div>
@@ -128,7 +128,7 @@ export default {
       .item-more-icon {
         width: 7px;
         height: 11px;
-        background-color: red;
+        display:block;
       }
     }
   }

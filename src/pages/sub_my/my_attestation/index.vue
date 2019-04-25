@@ -1,7 +1,10 @@
 <template>
   <section class="attestation-container">
     <div class="attestation-box">
-      <div class="attestation-item">
+      <div
+        class="attestation-item"
+        style="background:url('../../../../static/images/RealName_iCon.png') no-repeat;background-size:100% 100%;"
+      >
         <div class="item-info">
           <img
             src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
@@ -22,7 +25,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">王多多</div>
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div class="setting-item">
@@ -31,7 +37,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">身份证</div>
-          <div class="item-more-icon"></div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
     </div>
@@ -59,11 +68,6 @@ export default {
   padding: 15px 15px 30px;
   .attestation-item {
     padding: 20px 20px 12.5px;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 144, 126, 1) 0%,
-      rgba(255, 102, 102, 1) 100%
-    );
     box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
     border-radius: 6px;
     .item-info {
@@ -136,7 +140,7 @@ export default {
       .item-more-icon {
         width: 7px;
         height: 11px;
-        background-color: red;
+        display: block;
       }
     }
   }
