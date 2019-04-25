@@ -6,7 +6,10 @@
     <section class="main">
       <section class="top-kong"></section>
       <section class="ban-1">
-        <lunbo-images></lunbo-images>
+        <lunbo-images
+          :hasLink="true"
+          :imgArr="linkImgUrls">
+        </lunbo-images>
         <div class="type-box">
             <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(item.linkUrl)">
               <div class="type-item-t"><img :src="item.imgUrl" :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.boxShadow "></div>
@@ -86,6 +89,17 @@
     },
     data () {
       return {
+        // 顶部轮播图数据数组
+        linkImgUrls: [
+          {
+            imgurl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
+            linkUrl: '../productDetail/main'
+          },
+          {
+            imgurl: 'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
+            linkUrl: '../productList/main'
+          }
+        ],
         // 商品分类按钮信息
         typeInfoList: [
           {

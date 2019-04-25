@@ -1,5 +1,9 @@
 <template>
     <section  class="child-container">
+      <div class="custom-dot" v-if="hasDot">
+        <span class="dot-l">{{cuttentImg}}</span>
+        <span class="dot-r">/{{imgUrls.length}}</span>
+      </div>
       <swiper
         :style="'height:'+swiperHeight"
         :indicator-dots="indicatorDots"
@@ -14,9 +18,15 @@
         :display-multiple-items="displayMultipleItems"
         :previous-margin="previousMargin"
         :next-margin="nextMargin"
+        @change="handleChange"
       >
-        <block v-for="(item,i) in imgUrls" :key="i">
-          <swiper-item :item-id="i">
+        <block v-if="isLink">
+          <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
+            <image :src="item.imgurl" class="slide-image" style="width: 100%;height: 100%;" @click="handleLinkPage(item.linkUrl)"/>
+          </swiper-item>
+        </block>
+        <block v-else>
+          <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
             <image :src="item" class="slide-image" style="width: 100%;height: 100%;"/>
           </swiper-item>
         </block>
@@ -28,22 +38,33 @@
   export default {
     name: 'LunboImages',
     props: {
+      // 设置高度
       swiperH: {
         type: String,
         default: '340rpx'
+      },
+      // 是否带有链接
+      hasLink: {
+        type: Boolean,
+        default: false
+      },
+      // 数据数组
+      imgArr: {
+        type: Array,
+        required: true
+      },
+      // 是否显示自定义指示点
+      isDot: {
+        type: Boolean,
+        default: true
       }
     },
     data () {
       return {
         // 设置swiper的高度
         swiperHeight: this.swiperH,
-        imgUrls: [
-          'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3069259875,1190326871&fm=27&gp=0.jpg',
-          'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1496232587,926948844&fm=27&gp=0.jpg',
-          'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-          'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=640',
-          'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640'
-        ],
+        isLink: this.hasLink,
+        imgUrls: this.imgArr,
         // 是否显示指示点
         indicatorDots: false,
         // 指示点颜色
@@ -67,12 +88,58 @@
         // 前边距，可露出前一项的一小部分，px或rpx
         previousMargin: '-1rpx',
         // 后边距，可露出后一项的一小部分，px或rpx
-        nextMargin: '-1rpx'
+        nextMargin: '-1rpx',
+        // 当前页面数字
+        cuttentImg: 1,
+        // 是否显示自定义指示点
+        hasDot: this.isDot
+      }
+    },
+    methods: {
+      handleLinkPage (url) {
+        console.log('点击轮播图，根据链接地址跳转到不同的页面：');
+        console.log(url)
+        mpvue.navigateTo({url})
+      },
+      handleChange (detail) {
+        // console.log('改变');
+        // console.log(detail.target.current);
+        this.cuttentImg = detail.target.current + 1;
+      }
+    },
+    watch: {
+      imgArr: function (val) {
+        this.imgUrls = val;
       }
     }
   }
 </script>
 
 <style scoped lang="scss">
-
+  .child-container{
+    position: relative;
+    .custom-dot{
+      position: absolute;
+      bottom: 20rpx;
+      right: 30rpx;
+      height: 44rpx;
+      line-height: 44rpx;
+      width: 88rpx;
+      text-align: center;
+      background:rgba(0,0,0,.4);
+      z-index: 1;
+      -webkit-border-radius: 12rpx;
+      -moz-border-radius: 12rpx;
+      border-radius: 12rpx;
+      color: #fff;
+      letter-spacing: 6rpx;
+      .dot-l{
+        font-size: 30rpx;
+      }
+      .dot-r{
+        font-size: 22rpx;
+        opacity: .5;
+      }
+    }
+  }
 </style>

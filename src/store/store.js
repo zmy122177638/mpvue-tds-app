@@ -11,7 +11,9 @@ const store = new Vuex.Store({
     // 用户唯一ssid
     ssid: '',
     // 用户信息
-    userInfo: {}
+    userInfo: {},
+    // 明日预告图片信息
+    tomorrowImg: {}
   },
   mutations: {
     // 写入登录 ssid ,作为用户是否已登录的唯一凭证

@@ -214,7 +214,6 @@ class Https {
       console.log('上报过程中出错，错误：');
       console.log(e);
     })
-
   }
 }
 

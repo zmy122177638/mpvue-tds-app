@@ -2,25 +2,29 @@
   <section class="container">
     <section><van-icon name="arrow-left" class="go-back" @click="handleGoBack" /></section>
     <section class="lunbo-box">
-      <lunbo-images swiperH="600rpx"></lunbo-images>
+      <lunbo-images
+        swiperH="600rpx"
+        :imgArr="productData.small_image">
+      </lunbo-images>
     </section>
     <section class="main">
       <section class="content">
-        <header class="d-head">ins风全棉纯棉床上用品四件套宿舍床单人3三件套儿童网红被套床笠</header>
+        <header class="d-head">{{productData.goods_name}}</header>
         <div class="d-price">
-          <span class="n"><span>￥</span>36.00</span>
-          <span class="o"><span>￥</span>59.00</span>
-          <span class="sale-num">已售 5124 件</span>
+          <span class="n"><span>￥</span>{{productData.goods_price}}</span>
+          <span class="o"><span>￥</span>{{productData.market_price}}</span>
+          <span class="sale-num">{{productData.detail_sales_desc}}</span>
         </div>
-        <div class="d-discounts">
-          <span class="d-d-msg">立省30元</span>
-          <span class="d-d-msg">全场包邮</span>
+        <div class="d-discounts" v-if="false">
+          <block v-for="(item,i) in productData.tag" :key="i">
+            <span class="d-d-msg">{{item}}</span>
+          </block>
         </div>
-        <div class="d-sale-time">
+        <div class="d-sale-time" v-if="timeOut">
           <span class="des">今日团品限时购：</span>
-          <span class="time">10</span>:
-          <span class="time">32</span>:
-          <span class="time">52</span>
+          <span class="time">{{p_h}}</span>:
+          <span class="time">{{p_m}}</span>:
+          <span class="time">{{p_s}}</span>
         </div>
         <div class="d-type-selecte" @click="handleShowProductType">
           <span class="d-tpye-s-l">选择</span>
@@ -29,7 +33,7 @@
         </div>
         <header class="ban-header">商品详情</header>
         <div class="img-list">
-          <block v-for="(item,i) in desImages" :key="i">
+          <block v-for="(item,i) in productData.detail_image" :key="i">
             <image :src="item" mode="widthFix" />
           </block>
         </div>
@@ -132,7 +136,8 @@
           icon="chat-o"
           text="客服"
           info="5"
-          @click="handleServiceCall"
+          open-type="contact"
+          @contact="handleServiceCall"
         />
         <van-goods-action-button
           v-if="isManager"
@@ -161,6 +166,110 @@
     },
     data () {
       return {
+        // 商品详情
+        productData: {
+          // tag: ['立省30元', '全场包邮', '给我而非', '立省30元', '全场包邮', '给我而非'],
+          goods_id: 391,
+          goods_name: '测试商品请勿下单',
+          small_image: [
+            'http://oss.baidichan.com/store/images/20190325/63EVxE6CM431kXfxQcfnO7RSoOjPyYSjQi7laHfa.jpeg',
+            'http://oss.baidichan.com/store/images/20190325/5izy0JXzXnumKgnHNK0AQIuQgLHqJYFFkDGqLavu.jpeg',
+            'http://oss.baidichan.com/store/images/20190325/09AT8wCGqY2sZbeDWDuCSnPMVq6PY0IajG0ikQlw.jpeg',
+            'http://oss.baidichan.com/store/images/20190325/KkuUL9uMpByx8y00iA7KzS9zRQUcTAR9yMRJI8aG.jpeg'
+          ],
+          detail_image: [
+            'http://oss.baidichan.com/store/images/20190325/l6qf0XfRQzO9toyoprcCCQVhavZAhdUMzpAsrXhF.jpeg',
+            'http://oss.baidichan.com/store/images/20190325/cravBB0nKulPSS5dc8YWUji4te2b7Jtaj73oQabd.webp',
+            'http://oss.baidichan.com/store/images/20190325/4MGe7aAecg5PxY0xm6Ou0Q9Iygt0dUz1b69PjMSw.webp',
+            'http://oss.baidichan.com/store/images/20190325/LI2UjHXv19smHhf8tvni6TlO9N92mNRtHMcK9vBO.webp'
+          ],
+          goods_price: '0.01',
+          market_price: '99.00',
+          stock: 100,
+          unit: '台',
+          weight: 250,
+          goods_desc: '',
+          sales_count: 3002,
+          video_url: '',
+          status: 1,
+          end_time: '2019/04/26 14:08:00',
+          limit_num: 2,
+          spec: [
+            {
+              'spec_name': '款式',
+              'spec_attr': [
+                '自动款',
+                '手动款'
+              ],
+              'params_child_has_del': true
+            },
+            {
+              'spec_name': '颜色',
+              'spec_attr': [
+                '白色',
+                '黄色'
+              ],
+              'params_child_has_del': true
+            }
+          ],
+          spu: [
+            {
+              'spec_attr_arr': [],
+              'spec_attr': '自动款-白色',
+              'stock': 50,
+              'price': 0.01,
+              'goods_no': '0001',
+              'item_image': 'http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg'
+            },
+            {
+              'spec_attr_arr': [],
+              'spec_attr': '自动款-黄色',
+              'stock': 20,
+              'price': 0.02,
+              'goods_no': '0002',
+              'item_image': 'http://oss.baidichan.com/store/images/20190325/9hvuYDv2qX2Dj1VRmjDGsVBZjMBesEAiLfnF2hiG.jpeg'
+            },
+            {
+              'spec_attr_arr': [],
+              'spec_attr': '手动款-白色',
+              'stock': 10,
+              'price': 0.01,
+              'goods_no': '0003',
+              'item_image': 'http://oss.baidichan.com/store/images/20190325/PN8ZHudQRhzt3brpeGrfaF6H3vLb6YIDZzPzyMMW.jpeg'
+            },
+            {
+              'spec_attr_arr': [],
+              'spec_attr': '手动款-黄色',
+              'stock': 20,
+              'price': 0.04,
+              'goods_no': '0004',
+              'item_image': 'http://oss.baidichan.com/store/images/20190325/A3nJkwHe44mQ8XL2VTxV3i9DlpVr41S0NhOuTBO8.jpeg'
+            }
+          ],
+          charge_zone: '',
+          unshipping_zone: '',
+          detail_sales_desc: '已售 3002 台',
+          charge_zone: ['青海', '西藏', '甘肃'],
+          // 不发货地区
+          unshipping_zone: [
+            '新疆',
+            '内蒙古'
+          ],
+          user_info: {
+            'id': 3,
+            'uid': 1,
+            'consignee': '12323',
+            'consignee_mobile': '1369085077 9',
+            'consignee_area_id': '1,2,3',
+            'address': '广东省惠州市惠阳区世贸广场1',
+            'is_default': 1,
+            'tag': '',
+            'created_at': '2019-04-17 14:03:10',
+            'updated_at': '2019-04-17 12:03:10',
+            'area': null
+          },
+          limit_text: '团大师价 ￥0.01'
+        },
         // 判断是否为掌柜、团长
         isManager: true,
         // 商品规格上拉弹窗是否显示
@@ -180,18 +289,46 @@
         // 规格选择子组件传回的数据
         specSelected: {},
         // 海报图片路径
-        posterImgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2624716811,1190583056&fm=26&gp=0.jpg'
+        posterImgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2624716811,1190583056&fm=26&gp=0.jpg',
+        // 商品是否还有倒计时以及时分秒设置
+        timeOut: true,
+        p_h: '',
+        p_m: '',
+        p_s: ''
       }
     },
     methods: {
-      // 返回上一页按钮响应
+      // 倒计时显示
+      setEndTime () {
+        let endTime = new Date(this.productData.end_time).getTime();
+        let todayTime = new Date().getTime();
+        // 获得间隔秒数
+        let tempTime = (endTime - todayTime) / 1000;
+        // 如果团购时间已到，则设置停止倒计时
+        if (tempTime <= 0) {
+          this.timeOut = false;
+          clearInterval(this.timeIntval);
+          return;
+        }
+        let h = Math.floor(tempTime / 3600);
+        h = h >= 10 ? h : '0' + h;
+        let m = Math.floor((tempTime % 3600) / 60);
+        m = m >= 10 ? m : '0' + m;
+        let s = Math.floor(tempTime - (h * 3600 + m * 60));
+        s = s >= 10 ? s : '0' + s;
+        // console.log(s);
+        this.p_h = h;
+        this.p_m = m;
+        this.p_s = s;
+      },
+      // 顶部返回上一页按钮响应
       handleGoBack () {
         // console.log('自定义返回按钮,返回上一页，若没有上一页则返回首页')
         mpvue.navigateBack({
           delta: 1
         })
       },
-      // 返回首页按钮响应
+      // 底部返回首页按钮响应
       handleGoHome () {
         console.log('返回首页')
         mpvue.reLaunch({
@@ -199,7 +336,7 @@
         })
       },
       // 联系客服按钮响应
-      handleServiceCall () {
+      handleServiceCall (e) {
         console.log('联系客服')
       },
       // 分享按钮响应
@@ -247,23 +384,17 @@
           urls: [this.posterImgUrl]
         })
       },
-      // 子组件提交订单响应
+      // 规格选择子组件提交订单响应
       handleSubmitOrder (options) {
         console.log('子组件数据')
         console.log(options)
         this.specSelected = options
         this.productTypeShow = false
         // 跳转到未付款订单页面
-        mpvue.navigateTo({
-          url: '../sub_my/my_unpaid/main'
-        })
+        // mpvue.navigateTo({
+        //   url: '../sub_my/my_unpaid/main'
+        // })
       }
-    },
-    // 页面显示监听
-    onLoad () {
-      mpvue.showShareMenu({
-        withShareTicket: true
-      })
     },
     // 分享监听
     onShareAppMessage (res) {
@@ -287,10 +418,30 @@
         }
       }
     },
+
+    // 页面加载监听
+    onLoad (options) {
+      console.log('根据传递的ID值请求商品详情：');
+      console.log(options);
+
+      // console.log('根据商品结束时间，开始商品倒计时')
+      this.setEndTime();
+      this.timeIntval = setInterval(function () {
+        this.setEndTime();
+      }.bind(this), 1000);
+      // 开启群分享获取信息设置
+      mpvue.showShareMenu({
+        withShareTicket: true
+      })
+    },
+    onUnload () {
+      console.log('停止商品倒计时')
+      clearInterval(this.timeIntval);
+    },
     created () {
     },
-    beforeMount () {
-      console.log('productDetail挂载')
+    mounted () {
+
     }
   }
 </script>
@@ -387,6 +538,7 @@
       .d-sale-time{
         height: 70rpx;
         color:rgba(40,40,40,1);
+        margin-top: 25rpx;
         margin-bottom:20rpx;
         .des{
           font-weight: bold;
@@ -417,6 +569,7 @@
         line-height: 88rpx;
         font-weight: bold;
         padding: 0 4%;
+        margin-top: 25rpx;
         .d-tpye-s-l{
           display: inline-block;
         }

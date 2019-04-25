@@ -5,9 +5,9 @@
     "pages/ranking/main",
     "pages/manager/main",
     "pages/my/main",
-    "pages/productDetail/main",
-    "pages/productList/main"
 
+    "pages/productList/main",
+    "pages/productDetail/main"
   ],
   "subPackages": [{
       "root": "pages/sub_manager/",
