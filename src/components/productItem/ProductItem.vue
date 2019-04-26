@@ -57,7 +57,8 @@
         <!--<span v-else class="num">No.{{i+1}}</span>-->
         <span class="des">已有<span>5327人</span>为它投票</span>
       </span>
-      <span class="c-4-r">让他返场</span>
+      <span v-if="inVoteLoading" class="c-4-r" @click.stop="">投票中 ...</span>
+      <span v-else class="c-4-r" @click.stop="handleNetworkVote">让他返场</span>
     </section>
     <section
       v-if="type == 3"
@@ -84,7 +85,9 @@ export default {
       // type表示不同类型显示的商品信息，type：1：引流，2,：团品，3：拼团，4：返场
       type: this.itemTpye,
       // i表示下标，用于区分前三排名
-      i: this.subIndex
+      i: this.subIndex,
+      // 是否在投票中
+      inVoteLoading: false
     }
   },
   methods: {
@@ -94,20 +97,24 @@ export default {
       mpvue.navigateTo({
         url: '../productDetail/main'
       })
+    },
+    // 返场投票点击
+    handleNetworkVote () {
+      console.log('返场投票点击')
+      this.inVoteLoading = true;
+      setTimeout(function () {
+        this.inVoteLoading = false;
+      }.bind(this), 3000)
     }
   },
   watch: {
     itemTpye: function (nVal, oVal) {
       // console.log("值改变")
-      if (nVal != oVal) {
-        this.type = nVal
-      }
+      this.type = nVal
     },
     subIndex: function (nVal, oVal) {
       // console.log("值改变")
-      if (nVal != oVal) {
-        this.i = nVal
-      }
+      this.i = nVal
     }
   }
 

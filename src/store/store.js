@@ -8,19 +8,24 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    // 用户唯一ssid
-    ssid: '',
+    // 用户验证token
+    token: '',
     // 用户信息
     userInfo: {},
     // 明日预告图片信息
     tomorrowImg: {}
   },
   mutations: {
-    // 写入登录 ssid ,作为用户是否已登录的唯一凭证
-    setSsid (state, data) {
-      // console.log('写入ssid:');
-      // console.log(data.ssid);
-      state.ssid = data.ssid;
+    // 写入用户登录信息
+    writeUserInfo (state, data) {
+      // console.log('写入用户信息:');
+      // console.log(data.userInfo);
+      state.userInfo = data.userInfo;
+      // console.log(state.userInfo);
+    },
+    // 写入token 登录凭证
+    writeToken (state, data) {
+      state.token = data.token;
     }
   },
   getters: {},

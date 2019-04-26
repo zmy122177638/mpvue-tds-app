@@ -444,7 +444,8 @@
     created () {
     },
     mounted () {
-
+      // console.log('获取用户信息：');
+      // console.log(this.$store.state.userInfo)
     }
   }
 </script>

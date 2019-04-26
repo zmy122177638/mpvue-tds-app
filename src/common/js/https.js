@@ -11,7 +11,7 @@
 // 配置信息获取
 class Https {
   constructor () {
-    // 服务器
+    // 服务器，测试服
     this.commonUrl = 'http://miniprogram.dev.com/api/v1/';
     // 必须：当前小程序的appid
     this.appid = 'wx36728f07d8012894';
@@ -19,7 +19,6 @@ class Https {
     this.secret = '81314d87c17307bfe22996c48c1f4c3d';
     // token 和openid,由登录成功后写入
     this.token = '';
-    this.ssid = '';
   }
   // 小程序登录流程
   // async 异步处理登录流程，保证每个环节获取数据正确
@@ -29,12 +28,21 @@ class Https {
       let codeInfo = await this.login();
       let userInfo = await this.getUserInfo();
       // 获取到code和userInfo之后调起请求，返回openId/token
-      console.log('用户授权登录获取的信息：codeInfo、userInfo：')
-      console.log(codeInfo);
-      console.log(userInfo);
-      return userInfo
+      // console.log('用户授权登录获取的信息：codeInfo、userInfo：')
+      // console.log(codeInfo);
+      // console.log(userInfo);
+      // 根据code、encryptedData、iv三个参数项后台请求open_id以及用户信息
+      let tempData = {};
+      tempData.code = codeInfo.code;
+      tempData.enc_data = userInfo.encryptedData;
+      tempData.iv = userInfo.iv;
+      let requestData = await this.post('auth/login', tempData);
+      // console.log('服务器后台登录成功，数据：');
+      // console.log(requestData);
+      this.token = requestData.data.token;
+      return requestData
     } else {
-      return '22222222222222222'
+      return '登录流程失败'
     }
   }
   // 获得code,检查到登录态失效时调用
@@ -94,12 +102,14 @@ class Https {
     mpvue.showLoading({
       title: '加载中' // 数据请求前loading，提高用户体验
     })
+    // 设置头部
     return new Promise((resolve, reject) => {
       mpvue.request({
         url: this.commonUrl + url,
         data: data,
         method: 'GET',
         header: {
+          'Authorization': 'Bearer ' + this.token,
           'Content-Type': 'application/json'
         }, // 设置请求的 header
         success: function (res) {
@@ -117,6 +127,10 @@ class Https {
         fail: function (error) {
           // fail
           mpvue.hideLoading();
+          mpvue.showToast({
+            title: '网络异常，稍后再试',
+            icon: 'none'
+          });
           reject(error);
         },
         complete: function () {
@@ -127,9 +141,11 @@ class Https {
     })
   }
   // post请求
-  post(url, data) {
+  post(url, data, tip = '') {
+    // console.log('token:');
+    // console.log(this.token);
     mpvue.showLoading({
-      title: '加载中'
+      title: tip !== '' ? tip : '加载中'
     })
     return new Promise((resolve, reject) => {
       mpvue.request({
@@ -137,6 +153,7 @@ class Https {
         data: data,
         method: 'POST',
         header: {
+          'Authorization': 'Bearer ' + this.token,
           'content-type': 'application/x-www-form-urlencoded'
         }, // 设置请求的 header
         success: function (res) {
@@ -144,7 +161,7 @@ class Https {
           mpvue.hideLoading();
           if (res.statusCode !== 200) {
             mpvue.showToast({
-              title: '网络出错，稍后再试',
+              title: '网络异常，稍后再试',
               icon: 'none'
             });
             return false;
@@ -154,6 +171,10 @@ class Https {
         fail: function (error) {
           // fail
           mpvue.hideLoading();
+          mpvue.showToast({
+            title: '网络异常，稍后再试',
+            icon: 'none'
+          });
           reject(error);
         },
         complete: function () {

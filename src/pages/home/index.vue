@@ -155,8 +155,9 @@
       console.log('上拉拉触底')
     },
     onShow () {
-      console.log('home 页面 onShow 读取 ssid ：')
-      console.log(this.$store.state.ssid)
+      console.log('home 页面 onShow 读取 token 和用户数据 ：')
+      console.log(this.$store.state.token)
+      console.log(this.$store.state.userInfo)
     },
     created () {
     }
@@ -171,7 +172,7 @@
   .ban-header{
     margin-top: 20rpx;
     font-size: 44rpx;
-    line-height: 130rpx;
+    line-height: 110rpx;
     font-weight: bold;
     border-top: 1px solid transparent;
   }
