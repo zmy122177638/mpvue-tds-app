@@ -9,10 +9,13 @@
 // 群分享上报群ID等信息
 // 小程序跳转
 // 配置信息获取
+
+import store from '../../store/store';
 class Https {
-  constructor () {
-    // 服务器，测试服
-    this.commonUrl = 'http://miniprogram.dev.com/api/v1/';
+  constructor() {
+    // 服务器baseUrl
+    // this.commonUrl = 'http://miniprogram.dev.com/api/v1/'; // 福军本地
+    this.commonUrl = 'http://tuan.baidichan.com/api/v1/'; // 测试服
     // 必须：当前小程序的appid
     this.appid = 'wx36728f07d8012894';
     // 必须：小程序私钥secret
@@ -22,7 +25,7 @@ class Https {
   }
   // 小程序登录流程
   // async 异步处理登录流程，保证每个环节获取数据正确
-  async loginFlow () {
+  async loginFlow() {
     if (!this.hasOpenId) {
       // 用户未授权登录，则进入登录流程
       let codeInfo = await this.login();
@@ -46,7 +49,7 @@ class Https {
     }
   }
   // 获得code,检查到登录态失效时调用
-  login () {
+  login() {
     return new Promise((resolve, reject) => {
       mpvue.login({
         success: function (res) {
@@ -60,7 +63,7 @@ class Https {
     })
   }
   // 需要先判断是否有权限调用信息，获取微信用户信息，成功获得code后调用
-  getUserInfo () {
+  getUserInfo() {
     return new Promise((resolve, reject) => {
       // 判断是否有拿到用户信息的权限
       mpvue.getSetting({
@@ -171,6 +174,71 @@ class Https {
         fail: function (error) {
           // fail
           mpvue.hideLoading();
+          mpvue.showToast({
+            title: '网络异常，稍后再试',
+            icon: 'none'
+          });
+          reject(error);
+        },
+        complete: function () {
+          // complete
+          mpvue.hideLoading();
+        }
+      })
+    })
+  }
+
+  /**
+   * @description: common接口
+   * @param {String} method 方法名
+   * @param {String} url 接口地址
+   * @param {Object} params request参数
+   * @param {Object} config requst配置 loading配置
+   * @return: undefined
+   * @Date: 2019-04-26 20:23:07
+   */
+  request(method, url, params = {}, config = {}) {
+    // 是否显示loading
+    if (config && !config.ISLOADING) {
+      mpvue.showLoading({
+        title: config.tip ? config.tip : '加载中'
+      })
+    }
+    return new Promise((resolve, reject) => {
+      if (typeof params !== 'object') params = {};
+      // 默认配置
+      let options = {
+        url: this.commonUrl + url,
+        data: params,
+        method: method.toLocaleUpperCase(),
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        ...config
+      }
+      // 追加token,防止单独设置请求头覆盖token
+      options.header = {
+        ...options.header,
+        'authorization': 'Bearer ' + store.state.token
+      }
+      // 发起请求
+      mpvue.request({
+        ...options,
+        success: function (res) {
+          // success
+          if (res.statusCode === 200) {
+            resolve(res.data);
+          } else if (res.statusCode === 401) {
+            console.log('用户没有权限或token失效,需要跳转到登录页')
+          } else {
+            mpvue.showToast({
+              title: '网络异常，稍后再试',
+              icon: 'none'
+            });
+          }
+        },
+        fail: function (error) {
+          // fail
           mpvue.showToast({
             title: '网络异常，稍后再试',
             icon: 'none'

@@ -13,7 +13,10 @@
       class="add-btn-box"
       @click="handleAddAddress()"
     >
-      <img src="../../../../static/images/add.png" class="add-icon">
+      <img
+        src="../../../../static/images/add.png"
+        class="add-icon"
+      >
       <div class="add-txt">新增地址</div>
     </div>
     <!-- 弹窗 -->
@@ -58,6 +61,11 @@ export default {
     // 获取传入值
     this.type = options.type || 0;
     console.log(this.type)
+  },
+  mounted() {
+    this.$http.request('get', 'addresses').then((res) => {
+      console.log(res)
+    })
   },
   methods: {
     /**
@@ -141,7 +149,7 @@ export default {
       width: 20px;
       height: 20px;
       margin-right: 10px;
-      display:flex;
+      display: flex;
     }
     .add-txt {
       font-size: 15px;
