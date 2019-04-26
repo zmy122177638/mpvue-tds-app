@@ -1,10 +1,12 @@
 <template>
   <section class="attestation-container">
     <div class="attestation-box">
-      <div
-        class="attestation-item"
-        style="background:url('../../../../static/images/RealName_iCon.png') no-repeat;background-size:100% 100%;"
-      >
+      <div class="attestation-item">
+        <img
+          src="../../../../static/images/RealName_iCon.png"
+          class="attestation-bg"
+          alt=""
+        >
         <div class="item-info">
           <img
             src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
@@ -70,6 +72,16 @@ export default {
     padding: 20px 20px 12.5px;
     box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
     border-radius: 6px;
+    position: relative;
+    .attestation-bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: -1;
+    }
     .item-info {
       display: flex;
       align-items: center;

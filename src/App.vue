@@ -1,6 +1,6 @@
 <script>
 export default {
-  created () {
+  created() {
     // 调用API从本地缓存中获取数据
     /*
      * 平台 api 差异的处理方式:  api 方法统一挂载到 mpvue 名称空间, 平台判断通过 mpvuePlatform 特征字符串
@@ -11,7 +11,7 @@ export default {
      */
   },
   // 下面为小程序APP生命周期
-  onLaunch (options) {
+  onLaunch(options) {
     // 获取store中的ssid，判断用户是否已经授权登录，若已经授权登录，则直接跳转到首页面
     // if (this.$store.state.ssid) {
     //   mpvue.reLaunch({
@@ -23,14 +23,14 @@ export default {
     // console.log(options)
     // console.log(App)
   },
-  onShow (options) {
+  onShow(options) {
     // console.log('小程序进入前台')
     // console.log(options)
   },
-  onHide () {
+  onHide() {
     // console.log('小程序进入后台')
   },
-  onError (msg) {
+  onError(msg) {
     // console.log(msg)
   }
 }

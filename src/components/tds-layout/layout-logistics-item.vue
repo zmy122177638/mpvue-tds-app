@@ -27,7 +27,7 @@
             <p class="order-status-time">19/04/09 12:53:50</p>
           </div>
         </div>
-        <div :class="['order-status-item', 'on']">
+        <div :class="['order-status-item']">
           <div class="step-box"></div>
           <div class="order-status-btn">
             <p class="order-status">待收货</p>
@@ -88,6 +88,7 @@ export default {
       .order-status-item {
         margin-left: 25px;
         padding: 10px 0 10px 21.5px;
+        border-left:1px solid #F6F8FA;
         position: relative;
         .step-box {
           position: absolute;
@@ -98,6 +99,7 @@ export default {
           height: 18px;
           border: 3px solid #c1c1c1;
           box-sizing: border-box;
+          background-color:#ffffff;
           border-radius: 50%;
           &::before {
             width: 0;
@@ -184,6 +186,9 @@ export default {
               color: #ff6666;
             }
           }
+        }
+        &::nth-last-child(1) {
+
         }
       }
     }

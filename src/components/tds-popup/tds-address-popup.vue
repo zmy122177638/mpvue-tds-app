@@ -74,7 +74,6 @@
         </div>
       </div>
       <div class="set-normal" @click="formData_v.isNormal = !formData_v.isNormal">
-        <!-- <span :class="['set-icon',{on:formData_v.isNormal}]"></span> -->
         <img :src="'../../../static/images/select_'+(formData_v.isNormal?'on':'no')+'.png'" class="set-icon"/>
         <span class="set-txt">设为默认</span>
       </div>
@@ -352,7 +351,7 @@ export default {
   }
   &.on {
     .address-popup-cont {
-      animation: movescale 0.45s ease-out;
+      animation: movescale 0.7s ease-out;
     }
   }
   @keyframes movescale {
