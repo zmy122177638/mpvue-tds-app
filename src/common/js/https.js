@@ -17,7 +17,7 @@ class Https {
     this.appid = 'wx36728f07d8012894';
     // 必须：小程序私钥secret
     this.secret = '81314d87c17307bfe22996c48c1f4c3d';
-    // token 和openid,由登录成功后写入
+    // token 和 openid,由登录成功后写入
     this.token = '';
   }
   // 小程序登录流程
