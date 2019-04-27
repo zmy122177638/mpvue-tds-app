@@ -4,18 +4,18 @@
     @click="$emit('click',item)"
   >
     <div class="order-title">
-      <div class="order-num">订单号：{{item.order_num}}</div>
-      <div class="order-status">{{item.status_str}}</div>
+      <div class="order-num">订单号：{{item.order_no}}</div>
+      <div class="order-status">{{item.mini_status}}</div>
     </div>
     <div class="order-goods">
       <img
-        :src="item.goods_img"
+        :src="item.goods_image_url"
         class="goods-img"
         alt=""
       >
       <div class="goods-info">
         <div class="goods-name">{{item.goods_name}}</div>
-        <div class="goods-money">￥<span>{{item.goods_money}}</span></div>
+        <div class="goods-money">￥<span>{{item.unit_price}}</span></div>
       </div>
     </div>
   </div>

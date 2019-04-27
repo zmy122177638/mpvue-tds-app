@@ -24,7 +24,7 @@
               class="input-value"
               type="text"
               @input="getAddressName"
-              :value="formData_v.name"
+              :value="formData_v.consignee"
             />
           </div>
         </div>
@@ -37,7 +37,7 @@
               class="input-value"
               type="number"
               @input="getAddressPhone"
-              :value="formData_v.phone"
+              :value="formData_v.consignee_mobile"
             />
           </div>
         </div>
@@ -48,9 +48,9 @@
               mode="region"
               @change="bindRegionChange"
               class="input-value02"
-              :value="formData_v.region"
+              :value="formData_v.area"
             >
-              {{ formData_v.region ? formData_v.region[0] + '-' + formData_v.region[1] + '-' + formData_v.region[2] : '请选择收货人地址'}}
+              {{ formData_v.area ? formData_v.area[0] + '-' + formData_v.area[1] + '-' + formData_v.area[2] : '请选择收货人地址'}}
             </picker>
           </div>
         </div>
@@ -66,15 +66,15 @@
             />
             </div>
         </div>
-        <div class="address-info-item">
+        <div class="address-info-item" v-if="tagList">
           <div class="item-label">标签</div>
           <div class="item-tag-list">
             <div :class="['item-tag-item',{on:formData_v.tag === item}]" v-for="(item,index) in tagList" :key="index" @click="formData_v.tag === item?formData_v.tag = null:formData_v.tag = item">{{item}}</div>
           </div>
         </div>
       </div>
-      <div class="set-normal" @click="formData_v.isNormal = !formData_v.isNormal">
-        <img :src="'../../../static/images/select_'+(formData_v.isNormal?'on':'no')+'.png'" class="set-icon"/>
+      <div class="set-normal" @click="formData_v.is_default = !formData_v.is_default">
+        <img :src="'../../../static/images/select_'+(formData_v.is_default?'on':'no')+'.png'" class="set-icon"/>
         <span class="set-txt">设为默认</span>
       </div>
       <div
@@ -92,16 +92,20 @@ export default {
       type: Boolean,
       default: false
     },
+    tagList: {
+      type: Array,
+      default: null
+    },
     // tag 和 isNormal 必传
     data: {
       type: Object,
       default: {
-        name: '',
-        phone: '',
-        region: '',
+        consignee: '',
+        consignee_mobile: '',
+        area: '',
         address: '',
         tag: '',
-        isNormal: false
+        is_default: false
       }
     }
   },
@@ -124,9 +128,7 @@ export default {
     }
   },
   data() {
-    return {
-      tagList: ['家', '公司', '学校']
-    }
+    return {}
   },
   methods: {
     /**
@@ -134,7 +136,7 @@ export default {
      * @Date: 2019-04-22 15:50:07
      */
     getAddressName(ev) {
-      this.formData_v.name = ev.target.value;
+      this.formData_v.consignee = ev.target.value;
     },
 
     /**
@@ -142,7 +144,7 @@ export default {
      * @Date: 2019-04-22 15:52:59
      */
     getAddressPhone(ev) {
-      this.formData_v.phone = ev.target.value;
+      this.formData_v.consignee_mobile = ev.target.value;
     },
 
     /**
@@ -150,8 +152,8 @@ export default {
      * @Date: 2019-04-22 15:56:34
      */
     bindRegionChange(e) {
-      this.formData_v.region = e.target.value;
-      this.formData_v.regionCode = e.target.code;
+      this.formData_v.area = e.target.value;
+      this.formData_v.consignee_area_id = e.target.code;
       console.log('picker发送选择改变，携带值为', e)
     },
 
@@ -176,29 +178,29 @@ export default {
      * @Date: 2019-04-22 16:34:46
      */
     submit() {
-      const { name, phone, region, address } = this.formData_v;
-      if (!name) {
+      const { consignee, consignee_mobile, area, address } = this.formData_v; // eslint-disable-line
+      if (!consignee) {
         mpvue.showToast({
           title: '请输入收货人姓名',
           icon: 'none',
           duration: 1000
         })
         return false;
-      } else if (!phone) {
+      } else if (!consignee_mobile) { // eslint-disable-line
         mpvue.showToast({
           title: '请输入收货人手机号码',
           icon: 'none',
           duration: 1000
         })
         return false;
-      } else if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(phone)) {
+      } else if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(consignee_mobile)) {
         mpvue.showToast({
           title: '请输入正确手机号码',
           icon: 'none',
           duration: 1000
         })
         return false;
-      } else if (!region) {
+      } else if (!area) {
         mpvue.showToast({
           title: '请选择收货人地址',
           icon: 'none',
@@ -213,9 +215,10 @@ export default {
         })
         return false;
       }
+      // 布尔值转换数字
+      this.formData_v.is_default += 0;
       this.$emit('submit', this.formData_v)
       this.closePopupChange();
-      console.log(this.formData_v)
     }
   }
 }
@@ -351,15 +354,15 @@ export default {
   }
   &.on {
     .address-popup-cont {
-      animation: movescale 0.7s ease-out;
+      animation: movescale 0.35s ease-out;
     }
   }
   @keyframes movescale {
     0% {
-      opacity: 0;
+      transform: translate3d(-50%, -70%, 0);
     }
     100% {
-      opacity: 1;
+      transform: translate3d(-50%, -50%, 0);
     }
   }
 }

@@ -6,11 +6,11 @@
     >
       <div :class="['nav-list',{fixed:isFixed}]">
         <div
-          :class="['nav-item',{on:index === currentIndex}]"
+          :class="['nav-item',{on:item.key === currentIndex}]"
           v-for="(item,index) in navList"
-          @click="currentIndex = index"
+          @click="currentIndex = item.key"
           :key="index"
-        >{{item}}</div>
+        >{{item.val}}</div>
       </div>
     </div>
     <div class="order-content">
@@ -35,14 +35,56 @@ export default {
   },
   data() {
     return {
-      // 导航列表
-      navList: ['全部', '待付款', '待发货', '待收货', '已完成', '退货退款'],
+      // 导航默认列表
+      navList: [{
+        'key': 'all',
+        'val': '全部',
+        'status': ''
+      },
+      {
+        'key': 'unpaid',
+        'val': '待付款',
+        'status': [
+          1
+        ]
+      },
+      {
+        'key': 'paid',
+        'val': '待发货',
+        'status': [
+          3
+        ]
+      },
+      {
+        'key': 'shipped',
+        'val': '待收货',
+        'status': [
+          5
+        ]
+      },
+      {
+        'key': 'finish',
+        'val': '已完成',
+        'status': [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        'key': 'refund',
+        'val': '退货退款',
+        'status': [
+          15
+        ]
+      }],
       // 填充高度
       fillHeight: '',
       // 是否悬浮
       isFixed: false,
       // 选中导航
-      currentIndex: 0,
+      currentIndex: 'all',
       // 订单列表
       orderList: [
         { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
@@ -50,18 +92,25 @@ export default {
         { order_id: 1, order_num: 2018284658126516, status_str: '待收货', status: 3, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
         { order_id: 1, order_num: 2018284658126516, status_str: '已完成', status: 4, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
         { order_id: 1, order_num: 2018284658126516, status_str: '退款退货', status: 5, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 }
-      ]
+      ],
+      // page参数 page 页码 show页码数量
+      queryData: { page: 1, show: 15 }
     }
   },
   onLoad(options) {
     console.log(options)
     // 接收current参数初始化选中的导航index
-    this.currentIndex = parseInt(options.current) || 0
+    this.currentIndex = options.current || 'all'
   },
   mounted() {
     // 获取填充高度
     this.getBoundingClientRect('#navNode', (res) => {
       this.fillHeight = res[0].height;
+    })
+    // 获取订单列表 接收promise返回导航栏
+    this.getOrderList(this.currentIndex).then((navList) => {
+      this.navList = navList;
+      console.log(this.navList)
     })
   },
   onPageScroll(ev) {
@@ -76,13 +125,42 @@ export default {
   },
   onPullDownRefresh() {
     setTimeout(() => {
-      mpvue.stopPullDownRefresh()
+      mpvue.stopPullDownRefresh();
     }, 2000)
   },
   onReachBottom() {
     console.log(123)
   },
+  watch: {
+    currentIndex(currentIndex) {
+      // 获取数据
+      this.getOrderList(currentIndex)
+    }
+  },
   methods: {
+    /**
+     * @description: 获取订单列表
+     * @param {type}
+     * @return: navList
+     * @Date: 2019-04-27 16:41:59
+     */
+    getOrderList(currentIndex) {
+      return this.$http.request('get', 'orders', { ...this.queryData, status: currentIndex }).then(({ code, resource }) => {
+        if (code === 200) {
+          this.orderList = resource.orderList.data;
+          console.log(this.orderList)
+        } else {
+          wx.showToast({
+            title: '获取订单列表失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+        // 返回导航标签
+        return resource.state
+      })
+    },
+
     /**
      * @description: 点击item
      * @param {Object} item 订单

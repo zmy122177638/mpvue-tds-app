@@ -17,7 +17,10 @@
             class="receiver-info"
             @click="navigateToAddress()"
           >
-            <img class="receiver-icon" src="../../../../static/images/Dingwei_iCon.png">
+            <img
+              class="receiver-icon"
+              src="../../../../static/images/Dingwei_iCon.png"
+            >
             <div class="receiver-name">{{addressData.name}}&nbsp;&nbsp;&nbsp;{{addressData.phone}}</div>
             <div class="receiver-location">{{addressData.address}}</div>
           </div>
@@ -28,7 +31,10 @@
           @click="navigateToAddress()"
         >
           <div class="no-address">
-            <img class="no-address-icon" src="../../../../static/images/add.png">
+            <img
+              class="no-address-icon"
+              src="../../../../static/images/add.png"
+            >
             <div class="no-address-txt">选择收货地址</div>
           </div>
         </div>
@@ -96,7 +102,7 @@ export default {
   methods: {
     navigateToAddress() {
       mpvue.navigateTo({
-        url: '../my_address/main?type=1'
+        url: '../my_address/main?use=select' // use=select 选择
       })
     },
     handleGotoBuy() {

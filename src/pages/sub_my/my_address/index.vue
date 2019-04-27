@@ -5,7 +5,9 @@
         v-for="(item,index) in addressList"
         :key="index"
         :item="item"
+        :activeId="activeId"
         @click="handleAddressItem"
+        @longpress="longpressAddressItem"
       ></Layout-address-item>
     </div>
     <!-- 新增地址 -->
@@ -23,6 +25,7 @@
     <Tds-address-popup
       :isShow.sync="isShow"
       :data.sync="formData"
+      :tagList="tagList"
       @submit="handleSubmitForm"
     ></Tds-address-popup>
   </section>
@@ -38,45 +41,141 @@ export default {
   },
   data() {
     return {
-      // 0修改 1选择
-      type: 0,
+      // set修改 select选择
+      use: 'set',
+      // 当前选中地址
+      activeId: '',
       // 是否弹窗
       isShow: false,
       // 地址列表
-      addressList: [
-        {
-          name: 'anles',
-          phone: '18588419510',
-          region: ['湖南省', '衡阳市', '祁东县'],
-          address: '三千地市',
-          tag: '公司',
-          isNormal: false
-        }
-      ],
+      addressList: [],
+      // 标签列表
+      tagList: [],
       // 弹窗表单
       formData: {}
     }
   },
   onLoad(options) {
     // 获取传入值
-    this.type = options.type || 0;
-    console.log(this.type)
+    this.use = options.use || 'set';
+    console.log(this.use)
   },
   mounted() {
-    this.$http.request('get', 'addresses').then((res) => {
-      console.log(res)
-    })
+    this.getAddressList().then(() => {
+      // 当前选中地址（默认）
+      this.addressList.find(item => {
+        if (item.is_default) {
+          this.activeId = item.id;
+        }
+      })
+      // 如果没有默认地址，选中第一个
+      this.activeId = this.activeId ? this.activeId : this.addressList[0].id
+    });
   },
   methods: {
     /**
+     * @description: 获取收货列表
+     * @Date: 2019-04-27 09:52:41
+     */
+    getAddressList() {
+      return this.$http.request('get', 'addresses').then(({ code, resource }) => {
+        console.log(resource)
+        if (code === 200) {
+          this.tagList = resource.tag_list;
+          this.addressList = resource.list;
+        } else {
+          wx.showToast({
+            title: '获取收货列表失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 新增收货地址
+     * @param {Object} params request参数
+     * @return: undefined
+     * @Date: 2019-04-27 09:59:18
+     */
+    addAddressItem(params) {
+      return this.$http.request('post', 'addresses', params).then((res) => {
+        if (res.code === 200) {
+          this.getAddressList();
+          wx.showToast({
+            title: '新增成功',
+            icon: 'success',
+            duration: 2000
+          })
+        } else {
+          wx.showToast({
+            title: '新增失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 修改收货地址
+     * @param {Object} params request参数
+     * @return: undefined
+     * @Date: 2019-04-27 09:59:18
+     */
+    setAddressItem(params) {
+      return this.$http.request('put', 'addresses/' + params.id, params).then((res) => {
+        if (res.code === 200) {
+          this.getAddressList()
+          wx.showToast({
+            title: '修改成功',
+            icon: 'success',
+            duration: 2000
+          })
+        } else {
+          wx.showToast({
+            title: '修改失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 删除收货地址
+     * @param {Number|String} id 地址id
+     * @Date: 2019-04-27 09:59:18
+     */
+    deleteAddressItem(id) {
+      return this.$http.request('delete', 'addresses/' + id).then((res) => {
+        if (res.code === 200) {
+          this.getAddressList()
+          wx.showToast({
+            title: '删除成功',
+            icon: 'success',
+            duration: 2000
+          })
+        } else {
+          wx.showToast({
+            title: '删除失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
      * @description: 点击地址子项
-     * @param {type}
+     * @param {Object} formData // 地址数据
      * @Date: 2019-04-22 14:23:38
      */
     handleAddressItem(formData) {
-      console.log(formData)
+      this.activeId = formData.id;
       // 判断是否选择
-      if (this.type === 1) {
+      if (this.use === 'select') {
         // 存入缓存
         mpvue.setStorage({
           key: 'selAddress',
@@ -89,6 +188,29 @@ export default {
         this.formData = { ...formData, use: 'set' };
         this.isShow = !this.isShow;
       }
+      console.log(formData)
+    },
+
+    /**
+     * @description: 长按删除
+     * @param {Object} item // 地址数据
+     * @Date: 2019-04-27 14:46:46
+     */
+    longpressAddressItem(item) {
+      this.activeId = item.id;
+      let that = this;
+      wx.showActionSheet({
+        itemList: ['删除'],
+        itemColor: '#FF6666',
+        success(res) {
+          if (res.tapIndex === 0) {
+            that.deleteAddressItem(item.id)
+          }
+        },
+        fail(res) {
+          console.log('取消删除')
+        }
+      })
     },
 
     /**
@@ -97,13 +219,13 @@ export default {
      */
     handleAddAddress() {
       this.formData = {
-        name: '',
-        phone: '',
-        region: '',
+        consignee: '',
+        consignee_mobile: '',
+        area: '',
         address: '',
         tag: '',
-        use: 'add',
-        isNormal: false
+        is_default: false,
+        use: 'add'
       }
       this.isShow = !this.isShow;
     },
@@ -115,12 +237,21 @@ export default {
      */
     handleSubmitForm(formData) {
       console.log(formData)
-      this.addressList.push(formData)
-      console.log(formData)
+      if (formData.use === 'set') {
+        // 修改收货地址
+        this.setAddressItem(formData)
+      } else if (formData.use === 'add') {
+        // 添加收货地址
+        this.addAddressItem(formData)
+      }
     }
   },
 
-  created() {
+  onPullDownRefresh() {
+    // 刷新地址列表
+    this.getAddressList().then(() => {
+      mpvue.stopPullDownRefresh()
+    })
   }
 }
 </script>
