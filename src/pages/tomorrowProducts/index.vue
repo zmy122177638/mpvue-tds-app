@@ -14,9 +14,9 @@
             </div>
           </block>
         </div>
-
       </section>
     </section>
+
   </section>
 </template>
 
@@ -26,6 +26,14 @@
     data () {
       return {
         dataList: [
+          {
+            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
+            imgUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg'
+          },
+          {
+            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
+            imgUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3464499095,1074840881&fm=27&gp=0.jpg'
+          },
           {
             goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
             imgUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg'
@@ -110,9 +118,9 @@
             }
           }
         }
-
       }
     }
+
   }
 
 </style>
