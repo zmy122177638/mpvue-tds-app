@@ -66,6 +66,9 @@ export default {
   },
   data() {
     return {
+      // 订单信息(分为待提交和已提交)
+      //
+      // 用户选择的地址信息,来自
       addressData: {
         name: '十里桃花',
         phone: '18588425165',

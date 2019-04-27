@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/tomorrowProducts/main",
     "pages/start/main",
     "pages/home/main",
     "pages/ranking/main",
@@ -7,6 +8,7 @@
     "pages/my/main",
     "pages/productList/main",
     "pages/productDetail/main"
+
   ],
   "subPackages": [{
       "root": "pages/sub_manager/",

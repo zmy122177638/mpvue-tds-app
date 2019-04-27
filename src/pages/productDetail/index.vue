@@ -6,7 +6,7 @@
     </section>
     <section class="lunbo-box">
       <lunbo-images
-        swiperH="600rpx"
+        swiperH="562rpx"
         :imgArr="productData.small_image">
       </lunbo-images>
     </section>
