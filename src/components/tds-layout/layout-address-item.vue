@@ -2,18 +2,19 @@
   <div
     class="address-item"
     @click="$emit('click',item)"
+    @longpress="$emit('longpress',item)"
   >
     <div
       class="address-normal"
-      v-if="item.isNormal"
+      v-if="item.is_default"
     >默认</div>
     <img
-      src="../../../static/images/select_on.png"
+      :src="'../../../static/images/select_'+(activeId === item.id?'on':'no')+'.png'"
       class="address-icon"
     />
     <div class="address-content">
-      <p class="address-name">{{item.name}}&nbsp;&nbsp;&nbsp;{{item.phone}}</p>
-      <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.region + ',' + item.address}}</p>
+      <p class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}{{'ss'+activeId}}</p>
+      <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
     </div>
     <img
       class="address-more-icon"
@@ -26,6 +27,12 @@
 <script>
 export default {
   props: {
+    // 是否选中
+    activeId: {
+      type: Number || String,
+      default: ''
+    },
+    // 地址数据
     item: {
       type: Object,
       requeired: true

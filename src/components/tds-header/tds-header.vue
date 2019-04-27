@@ -5,14 +5,14 @@
         <slot name="left">
           <div class="tds-header-figure">
             <img
-              src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3272199364,3404297250&fm=27&gp=0.jpg"
+              :src="userInfo.headimgurl"
               class="tds-header-img"
               alt=""
             >
-            <div class="user-grade">Lv.2</div>
+            <div class="user-grade">{{userInfo.shop_level}}</div>
           </div>
 
-          <h2 class="tds-header-shopname"><span class="tds-header-name">王多多</span>的团大师小店</h2>
+          <h2 class="tds-header-shopname"><span class="tds-header-name">{{userInfo.nickname}}</span>的团大师小店</h2>
         </slot>
       </div>
       <div class="tds-header-right">
@@ -30,7 +30,11 @@
 
 <script>
 export default {
-
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
+  }
 }
 </script>
 
@@ -44,6 +48,7 @@ export default {
     flex: 1;
     display: flex;
     align-items: center;
+    overflow: hidden;
     .tds-header-figure {
       position: relative;
       margin-right: 10px;
@@ -70,6 +75,11 @@ export default {
     .tds-header-shopname {
       font-size: 18px;
       font-weight: bold;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-right: 5px;
       .tds-header-name {
         color: #ff6666;
       }

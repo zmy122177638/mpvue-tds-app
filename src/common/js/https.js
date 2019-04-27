@@ -229,6 +229,9 @@ class Https {
           if (res.statusCode === 200) {
             resolve(res.data);
           } else if (res.statusCode === 401) {
+            mpvue.navigateTo({
+              url: '../../../pages/start/main'
+            })
             console.log('用户没有权限或token失效,需要跳转到登录页')
           } else {
             mpvue.showToast({
