@@ -7,8 +7,10 @@
     "pages/my/main",
     "pages/productList/main",
     "pages/productDetail/main",
-    "pages/tomorrowProducts/main"
-
+    "pages/tomorrowProducts/main",
+    "pages/start/main",
+    "pages/openShop/main",
+    "pages/openGift/main"
   ],
   "subPackages": [{
       "root": "pages/sub_manager/",

@@ -19,14 +19,14 @@ const store = new Vuex.Store({
   },
   mutations: {
     // 写入用户登录信息
-    writeUserInfo (state, data) {
+    writeUserInfo(state, data) {
       // console.log('写入用户信息:');
       // console.log(data.userInfo);
       state.userInfo = data.userInfo;
       // console.log(state.userInfo);
     },
     // 写入token 登录凭证
-    writeToken (state, data) {
+    writeToken(state, data) {
       state.token = data.token;
     }
   },

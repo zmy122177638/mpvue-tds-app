@@ -1,6 +1,7 @@
 <template>
   <section class="ranking-container">
     <Tds-header></Tds-header>
+    <kaidianYouliBtn></kaidianYouliBtn>
     <div class="ranking-action">
       <div class="ranking-category">
         <div
@@ -101,6 +102,7 @@
 
 <script>
 import TdsHeader from '@/components/tds-header/tds-header'
+import kaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn'
 export default {
   data() {
     return {
@@ -129,7 +131,8 @@ export default {
   },
 
   components: {
-    TdsHeader
+    TdsHeader,
+    kaidianYouliBtn
   },
 
   methods: {

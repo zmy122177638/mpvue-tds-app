@@ -21,7 +21,7 @@
           <div class="item-label">手机号码</div>
         </div>
         <div class="item-right">
-          <div class="item-value">136****5989</div>
+          <div class="item-value">{{userInfo.mobile_phone}}</div>
           <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
@@ -91,7 +91,11 @@ export default {
   components: {
     TdsPublicPopup
   },
-
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
+  },
   methods: {
     navigateToInfo() {
       mpvue.navigateTo({
