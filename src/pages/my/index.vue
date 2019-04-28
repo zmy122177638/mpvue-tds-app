@@ -1,5 +1,7 @@
 <template>
   <section class="my-container">
+    <!-- 开店 -->
+    <kaidianYouliBtn></kaidianYouliBtn>
     <!-- 用户信息 -->
     <div :class="['my-info-box',{'vip':isVip}]">
       <div :class="['my-info',{'vip':isVip}]">
@@ -113,13 +115,13 @@
           <div class="my-order-hh">我的订单</div>
           <div
             class="my-order-all"
-            @click="navigaToOrder(0)"
+            @click="navigaToOrder('all')"
           >查看全部订单</div>
         </div>
         <div class="my-order-model">
           <div
             class="my-order-item"
-            @click="navigaToOrder(1)"
+            @click="navigaToOrder('unpaid')"
           >
             <div class="img-figure">
               <span class="item-num">12</span>
@@ -133,7 +135,7 @@
           </div>
           <div
             class="my-order-item"
-            @click="navigaToOrder(2)"
+            @click="navigaToOrder('paid')"
           >
             <div class="img-figure">
               <span class="item-num">12</span>
@@ -146,40 +148,40 @@
           </div>
           <div
             class="my-order-item"
-            @click="navigaToOrder(3)"
+            @click="navigaToOrder('shipped')"
           >
             <div class="img-figure">
               <span class="item-num">12</span>
               <img
-              class="item-icon"
-              src="../../../static/images/Collection_iCon.png"
-            >
+                class="item-icon"
+                src="../../../static/images/Collection_iCon.png"
+              >
             </div>
             <div class="item-name">代收货</div>
           </div>
           <div
             class="my-order-item"
-            @click="navigaToOrder(4)"
+            @click="navigaToOrder('finish')"
           >
             <div class="img-figure">
               <span class="item-num">12</span>
               <img
-              class="item-icon"
-              src="../../../static/images/Completed_iCon.png"
-            >
+                class="item-icon"
+                src="../../../static/images/Completed_iCon.png"
+              >
             </div>
             <div class="item-name">已完成</div>
           </div>
           <div
             class="my-order-item"
-            @click="navigaToOrder(5)"
+            @click="navigaToOrder('refund')"
           >
             <div class="img-figure">
               <span class="item-num">12</span>
               <img
-              class="item-icon"
-              src="../../../static/images/Refund_iCon.png"
-            >
+                class="item-icon"
+                src="../../../static/images/Refund_iCon.png"
+              >
             </div>
             <div class="item-name">退款退货</div>
           </div>
@@ -273,7 +275,11 @@
 </template>
 
 <script>
+import kaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn'
 export default {
+  components: {
+    kaidianYouliBtn
+  },
   data() {
     return {
       isVip: false

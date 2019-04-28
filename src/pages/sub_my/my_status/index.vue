@@ -4,14 +4,17 @@
     <div class="status-content">
 
       <!-- 商品信息 -->
-      <Layout-goods-item></Layout-goods-item>
-      <Layout-buyer-item @setAddress="handleAddress"></Layout-buyer-item>
+      <Layout-goods-item :item="orderData"></Layout-goods-item>
+      <Layout-buyer-item :item="orderData"></Layout-buyer-item>
       <Layout-logistics-item @onService="handleService"></Layout-logistics-item>
 
     </div>
 
     <!-- 修改收货 -->
-    <Tds-address-popup :isShow.sync="isShow" :data.sync="formData"></Tds-address-popup>
+    <Tds-address-popup
+      :isShow.sync="isShow"
+      :data.sync="formData"
+    ></Tds-address-popup>
   </section>
 </template>
 
@@ -30,9 +33,10 @@ export default {
   data() {
     return {
       // 订单Id
-      orderId: 0,
+      orderId: '',
       // 是否显示弹窗
       isShow: false,
+      orderData: {},
       formData: { name: '132', tag: '', isNormal: '', phone: 18588419510, address: 'wwww' }
     }
   },
@@ -40,8 +44,40 @@ export default {
     // 接受orderId参数
     this.orderId = options.orderId
   },
-
+  mounted() {
+    this.getOrderDetail(this.orderId)
+  },
   methods: {
+    /**
+    * @description: 获取订单详情
+    * @param {type}
+    * @Date: 2019-04-27 19:54:00
+    */
+    getOrderDetail(id) {
+      return this.$http.request('get', 'orders/' + id).then(({ code, resource }) => {
+        console.log(resource)
+        if (code === 200) {
+          // 订单详情
+          this.orderData = resource.order;
+          // // 备注
+          // this.remark = resource.order.remark;
+          // // 地址信息
+          // this.addressData = {
+          //   consignee: resource.order.consignee,
+          //   consignee_mobile: resource.order.consignee_mobile,
+          //   consignee_address: resource.order.consignee_address
+          // }
+          // // 下架时间
+          // this.endTime = resource.goods.end_time;
+        } else {
+          wx.showToast({
+            title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
     /**
      * @description: 申请售后
      * @Date: 2019-04-19 11:01:46

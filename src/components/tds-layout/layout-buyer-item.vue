@@ -9,12 +9,12 @@
     <!-- 主体内容 -->
     <div class="buyer-info">
       <img
-        src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg"
+        :src="userInfo.headimgurl"
         class="buyer-userimg"
         alt=""
       >
       <div class="buyer-cont">
-        <div class="buyer-nickname">996-icu.com</div>
+        <div class="buyer-nickname">{{userInfo.nickname}}</div>
         <div class="buyer-pipe">
           <div class="buyer-pipe-item">
             <div class="item-key">收货姓名：</div>
@@ -43,11 +43,11 @@
                 src="../../../static/images/vehicle.png"
               /></div>
           </div>
-
+          <!-- 
           <div
             class="buyer-pipe-set"
             @click="$emit('setAddress')"
-          >修改收货地址</div>
+          >修改收货地址</div> -->
         </div>
       </div>
     </div>
@@ -57,7 +57,17 @@
 
 <script>
 export default {
-
+  props: {
+    item: {
+      type: Boolean,
+      required: true
+    }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
+  }
 }
 </script>
 

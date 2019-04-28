@@ -8,12 +8,12 @@
         <div class="item-right">
           <img
             class="item-avator"
-            src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+            :src="userInfo.headimgurl"
           />
-          <img
+          <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
-          />
+          /> -->
         </div>
       </div>
       <div class="setting-item">
@@ -21,11 +21,11 @@
           <div class="item-label">昵称</div>
         </div>
         <div class="item-right">
-          <div class="item-value">我在人民广场</div>
-          <img
+          <div class="item-value">{{userInfo.nickname}}</div>
+          <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
-          />
+          /> -->
         </div>
       </div>
       <div class="setting-item">
@@ -111,7 +111,11 @@ export default {
 
   components: {
   },
-
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
+  },
   methods: {
     /**
      * @description: 选择性别
@@ -121,7 +125,7 @@ export default {
       this.sexActive = ev.target.value;
     },
     /**
-     * @description: 选择性别
+     * @description: 选择地址
      * @Date: 2019-04-25 17:31:18
      */
     selectAddressChange(ev) {
@@ -142,9 +146,6 @@ export default {
         })
       }
     }
-  },
-
-  created() {
   }
 }
 </script>
@@ -180,18 +181,17 @@ export default {
       .item-value {
         font-size: 15px;
         color: #b1b1b1;
-        margin-right: 15px;
       }
       .item-avator {
         width: 39px;
         height: 39px;
         border-radius: 50%;
-        margin-right: 15px;
         display: block;
       }
       .item-more-icon {
         width: 7px;
         height: 11px;
+        margin-left: 15px;
         display: block;
       }
     }
