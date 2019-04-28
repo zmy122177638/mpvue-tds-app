@@ -9,6 +9,7 @@
 // 群分享上报群ID等信息
 // 小程序跳转
 // 配置信息获取
+// 支付接口
 
 import store from '../../store/store';
 class Https {
@@ -42,6 +43,7 @@ class Https {
       let requestData = await this.post('auth/login', tempData);
       // console.log('服务器后台登录成功，数据：');
       // console.log(requestData);
+      // console.log('走了授权登录流程，更新了token');
       this.token = requestData.data.token;
       return requestData
     } else {
@@ -102,6 +104,8 @@ class Https {
 
   // get请求
   get(url, data) {
+    console.log('111111111token:');
+    console.log(this.token);
     mpvue.showLoading({
       title: '加载中' // 数据请求前loading，提高用户体验
     })

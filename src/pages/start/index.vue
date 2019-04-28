@@ -58,9 +58,10 @@
                   url: '../../pages/home/main'
                 })
               } else {
-                // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
-                that.$http.token = that.$store.state.token;
+                console.log('11111111111')
               }
+              // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
+              that.$http.token = that.$store.state.token;
             } else {
               console.log('sessionKey虽然没失效，但是授权登录失败,需要重新授权')
             }

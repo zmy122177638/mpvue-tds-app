@@ -14,6 +14,8 @@
       </block>
     </section>
     <section class="kong"></section>
+    <!--开店礼包按钮，如果用户是会员则不需要显示-->
+    <kaidian-youli-btn></kaidian-youli-btn>
   </section>
 </template>
 
@@ -21,6 +23,8 @@
   import TdsHeader from '@/components/tds-header/tds-header'
   import TomorrowImage from '@/components/tomorrowImage/TomorrowImage.vue'
   import PruductItem from '@/components/productItem/ProductItem.vue'
+  import KaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn.vue'
+
   export default {
     data () {
       return {
@@ -31,7 +35,8 @@
     components: {
       TdsHeader,
       TomorrowImage,
-      PruductItem
+      PruductItem,
+      KaidianYouliBtn
     },
 
     methods: {},

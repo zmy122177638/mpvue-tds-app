@@ -26,11 +26,12 @@
           </div>
         </div>
       </section>
-      <section class="jr-tp">
-        <header class="ban-header">今日团品限时购</header>
-        <block v-for="i in 6" :key="i">
+      <section class="jr-tp"  v-if="regiment">
+        <header class="ban-header">{{regiment.title}}</header>
+        <block v-for="(item,i) in regiment.list" :key="i">
           <pruduct-item
-            :itemTpye="2"
+            :itemTpye="regiment.type"
+            :goods_data="item"
           ></pruduct-item>
         </block>
       </section>
@@ -39,38 +40,43 @@
         <img @click="handleToTomorrowPage" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1533275126,1287779573&fm=26&gp=0.jpg" />
       </section>
       <section class="hw-pt">
-        <header class="ban-header">好物拼团</header>
-        <block v-for="i in 6" :key="i">
+        <header class="ban-header">{{group.title}}</header>
+        <block v-for="(item,i) in group.list" :key="i">
           <pruduct-item
-            :itemTpye="3"
+            :itemTpye="group.type"
+            :goods_data="item"
           ></pruduct-item>
         </block>
       </section>
       <section class="yl-tg">
-        <header class="ban-header">引流特供</header>
-        <block v-for="i in 6" :key="i">
+        <header class="ban-header">{{special.title}}</header>
+        <block v-for="(item,i) in special.list" :key="i">
           <pruduct-item
-            :itemTpye="1"
+            :itemTpye="special.type"
+            :goods_data="item"
           ></pruduct-item>
         </block>
       </section>
       <section class="bp-fc">
         <header class="ban-header">
-          爆品返场
+          {{encore.title}}
           <span class="tip">所投票商品将于 <span class="time">2019年4月16日</span> 返场</span>
         </header>
         <section class="bp-fc-img">
         <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1996499788,3346940487&fm=26&gp=0.jpg" />
         </section>
-        <block v-for="i in 6" :key="i">
+        <block v-for="(item,i) in encore.list" :key="i">
           <pruduct-item
-            :itemTpye="4"
-            :subIndex="i-1"
+            :itemTpye="encore.type"
+            :goods_data="item"
+            :subIndex="i"
           ></pruduct-item>
         </block>
       </section>
     </section>
     <section class="kong"></section>
+    <!--开店礼包按钮，如果用户是会员则不需要显示-->
+    <kaidian-youli-btn></kaidian-youli-btn>
   </section>
 </template>
 
@@ -79,13 +85,15 @@
   import LunboImages from '@/components/lunboImages/LunboImages.vue'
   import ActiveLunboMsg from '@/components/activeLunboMsg/ActiveLunboMsg.vue'
   import PruductItem from '@/components/productItem/ProductItem.vue'
+  import KaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn.vue'
 
   export default {
     components: {
       TdsHeader,
       LunboImages,
       ActiveLunboMsg,
-      PruductItem
+      PruductItem,
+      KaidianYouliBtn
     },
     data () {
       return {
@@ -126,7 +134,15 @@
             linkUrlType: '4',
             boxShadow: 'rgba(255,116,199,0.35)'
           }
-        ]
+        ],
+        // 引流特供数据
+        special: {},
+        // 今日团品数据
+        regiment: {},
+        // 好物拼团
+        group: {},
+        // 爆品返场
+        encore: { }
       }
     },
     methods: {
@@ -156,22 +172,31 @@
         mpvue.navigateTo({
           url: '../tomorrowProducts/main'
         })
-      }
-    },
-    onPullDownRefresh () {
-      // 需要在json中开启配置
-      console.log('下拉刷新')
-      setTimeout(function () {
-        mpvue.stopPullDownRefresh()
-      }, 1000)
-    },
-    onReachBottom () {
-      console.log('上拉拉触底')
+      },
+      // 获取商品列表数据
+      getAllPruductsData () {
+        this.$http.get('goods/list')
+          .then(res => {
+            console.log('返回的数据：');
+            console.log(res);
+            // 数据替换
+            this.special = res.resource.special;
+            this.regiment = res.resource.regiment;
+            this.group = res.resource.group;
+            this.encore = res.resource.encore;
+            console.log('替换的数据：')
+            console.log(this.regiment);
+          })
+      },
+      // 获取首页配置项：轮播图，分类按钮信息
     },
     onShow () {
       console.log('home 页面 onShow 读取 token 和用户数据 ：')
       console.log(this.$store.state.token)
       console.log(this.$store.state.userInfo)
+    },
+    onLoad () {
+      this.getAllPruductsData();
     },
     created () {
     }
@@ -180,6 +205,7 @@
 
 <style scoped lang="scss">
   @import "../../common/scss/index.scss";
+
   .kong{
     height: 60rpx;
   }
@@ -317,6 +343,8 @@
         border-radius: 15rpx;
       }
     }
+
   }
+
 
 </style>

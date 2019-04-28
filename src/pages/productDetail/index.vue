@@ -35,6 +35,9 @@
           <span v-else class="d-tpye-s-r">规格选择 ></span>
         </div>
         <header class="ban-header">商品详情</header>
+        <div class="video-box" v-if="productData.video_url">
+          <video class="video"  :src="productData.video_url"></video>
+        </div>
         <div class="img-list">
           <block v-for="(item,i) in productData.detail_image" :key="i">
             <image :src="item" mode="widthFix" />
@@ -193,9 +196,9 @@
           weight: 250,
           goods_desc: '',
           sales_count: 3002,
-          video_url: '',
-          status: 1,
-          end_time: '2019/04/26 14:08:00',
+          // video_url: 'http://oss.baidichan.com/store/video/20190228/YacyKT8F4DY5m9pCLg3VmBaBFDevNFb1vO25ssKl.mp4',
+          video_url: 'http://oss.baidichan.com/store/video/20190428/QAEOd5N47DHyRIKUORzZN6yMQIQwkCI3BQUjTmzS.mp4',
+          end_time: '2019/04/29 14:08:00',
           limit_num: 2,
           spec: [
             {
@@ -387,11 +390,38 @@
           urls: [this.posterImgUrl]
         })
       },
+      // 拼接商品订单提交
+      setgoodData () {
+        let that = this;
+        // 拼接商品订单信息
+        let goodData = {};
+        // 商品id
+        goodData.goods_id = this.productData.goods_id;
+        // 商品名称
+        goodData.goods_name = this.productData.goods_name;
+        //  根据用户选择，获得spu
+        this.productData.spu.map(function (value, index, array) {
+          if (value.spec_attr === that.specSelected.xuanze) {
+            goodData.spu = value;
+          }
+        })
+        // 单位
+        goodData.unit = this.productData.unit;
+        // 购买个数
+        goodData.num = this.specSelected.num
+
+        return goodData;
+      },
       // 规格选择子组件提交订单响应
       handleSubmitOrder (options) {
         console.log('子组件数据')
         console.log(options)
         this.specSelected = options
+        // 拼接的商品订单信息
+        let data = this.setgoodData();
+        console.log('订单信息：');
+        console.log(data);
+        return;
         this.productTypeShow = false
         // 跳转到未付款订单页面
         // mpvue.navigateTo({
@@ -600,6 +630,16 @@
          }
       }
 
+      .video-box{
+        width: 100%;
+        /*height: 300rpx;*/
+        /*height: 300rpx;*/
+        /*border: 1px solid red;*/
+        margin-bottom: 30rpx;
+        .video{
+          width: 100%;
+        }
+      }
       .img-list{
         width: 100%;
         image{

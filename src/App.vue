@@ -18,12 +18,17 @@ export default {
     //     url: './pages/home/main'
     //   })
     // }
-    console.log(options)
-    console.log('进入小程序的场景值：')
-    console.log(options.scene)
     // mpvue.reLaunch({
     //   url: './pages/sub_my/my_unpaid/main'
     // })
+
+    // 如果token不为空，写入API接口封装库
+    if (this.$store.state.token) {
+      this.$http.token = this.$store.state.token;
+    }
+    console.log(options)
+    console.log('进入小程序的场景值：')
+    console.log(options.scene)
   },
   onShow(options) {
     // console.log('小程序进入前台')

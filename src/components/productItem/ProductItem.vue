@@ -1,17 +1,17 @@
 <template>
   <section
     class="item"
-    @click="handleGoDetail"
+    @click="handleGoDetail(itemData.goods_id)"
   >
     <section class="c-1">
       <div class="left">
-        <img class="custom-bg-img" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg"/>
+        <img class="custom-bg-img" :src="itemData.goods_image_url"/>
       </div>
       <div class="right">
-        <div class="t">每日吃播·不能吃还不能看嘛不能吃还不能看不能吃还不能看嘛不能吃还不能看​</div>
+        <div class="t">{{itemData.goods_name}}</div>
         <div class="b">
-          <span class="n"><span>￥</span>36.00</span>
-          <span class="o"><span>￥</span>59.00</span>
+          <span class="n"><span>￥</span>{{itemData.goods_price}}</span>
+          <span class="o"><span>￥</span>{{itemData.market_price}}</span>
         </div>
       </div>
     </section>
@@ -19,20 +19,21 @@
       v-if="type == 2 || type == 3"
       class="c-2"
     >
-      <span class="c-2-l">分享赚 ￥6.90， 拼成省 ￥30.00</span>
-      <span class="c-2-r">679次分享</span>
+      <span class="c-2-l">{{itemData.tip_bar}}</span>
+      <span class="c-2-r">{{itemData.share_desc}}</span>
     </section>
     <section
       v-if="type == 2"
       class="c-3"
     >
-      <span class="c-3-l">
-        <span class="des">剩余时间：</span>
-        <span class="time">10</span>:
-        <span class="time">32</span>:
-        <span class="time">52</span>
+      <span class="c-3-l" v-if="timeOut">
+       <span class="des">剩余时间：</span>
+        <span class="time">{{p_h}}</span>:
+        <span class="time">{{p_m}}</span>:
+        <span class="time">{{p_s}}</span>
       </span>
-      <span class="c-3-r">已售 81%</span>
+      <span v-else>商品已过期</span>
+      <span class="c-3-r">{{itemData.sales_desc}}</span>
     </section>
     <section
       v-if="type == 4"
@@ -75,6 +76,10 @@ export default {
       type: Number,
       default: 1
     },
+    goods_data: {
+      type: Object,
+      required: true
+    },
     subIndex: {
       type: Number,
       default: 0
@@ -84,18 +89,48 @@ export default {
     return {
       // type表示不同类型显示的商品信息，type：1：引流，2,：团品，3：拼团，4：返场
       type: this.itemTpye,
+      // itemData 表示列表项数据
+      itemData: this.goods_data,
       // i表示下标，用于区分前三排名
       i: this.subIndex,
       // 是否在投票中
-      inVoteLoading: false
+      inVoteLoading: false,
+      // 商品是否还有倒计时以及时分秒设置
+      timeOut: true,
+      p_h: '',
+      p_m: '',
+      p_s: ''
     }
   },
   methods: {
+    // 设置倒计时
+    setEndTime () {
+      let endTime = new Date(this.itemData.end_time).getTime();
+      let todayTime = new Date().getTime();
+      // 获得间隔秒数
+      let tempTime = (endTime - todayTime) / 1000;
+      // 如果团购时间已到，则设置停止倒计时
+      if (tempTime <= 0) {
+        this.timeOut = false;
+        clearInterval(this.timeIntval);
+        return;
+      }
+      let h = Math.floor(tempTime / 3600);
+      h = h >= 10 ? h : '0' + h;
+      let m = Math.floor((tempTime % 3600) / 60);
+      m = m >= 10 ? m : '0' + m;
+      let s = Math.floor(tempTime - (h * 3600 + m * 60));
+      s = s >= 10 ? s : '0' + s;
+      // console.log(s);
+      this.p_h = h;
+      this.p_m = m;
+      this.p_s = s;
+    },
     // 商品点击跳转到详情响应
-    handleGoDetail() {
+    handleGoDetail(id) {
       console.log('跳转到详情');
       mpvue.navigateTo({
-        url: '../productDetail/main'
+        url: '../productDetail/main?goods_id=' + id
       })
     },
     // 返场投票点击
@@ -109,13 +144,22 @@ export default {
   },
   watch: {
     itemTpye: function (nVal, oVal) {
-      // console.log("值改变")
       this.type = nVal
     },
+    goods_data: function (nVal, oVal) {
+      this.itemData = nVal;
+    },
     subIndex: function (nVal, oVal) {
-      // console.log("值改变")
       this.i = nVal
     }
+  },
+  created () {
+    console.log('组件创建成果')
+    // console.log('根据商品结束时间，开始商品倒计时')
+    this.setEndTime();
+    this.timeIntval = setInterval(function () {
+      this.setEndTime();
+    }.bind(this), 1000);
   }
 
 }

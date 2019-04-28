@@ -13,7 +13,9 @@ const store = new Vuex.Store({
     // 用户信息
     userInfo: {},
     // 明日预告图片信息
-    tomorrowImg: {}
+    tomorrowImg: {},
+    // 小程序进入场景值,默认为1001 ；主要用来判断用户是否从被人分享中进入小程序
+    scene: 1001
   },
   mutations: {
     // 写入用户登录信息
