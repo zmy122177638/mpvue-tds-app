@@ -15,7 +15,7 @@
       >
       <div class="goods-info">
         <div class="goods-name">{{item.goods_name}}</div>
-        <div class="goods-money">￥<span>{{item.unit_price}}</span></div>
+        <div class="goods-money">￥<span>{{item.amount}}</span></div>
       </div>
     </div>
   </div>

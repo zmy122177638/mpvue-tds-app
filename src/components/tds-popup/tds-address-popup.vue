@@ -50,7 +50,7 @@
               class="input-value02"
               :value="formData_v.area"
             >
-              {{ formData_v.area ? formData_v.area[0] + '-' + formData_v.area[1] + '-' + formData_v.area[2] : '请选择收货人地址'}}
+              {{ formData_v.area ? formData_v.area[0] + ' ' + formData_v.area[1] + ' ' + formData_v.area[2] : '请选择收货人地址'}}
             </picker>
           </div>
         </div>

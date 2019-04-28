@@ -7,19 +7,21 @@
     </div>
 
     <!-- 订单 -->
-    <div class="goods-num">订单号： 2018464654915374</div>
+    <div
+      class="goods-num"
+      v-if="item.order_no"
+    >订单号： {{item.order_no}}</div>
 
     <!-- 商品信息 -->
     <div class="order-goods">
       <img
-        src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg"
+        :src="item.goods_image_url"
         class="goods-img"
         alt=""
       >
       <div class="goods-info">
-        <div class="goods-name">ins风全棉纯棉床上用品四件套宿舍床单人三件套儿童网...</div>
-        <div class="goods-type">已选：儿童床【床单款三件套】- 适用
-          120×150被子</div>
+        <div class="goods-name">{{item.goods_name}}</div>
+        <div class="goods-type">已选：{{item.spec_attr}}</div>
       </div>
     </div>
 
@@ -27,7 +29,7 @@
     <div class="goods-pipe">
       <div class="goods-pipe-item">
         <div class="item-key">购买数量</div>
-        <div class="item-value">1件</div>
+        <div class="item-value">{{item.num}}</div>
       </div>
       <div class="goods-pipe-item">
         <div class="item-key">配送方式</div>
@@ -42,7 +44,7 @@
         <div
           class="item-value"
           style="color:#FF0A0A"
-        >￥49.00</div>
+        >￥{{item.amount}}</div>
       </div>
     </div>
   </div>
@@ -50,7 +52,12 @@
 
 <script>
 export default {
-
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 
@@ -122,7 +129,7 @@ export default {
       }
       .item-value {
         font-size: 15px;
-        color: #B1B1B1;
+        color: #b1b1b1;
       }
     }
   }

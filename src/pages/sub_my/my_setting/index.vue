@@ -10,7 +10,10 @@
         </div>
         <div class="item-right">
           <div class="item-value"></div>
-          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div class="setting-item">
@@ -19,16 +22,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">136****5989</div>
-          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
-        </div>
-      </div>
-      <div class="setting-item">
-        <div class="item-left">
-          <div class="item-label">绑定微信</div>
-        </div>
-        <div class="item-right">
-          <div class="item-value">江湖一点光</div>
-          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
+          <!-- <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          /> -->
         </div>
       </div>
       <div class="setting-item">
@@ -37,7 +34,22 @@
         </div>
         <div class="item-right">
           <div class="item-value">三千零一页</div>
-          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
+          <!-- <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          /> -->
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">绑定微信</div>
+        </div>
+        <div class="item-right">
+          <div class="item-value">江湖一点光</div>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
       <div
@@ -49,7 +61,10 @@
         </div>
         <div class="item-right">
           <div class="item-value"></div>
-          <img src="../../../../static/images/ToRightGray_iCon.png" class="item-more-icon"/>
+          <img
+            src="../../../../static/images/ToRightGray_iCon.png"
+            class="item-more-icon"
+          />
         </div>
       </div>
     </div>
@@ -97,7 +112,9 @@ export default {
 .setting-list {
   .setting-item {
     background-color: #ffffff;
-    padding: 13.5px 30px 13px;
+    height: 64px;
+    padding: 0 30px;
+    box-sizing: border-box;
     border-bottom: 1px solid #f2f2f2;
     display: flex;
     justify-content: space-between;
@@ -123,12 +140,12 @@ export default {
       .item-value {
         font-size: 15px;
         color: #b1b1b1;
-        margin-right: 15px;
       }
       .item-more-icon {
         width: 7px;
         height: 11px;
-        display:block;
+        margin-left: 15px;
+        display: block;
       }
     }
   }
