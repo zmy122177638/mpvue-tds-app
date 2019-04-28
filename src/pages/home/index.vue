@@ -11,7 +11,7 @@
           :imgArr="linkImgUrls">
         </lunbo-images>
         <div class="type-box">
-            <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(item.linkUrl)">
+            <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(item.linkUrlType)">
               <div class="type-item-t"><img :src="item.imgUrl" :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.boxShadow "></div>
               <div class="type-item-t">{{item.name}}</div>
             </div>
@@ -35,7 +35,9 @@
         </block>
       </section>
       <div style="height: 20rpx;"></div>
-      <tomorrow-image></tomorrow-image>
+      <section class="tomorrow-img">
+        <img @click="handleToTomorrowPage" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1533275126,1287779573&fm=26&gp=0.jpg" />
+      </section>
       <section class="hw-pt">
         <header class="ban-header">好物拼团</header>
         <block v-for="i in 6" :key="i">
@@ -77,15 +79,13 @@
   import LunboImages from '@/components/lunboImages/LunboImages.vue'
   import ActiveLunboMsg from '@/components/activeLunboMsg/ActiveLunboMsg.vue'
   import PruductItem from '@/components/productItem/ProductItem.vue'
-  import TomorrowImage from '@/components/tomorrowImage/TomorrowImage.vue'
 
   export default {
     components: {
       TdsHeader,
       LunboImages,
       ActiveLunboMsg,
-      PruductItem,
-      TomorrowImage
+      PruductItem
     },
     data () {
       return {
@@ -105,25 +105,25 @@
           {
             name: '引流特供',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../productList/main?type=1',
+            linkUrlType: '1',
             boxShadow: 'rgba(255,174,77,0.35)'
           },
           {
             name: '今日团品',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../productList/main?type=2',
+            linkUrlType: '2',
             boxShadow: 'rgba(255,102,102,0.35)'
           },
           {
             name: '好物拼团',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../productList/main?type=3',
+            linkUrlType: '3',
             boxShadow: 'rgba(187,97,255,0.35)'
           },
           {
             name: '爆品返场',
             imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrl: '../productList/main?type=4',
+            linkUrlType: '4',
             boxShadow: 'rgba(255,116,199,0.35)'
           }
         ]
@@ -131,16 +131,30 @@
     },
     methods: {
       // 板块分类点击响应
-      handleClickGo (linkUrl) {
+      handleClickGo (type) {
         // type== 1：引流，2,：团品，3：拼团，4：返场
-        console.log(linkUrl)
-        mpvue.navigateTo({url: linkUrl})
+        if (type == 3 || type == 4) {
+          mpvue.showToast({
+            title: '此功能未开通',
+            icon: 'none'
+          })
+          return
+        }
+        let url = '../productList/main?type=' + type;
+        console.log(url)
+        mpvue.navigateTo({url: url})
       },
       // 商品点击跳转到详情响应
       handleGoDetail (i) {
         console.log('跳转到详情')
         mpvue.navigateTo({
           url: '#?id=' + i
+        })
+      },
+      // 跳转到明日预告页面响应
+      handleToTomorrowPage () {
+        mpvue.navigateTo({
+          url: '../tomorrowProducts/main'
         })
       }
     },
@@ -283,6 +297,24 @@
           -moz-border-radius: 15rpx;
           border-radius: 15rpx;
         }
+      }
+    }
+
+    .tomorrow-img{
+      @include common-width;
+      height: 300rpx;
+      -webkit-border-radius: 15rpx;
+      -moz-border-radius: 15rpx;
+      border-radius: 15rpx;
+      box-shadow: 0rpx 10rpx 20rpx rgba(255,102,102,0.35);
+      margin-top: 20rpx;
+      margin-bottom: 20rpx;
+      img{
+        width: 100%;
+        height: 100%;
+        -webkit-border-radius: 15rpx;
+        -moz-border-radius: 15rpx;
+        border-radius: 15rpx;
       }
     }
   }

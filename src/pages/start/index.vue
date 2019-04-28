@@ -43,24 +43,32 @@
       // 监测用户信息有效性
       authorUserInfo () {
         let that = this;
+        mpvue.showLoading({});
         mpvue.checkSession({
           success: function () {
-            // console.log('sessionKey未过期')
-            that.hasOpenId = true;
-            // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
-            if (that.$store.state.userInfo.mobile_phone) {
-              // 用户手机号存在，说明用户信息完整
-              mpvue.reLaunch({
-                url: '../../pages/home/main'
-              })
+            mpvue.hideLoading();
+            console.log('sessionKey未过期')
+            // 如果登录态未过期，还要考虑用户登录信息是否拿到，如果没有拿到，则需要重新授权登录
+            if (that.$store.state.userInfo.openid) {
+              that.hasOpenId = true;
+              // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
+              if (that.$store.state.userInfo.mobile_phone) {
+                // 用户手机号存在，说明用户信息完整
+                mpvue.reLaunch({
+                  url: '../../pages/home/main'
+                })
+              } else {
+                // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
+                that.$http.token = that.$store.state.token;
+              }
             } else {
-              // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
-              that.$http.token = that.$store.state.token;
+              console.log('sessionKey虽然没失效，但是授权登录失败,需要重新授权')
             }
           },
           fail: function () {
+            mpvue.hideLoading();
             // sessionKey过期，则需要让用户重新进行登录
-            // console.log('sessionKey已过期')
+            console.log('sessionKey已过期')
           }
         });
       },
@@ -68,8 +76,8 @@
       // 用户点击授权按钮响应
       handleGetUserInfo (e) {
         this.$http.loginFlow().then(res => {
-          // console.log('async返回的内容');
-          // console.log(res)
+          console.log('async返回的内容');
+          console.log(res)
           // 微信授权成功，向store写入token和用户信息
           this.$store.commit({
             type: 'writeToken',

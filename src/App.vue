@@ -1,4 +1,5 @@
 <script>
+
 export default {
   created() {
     // 调用API从本地缓存中获取数据
@@ -17,11 +18,12 @@ export default {
     //     url: './pages/home/main'
     //   })
     // }
-
-    // console.log('进入小程序')
-    // console.log(options)
-    // console.log(App)
-
+    console.log(options)
+    console.log('进入小程序的场景值：')
+    console.log(options.scene)
+    // mpvue.reLaunch({
+    //   url: './pages/sub_my/my_unpaid/main'
+    // })
   },
   onShow(options) {
     // console.log('小程序进入前台')
