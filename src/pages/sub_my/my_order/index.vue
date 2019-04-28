@@ -22,7 +22,7 @@
           @click="handleSelChange"
         ></Layout-order-item>
       </div>
-      <div class="scroll-point">没有更多数据了</div>
+      <div class="scroll-point">{{loadingTxt}}</div>
     </div>
   </section>
 </template>
@@ -79,6 +79,8 @@ export default {
           15
         ]
       }],
+      // 加载状态
+      isLoading: true,
       // 填充高度
       fillHeight: '',
       // 是否悬浮
@@ -86,13 +88,7 @@ export default {
       // 选中导航
       currentIndex: 'all',
       // 订单列表
-      orderList: [
-        { order_id: 1, order_num: 2018284658126516, status_str: '待付款', status: 1, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待发货', status: 2, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '待收货', status: 3, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '已完成', status: 4, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 },
-        { order_id: 1, order_num: 2018284658126516, status_str: '退款退货', status: 5, goods_img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', goods_name: '飞科电吹风机女家用可折叠大功率理发店不伤发吹风筒男...', goods_money: 55.00 }
-      ],
+      orderList: [],
       // page参数 page 页码 show页码数量
       queryData: { page: 1, show: 15 }
     }
@@ -110,9 +106,13 @@ export default {
     // 获取订单列表 接收promise返回导航栏
     this.getOrderList(this.currentIndex).then((navList) => {
       this.navList = navList;
-      console.log(this.navList)
     })
   },
+
+  /**
+   * @description: 滚动监听
+   * @Date: 2019-04-27 19:11:35
+   */
   onPageScroll(ev) {
     // 监听scroll
     this.getBoundingClientRect('#navNode', (res) => {
@@ -123,18 +123,43 @@ export default {
       }
     })
   },
+
+  /**
+   * @description: 下拉刷新
+   * @Date: 2019-04-27 19:11:00
+   */
   onPullDownRefresh() {
-    setTimeout(() => {
+    this.isLoading = true;
+    this.queryData.page = 1;
+    this.getOrderList(this.currentIndex).then(() => {
       mpvue.stopPullDownRefresh();
-    }, 2000)
+    })
   },
+
+  /**
+   * @description: 上拉加载
+   * @Date: 2019-04-27 19:11:19
+   */
   onReachBottom() {
-    console.log(123)
+    // （优化）如果正在努力加载中，证明后面还有数据，否则不触发接口。
+    if (this.isLoading) {
+      this.queryData.page++;
+      this.getOrderList(this.currentIndex);
+    }
   },
   watch: {
     currentIndex(currentIndex) {
+      // 初始数据配置
+      this.isLoading = true;
+      this.orderList = []
+      this.queryData.page = 1;
       // 获取数据
       this.getOrderList(currentIndex)
+    }
+  },
+  computed: {
+    loadingTxt() {
+      return this.isLoading ? '正在努力加载中...' : '没有更多数据了';
     }
   },
   methods: {
@@ -147,11 +172,13 @@ export default {
     getOrderList(currentIndex) {
       return this.$http.request('get', 'orders', { ...this.queryData, status: currentIndex }).then(({ code, resource }) => {
         if (code === 200) {
-          this.orderList = resource.orderList.data;
+          // 如果是第一页，赋值，否则合并
+          this.orderList = resource.orderList.current_page === 1 ? resource.orderList.data : this.orderList.concat(resource.orderList.data);
+          if (resource.orderList.data.length <= 0 || resource.orderList.data.length < this.queryData.show) { this.isLoading = false }
           console.log(this.orderList)
         } else {
           wx.showToast({
-            title: '获取订单列表失败,请重试',
+            title: '获取失败,请重试',
             icon: 'none',
             duration: 2000
           })
@@ -171,11 +198,11 @@ export default {
       // 使用订单状态判断切换不同page
       if (item.status === 1) {
         mpvue.navigateTo({
-          url: '../my_unpaid/main?orderId=' + item.orderId
+          url: '../my_unpaid/main?orderId=' + item.id
         })
       } else {
         mpvue.navigateTo({
-          url: '../my_status/main?orderId=' + item.order_id
+          url: '../my_status/main?orderId=' + item.id
         })
       }
     },

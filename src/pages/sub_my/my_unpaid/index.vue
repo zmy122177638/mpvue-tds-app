@@ -1,15 +1,15 @@
 <template>
   <section class="unpaid-container">
-    <scroll-view
-      scroll-y
-      class="scroll-view"
-    >
-      <div class="unpaid-content">
+    <!-- 内容 -->
+    <div class="unpaid-content">
+      <div class="unpaid-list">
         <!-- 商品信息 -->
-        <Layout-goods-item></Layout-goods-item>
-
+        <Layout-goods-item :item="orderData"></Layout-goods-item>
         <!-- 有默认地址 -->
-        <div class="section-item">
+        <div
+          class="section-item"
+          v-if="addressData.consignee"
+        >
           <div class="section-title">
             <div class="title-left">收货信息</div>
           </div>
@@ -21,12 +21,13 @@
               class="receiver-icon"
               src="../../../../static/images/Dingwei_iCon.png"
             >
-            <div class="receiver-name">{{addressData.name}}&nbsp;&nbsp;&nbsp;{{addressData.phone}}</div>
-            <div class="receiver-location">{{addressData.address}}</div>
+            <div class="receiver-name">{{addressData.consignee}}&nbsp;&nbsp;&nbsp;{{addressData.consignee_mobile}}</div>
+            <div class="receiver-location">{{addressData.consignee_address}}</div>
           </div>
         </div>
         <!-- 没有默认地址 -->
         <div
+          v-else
           class="section-item"
           @click="navigateToAddress()"
         >
@@ -42,48 +43,124 @@
         <div class="section-item">
           <div class="remarks-box">
             <div class="box-label">备注</div>
-            <div class="box-value">请放到小区丰巢快递柜！巢快递柜！谢谢！请放到小区丰巢快递柜！谢谢！</div>
-          </div>
+            <div class="box-value">
+              <textarea
+                :auto-height="false"
+                placeholder="请输入你的备注信息"
+                :value="remark"
+                @input="(ev)=>{remark = ev.target.value}"
+                name="textarea"
+              />
+              </div>
+            </div>
         </div>
-
       </div>
-    </scroll-view>
-    <!-- 提示时间 -->
-    <div class="unpaid-timer">剩余支付时间 <span class="unpaid-strong">03:18:32</span></div>
-    <!-- 支付 -->
-    <div class="unpaid-footer">
-      <div class="footer-cout">
-        <span class="cout-key">合计</span>
-        <span class="cout-value">￥ <span>49.00</span></span>
-      </div>
-      <div
-        class="footer-btn"
-        @click="handleGotoBuy"
-      >立即支付</div>
     </div>
+    <!-- 悬浮 -->
+    <cover-view class="unpaid-fixed">
+      <!-- 提示时间 -->
+      <cover-view class="unpaid-timer" v-if="isOrder">
+        <block v-if="isExpire">
+          <cover-view class="unpaid-txt">商品已下架</cover-view>
+        </block>
+        <block v-else>
+          <cover-view  class="unpaid-txt">剩余支付时间</cover-view> <cover-view class="unpaid-strong">{{surplusTime}}</cover-view>
+        </block>
+      </cover-view>
+      <!-- 支付 -->
+      <cover-view class="unpaid-footer">
+        <cover-view class="footer-cout">
+          <cover-view class="cout-key">合计</cover-view>
+          <cover-view class="cout-money-key">￥</cover-view>
+          <cover-view class="cout-money">{{orderData.amount}}</cover-view>
+        </cover-view>
+        <cover-view
+          class="footer-btn"
+          @click="handleGotoBuy"
+        >立即支付</cover-view>
+      </cover-view>
+    </cover-view>
+    
   </section>
 </template>
 
 <script>
 import LayoutGoodsItem from '@/components/tds-layout/layout-goods-item'
+import { countDownTime } from '../../../common/js/index'
 export default {
   components: {
     LayoutGoodsItem
   },
   data() {
     return {
+      // 订单ID
+      orderId: '',
+      // 是否未生成订单
+      isOrder: false,
+      // 商品信息
+      orderData: {},
+      remark: '',
+      // 地址信息
       addressData: {
-        name: '十里桃花',
-        phone: '18588425165',
-        address: '上海市徐汇区华山路1954号（上海交通)上海市徐汇区华山路1954号（上海交通)'
-      }
+        consignee: '',
+        consignee_mobile: '',
+        area: [],
+        address: ''
+      },
+      // 剩余支付时间
+      surplusTime: '00:00:00',
+      // 是否下架
+      isExpire: false
     }
   },
+  onLoad(options) {
+    // 传入商品信息(未生成订单)
+    if (options.orders) {
+      console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount等参数')
+      this.isOrder = false;
+      // 如果未生成订单不获取订单详情，使用传入的orders
+      this.orderData = options.orders
+    } else if (options.orderId) {
+      this.isOrder = true;
+      // 传入商品订单ID(已生成订单)
+      this.orderId = options.orderId;
+    } else {
+      wx.showToast({
+        title: '传入options参数错误orders || orderId',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+    console.log(options)
+  },
   mounted() {
-    console.log('mounted')
+    if (this.isOrder) {
+      console.log('已生成订单')
+      // 如果生成订单获取订单详情，使用传入的orderId
+      this.getOrderDetail(this.orderId).then(() => {
+        // 获取成功后开启剩余支付时间倒计时
+        this.timer = setInterval(() => {
+          let timeArr = countDownTime(this.endTime);
+          if (timeArr) {
+            // 设置时间展示
+            this.surplusTime = timeArr[0] + ':' + timeArr[1] + ':' + timeArr[2];
+          } else {
+            // 设置过期，清除定时器
+            this.isExpire = true;
+            clearInterval(this.timer)
+            this.timer = null;
+          }
+        }, 1000)
+      });
+    } else {
+      console.log('未生成订单')
+      // 如果未生成订单获取默认地址
+      this.getAddressList();
+    }
   },
   onShow() {
     let _that = this;
+    // 获取selAddress
     mpvue.getStorage({
       key: 'selAddress',
       success(res) {
@@ -91,46 +168,140 @@ export default {
         console.log(res.data)
       },
       fail(err) {
-        // 查询默认地址
         console.log(err)
       }
     })
   },
   methods: {
+    /**
+     * @description: 获取订单详情
+     * @param {type}
+     * @Date: 2019-04-27 19:54:00
+     */
+    getOrderDetail(id) {
+      return this.$http.request('get', 'orders/' + id).then(({ code, resource }) => {
+        console.log(resource)
+        if (code === 200) {
+          // 订单详情
+          this.orderData = resource.order;
+          // 备注
+          this.remark = resource.order.remark;
+          // 地址信息
+          this.addressData = {
+            consignee: resource.order.consignee,
+            consignee_mobile: resource.order.consignee_mobile,
+            consignee_address: resource.order.consignee_address
+          }
+          // 下架时间
+          this.endTime = resource.goods.end_time;
+        } else {
+          wx.showToast({
+            title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 获取默认地址
+     * @param {type}
+     * @return: undefined
+     * @Date: 2019-04-28 10:51:18
+     */
+    getAddressList() {
+      return this.$http.request('get', 'addresses/default').then(({ code, resource }) => {
+        if (code === 200) {
+          this.addressData = resource || {};
+          // 拼接地址
+          this.addressData.consignee_address = resource.area.join(' ') + ' ' + resource.address;
+          console.log(resource)
+        } else {
+          wx.showToast({
+            title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 选择收货地址
+     * @Date: 2019-04-27 19:51:19
+     */
     navigateToAddress() {
       mpvue.navigateTo({
         url: '../my_address/main?use=select' // use=select 选择
       })
     },
+
+    /**
+     * @description: 立即支付
+     * @Date: 2019-04-27 19:51:38
+     */
     handleGotoBuy() {
+      if (this.isOrder) {
+        // 已生成订单（待支付）
+        this.$http.request('put', 'orders/' + this.orderData.id, { ...this.addressData, remark: this.remark }).then((res) => {
+          console.log(res)
+        })
+      } else {
+        // 传入 goods_id spu_id sharer_id num
+        let goodsData = {
+          goods_id: '',
+          spu_id: '',
+          sharer_id: '',
+          num: ''
+        }
+        // 未生成订单（下单中）
+        this.$http.request('POST', 'orders', { ...this.addressData, remark: this.remark, ...goodsData }).then((res) => {
+          console.log(res)
+        })
+      }
       console.log('调起支付接口')
     }
   },
+
+  // 下拉刷新
+  onPullDownRefresh() {
+    mpvue.stopPullDownRefresh()
+  },
+
   onUnload() {
+    // 移除缓存selAddress
     mpvue.removeStorage({
       key: 'selAddress'
     })
+    // 设置过期，清除定时器
+    this.isExpire = false;
+    clearInterval(this.timer)
+    this.timer = null;
   }
 }
 </script>
 
 <style scoped lang="scss">
 .unpaid-container {
-  width: 100%;
-  height: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
   background-color: #f6f8fa;
-  .scroll-view {
-    flex: 1;
-    overflow: scroll;
-  }
   .unpaid-content {
-    flex: 1;
+    // flex: 1;
+    // overflow: hidden;
+    // overflow-y: scroll;
+    padding-bottom: 93px;
+    // -webkit-overflow-scrolling: touch;
+  }
+  .unpaid-list {
     padding: 0 15px 30px;
   }
-
+  .unpaid-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
   .section-item {
     margin-top: 15px;
     padding: 15px;
@@ -178,6 +349,13 @@ export default {
     .box-value {
       margin-left: 15px;
       flex: 1;
+      overflow: hidden;
+      textarea {
+        margin-top: -5px;
+        width: 100%;
+        height: 52px;
+        line-height: 1.2;
+      }
     }
   }
 
@@ -204,11 +382,16 @@ export default {
     height: 44px;
     line-height: 44px;
     background-color: #ffefef;
-    font-size: 16px;
-    color: #282828;
     text-align: center;
+    .unpaid-txt {
+      display: inline;
+      font-size: 16px;
+      color: #282828;
+    }
     .unpaid-strong {
+      display: inline;
       color: #ff6666;
+      margin-left: 5px;
     }
   }
 
@@ -224,14 +407,20 @@ export default {
       .cout-key {
         font-size: 12px;
         color: #ff0a0a;
+        display: inline;
+        margin-right: 5px;
       }
-      .cout-value {
+
+      .cout-money-key {
         font-size: 14px;
         color: #ff0a0a;
-        span {
-          font-size: 22px;
-          font-weight: bold;
-        }
+        display: inline;
+      }
+      .cout-money {
+        font-size: 22px;
+        color: #ff0a0a;
+        font-weight: bold;
+        display: inline;
       }
     }
     .footer-btn {

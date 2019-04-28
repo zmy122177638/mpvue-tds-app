@@ -18,6 +18,33 @@ export function formatTime(date) {
   return `${t1} ${t2}`
 }
 
+/**
+ * 倒计时数组
+ * 请勿使用'-'代替'/',在iPhone不支持
+ * @param {String} setEndTime 2018/08/27 18:00
+ */
+export const countDownTime = function (setEndTime) {
+  let endTime = new Date(setEndTime).getTime();
+  let time = new Date().getTime();
+
+  if (endTime <= time) {
+    return '';
+  } else {
+    let HsecondNum = endTime - time;
+    // let day = Math.floor(HsecondNum / (24 * 3600 * 1000))
+
+    let dd = Math.floor(HsecondNum % (24 * 3600 * 1000));
+    let hours = Math.floor(HsecondNum / (3600 * 1000)).toString().padStart(2, '0');
+
+    let minutesNum = dd % (3600 * 1000);
+    let minutes = Math.floor(minutesNum / (60 * 1000)).toString().padStart(2, '0');
+
+    let secondNum = dd % (60 * 1000);
+    let second = Math.floor(secondNum / 1000).toString().padStart(2, '0');
+    return [hours, minutes, second];
+  }
+};
+
 // mpvue 微信地址接口调用
 function getWxAddress() {
   mpvue.getSetting({

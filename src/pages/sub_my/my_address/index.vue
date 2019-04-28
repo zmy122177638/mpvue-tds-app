@@ -176,6 +176,8 @@ export default {
       this.activeId = formData.id;
       // 判断是否选择
       if (this.use === 'select') {
+        // 地址拼接
+        formData.consignee_address = formData.area.join(' ') + ' ' + formData.address;
         // 存入缓存
         mpvue.setStorage({
           key: 'selAddress',
