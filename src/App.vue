@@ -25,6 +25,7 @@ export default {
     // 如果token不为空，写入API接口封装库
     if (this.$store.state.token) {
       this.$http.token = this.$store.state.token;
+      console.log(this.$store.state.token);
     }
     console.log(options)
     console.log('进入小程序的场景值：')

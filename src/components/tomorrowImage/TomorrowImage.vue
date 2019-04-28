@@ -7,9 +7,20 @@
 <script>
   export default {
     name: 'TomorrowImage',
+    props: {
+      img_url: {
+        type: String,
+        required: true
+      }
+    },
     data () {
       return {
-        imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1533275126,1287779573&fm=26&gp=0.jpg'
+        imgUrl: this.img_url
+      }
+    },
+    watch: {
+      img_url: function (val) {
+        this.imgUrl = val;
       }
     }
   }
@@ -32,6 +43,8 @@
       -webkit-border-radius: 15rpx;
       -moz-border-radius: 15rpx;
       border-radius: 15rpx;
+      background: url("../../../static/images/GuanggNull.png");
+      background-size: 100% 100%;
     }
   }
 </style>

@@ -9,7 +9,7 @@
         <div class="img-list">
           <block v-for="(item,i) in dataList" :key="i">
             <div class="goods-item">
-              <image class="goods-img" :src="item.imgUrl" mode="widthFix" />
+              <image class="goods-img" :src="item.goods_image_url" mode="widthFix" />
               <p class="good-name"><span class="gou-icon"></span><span>{{item.goods_name}}</span></p>
             </div>
           </block>
@@ -25,24 +25,7 @@
   export default {
     data () {
       return {
-        dataList: [
-          {
-            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
-            imgUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg'
-          },
-          {
-            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
-            imgUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3464499095,1074840881&fm=27&gp=0.jpg'
-          },
-          {
-            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
-            imgUrl: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg'
-          },
-          {
-            goods_name: '全自动雨伞女韩国小清新晴雨两用折叠遮阳防晒防紫外线黑胶太阳伞',
-            imgUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3464499095,1074840881&fm=27&gp=0.jpg'
-          }
-        ]
+        dataList: []
       }
     },
 
@@ -50,9 +33,21 @@
       TdsHeader
     },
 
-    methods: {},
-
+    methods: {
+      // 获取列表
+      getTomorrowData () {
+        this.$http.get('goods/preSaleList')
+          .then(res => {
+            console.log('明日预告：：');
+            console.log(res);
+            this.dataList = res.resource;
+          })
+      }
+    },
     created () {
+    },
+    onLoad (options) {
+      this.getTomorrowData();
     }
   }
 </script>

@@ -58,8 +58,9 @@
         <!--<span v-else class="num">No.{{i+1}}</span>-->
         <span class="des">已有<span>5327人</span>为它投票</span>
       </span>
-      <span v-if="inVoteLoading" class="c-4-r" @click.stop="">投票中 ...</span>
-      <span v-else class="c-4-r" @click.stop="handleNetworkVote">让他返场</span>
+      <span v-if="VoteStatus == 0" class="c-4-r" @click.stop="handleNetworkVote">让他返场</span>
+      <span v-if="VoteStatus == 1" class="c-4-r" @click.stop="">投票中 ...</span>
+      <span v-if="VoteStatus == 2" class="c-4-r disable-click">已投票</span>
     </section>
     <section
       v-if="type == 3"
@@ -93,8 +94,8 @@ export default {
       itemData: this.goods_data,
       // i表示下标，用于区分前三排名
       i: this.subIndex,
-      // 是否在投票中
-      inVoteLoading: false,
+      // 投票状态:0--未投票，1--投票中，2--已投票
+      VoteStatus: 0,
       // 商品是否还有倒计时以及时分秒设置
       timeOut: true,
       p_h: '',
@@ -136,9 +137,9 @@ export default {
     // 返场投票点击
     handleNetworkVote () {
       console.log('返场投票点击')
-      this.inVoteLoading = true;
+      this.VoteStatus = 1;
       setTimeout(function () {
-        this.inVoteLoading = false;
+        this.VoteStatus = 2;
       }.bind(this), 3000)
     }
   },
@@ -153,14 +154,21 @@ export default {
       this.i = nVal
     }
   },
-  created () {
-    console.log('组件创建成果')
-    // console.log('根据商品结束时间，开始商品倒计时')
-    this.setEndTime();
-    this.timeIntval = setInterval(function () {
+  mounted () {
+    // 只有团品才需要倒计时
+    if (this.type === 2) {
+      // console.log('根据商品结束时间，开始商品倒计时')
       this.setEndTime();
-    }.bind(this), 1000);
+      this.timeIntval = setInterval(function () {
+        this.setEndTime();
+      }.bind(this), 1000);
+    }
   }
+  // 组件销毁时，清除计时器
+  // destroyed () {
+  //   console.log('销毁')
+  //   clearInterval(this.timeIntval);
+  // }
 
 }
 </script>
@@ -320,6 +328,10 @@ export default {
       -webkit-border-radius: 14rpx;
       -moz-border-radius: 14rpx;
       border-radius: 14rpx;
+      &.disable-click{
+        background: #F6F8FA;
+        color: #B1B1B1;
+      }
     }
   }
 

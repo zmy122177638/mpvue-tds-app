@@ -58,7 +58,7 @@
                   url: '../../pages/home/main'
                 })
               } else {
-                console.log('11111111111')
+                // console.log('11111111111')
               }
               // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
               that.$http.token = that.$store.state.token;
@@ -135,8 +135,6 @@
   .container{
     height: 100%;
     width: 100%;
-    /*background: url("https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1138431428,3970574101&fm=26&gp=0.jpg") no-repeat;*/
-    /*background: url("../../../static/images/LOGIN.png") no-repeat;*/
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     position:relative;

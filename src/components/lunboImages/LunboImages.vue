@@ -1,9 +1,11 @@
 <template>
     <section  class="child-container">
-      <div class="custom-dot" v-if="hasDot">
-        <span class="dot-l">{{cuttentImg}}</span>
-        <span class="dot-r">/{{imgUrls.length}}</span>
-      </div>
+      <block v-if="imgUrls.length > 0">
+        <div class="custom-dot" v-if="hasDot">
+          <span class="dot-l">{{cuttentImg}}</span>
+          <span class="dot-r">/{{imgUrls.length}}</span>
+        </div>
+      </block>
       <swiper
         :style="'height:'+swiperHeight"
         :indicator-dots="indicatorDots"
@@ -22,7 +24,7 @@
       >
         <block v-if="isLink">
           <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
-            <image :src="item.imgurl" class="slide-image custom-bg-img" style="width: 100%;height: 100%;" @click="handleLinkPage(item.linkUrl)"/>
+            <image :src="item.img_src" class="slide-image custom-bg-img" style="width: 100%;height: 100%;" @click="handleLinkPage(item.path,item.param)"/>
           </swiper-item>
         </block>
         <block v-else>
@@ -97,7 +99,11 @@
     },
     methods: {
       // 点击轮播图片响应
-      handleLinkPage (url) {
+      handleLinkPage (path, param) {
+        let url = path
+        if (param !== '') {
+          url = url + '?' + param;
+        }
         console.log('点击轮播图，根据链接地址跳转到不同的页面：');
         console.log(url)
         mpvue.navigateTo({url})

@@ -5,7 +5,7 @@
       direction="vertical"
       inertia="true"
       friction="5"
-      y="800rpx"
+      y="900rpx"
     >
       <img @click="handleGotoKaidian" src="../../../static/images/kdyl.png">
     </movable-view>

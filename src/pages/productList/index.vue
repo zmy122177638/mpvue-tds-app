@@ -4,12 +4,13 @@
       <tds-header></tds-header>
     </section>
     <section class="top-kong"></section>
-    <tomorrow-image></tomorrow-image>
+    <tomorrow-image :imgUrl="topImg"></tomorrow-image>
     <section class="item-list">
-      <block v-for="i in 6" :key="i">
+      <block v-for="(item,i) in productsData" :key="i">
         <pruduct-item
-          :itemTpye="listTpye"
-          :subIndex="i-1"
+          :itemTpye="type"
+          :goods_data="item"
+          :subIndex="i"
         ></pruduct-item>
       </block>
     </section>
@@ -28,7 +29,10 @@
   export default {
     data () {
       return {
-        listTpye: 3
+        type: 1,
+        position: 1,
+        productsData: {},
+        topImg: ''
       }
     },
 
@@ -39,15 +43,32 @@
       KaidianYouliBtn
     },
 
-    methods: {},
+    methods: {
+      // 获取列表
+      getProductsData () {
+        let data = {};
+        data.type = this.type;
+        data.position = this.position;
+        console.log(data);
+        this.$http.get('goods/getTopicList', data)
+          .then(res => {
+            console.log('数据：：');
+            console.log(res);
+            this.topImg = res.resource.img_src;
+            this.productsData = res.resource.list;
+            // console.log(this.productsData)
+          })
+      }
+    },
 
     created () {
     },
     onLoad (options) {
-      console.log(options)
-      if (options.type){
-        this.listTpye = Number(options.type)
-      }
+      console.log('有倒计时')
+      // console.log(options)
+      this.type = Number(options.type);
+      this.position = Number(options.position);
+      // 分类设置头部导航
       switch (options.type) {
         case '1':
           wx.setNavigationBarTitle({
@@ -70,6 +91,9 @@
           })
           break
       }
+    },
+    onShow () {
+      this.getProductsData()
     }
   }
 </script>

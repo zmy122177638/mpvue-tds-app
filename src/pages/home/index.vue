@@ -11,9 +11,9 @@
           :imgArr="linkImgUrls">
         </lunbo-images>
         <div class="type-box">
-            <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(item.linkUrlType)">
-              <div class="type-item-t"><img :src="item.imgUrl" :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.boxShadow "></div>
-              <div class="type-item-t">{{item.name}}</div>
+            <div class="type-item" v-for="(item,i) in typeInfoList" :key="i" @click="handleClickGo(i,item.path,item.param)">
+              <div class="type-item-t"><img :src="item.img_src" :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.shadow_color "></div>
+              <div class="type-item-t">{{item.ad_name}}</div>
             </div>
         </div>
         <div class="active-box">
@@ -98,43 +98,9 @@
     data () {
       return {
         // 顶部轮播图数据数组
-        linkImgUrls: [
-          {
-            imgurl: 'https://images.unsplash.com/photo-1551446591-142875a901a1?w=640',
-            linkUrl: '../productDetail/main'
-          },
-          {
-            imgurl: 'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=640',
-            linkUrl: '../productList/main'
-          }
-        ],
+        linkImgUrls: [],
         // 商品分类按钮信息
-        typeInfoList: [
-          {
-            name: '引流特供',
-            imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrlType: '1',
-            boxShadow: 'rgba(255,174,77,0.35)'
-          },
-          {
-            name: '今日团品',
-            imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrlType: '2',
-            boxShadow: 'rgba(255,102,102,0.35)'
-          },
-          {
-            name: '好物拼团',
-            imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrlType: '3',
-            boxShadow: 'rgba(187,97,255,0.35)'
-          },
-          {
-            name: '爆品返场',
-            imgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3029925626,4050821961&fm=27&gp=0.jpg',
-            linkUrlType: '4',
-            boxShadow: 'rgba(255,116,199,0.35)'
-          }
-        ],
+        typeInfoList: [],
         // 引流特供数据
         special: {},
         // 今日团品数据
@@ -147,16 +113,16 @@
     },
     methods: {
       // 板块分类点击响应
-      handleClickGo (type) {
+      handleClickGo (i, path, param) {
         // type== 1：引流，2,：团品，3：拼团，4：返场
-        if (type == 3 || type == 4) {
+        if (i === 2 || i === 3) {
           mpvue.showToast({
             title: '此功能未开通',
             icon: 'none'
           })
           return
         }
-        let url = '../productList/main?type=' + type;
+        let url = path + '?' + param;
         console.log(url)
         mpvue.navigateTo({url: url})
       },
@@ -177,18 +143,27 @@
       getAllPruductsData () {
         this.$http.get('goods/list')
           .then(res => {
-            console.log('返回的数据：');
-            console.log(res);
+            // console.log('返回的数据：');
+            // console.log(res);
             // 数据替换
             this.special = res.resource.special;
             this.regiment = res.resource.regiment;
             this.group = res.resource.group;
             this.encore = res.resource.encore;
-            console.log('替换的数据：')
-            console.log(this.regiment);
+            // console.log('替换的数据：')
+            // console.log(this.regiment);
           })
       },
       // 获取首页配置项：轮播图，分类按钮信息
+      getHomePageSetting () {
+        this.$http.get('conf/getIndexConf')
+          .then(res => {
+            // console.log('首页设置信息：：');
+            // console.log(res);
+            this.linkImgUrls = res.resource.banner;
+            this.typeInfoList = res.resource.lead;
+          })
+      }
     },
     onShow () {
       console.log('home 页面 onShow 读取 token 和用户数据 ：')
@@ -196,6 +171,7 @@
       console.log(this.$store.state.userInfo)
     },
     onLoad () {
+      this.getHomePageSetting();
       this.getAllPruductsData();
     },
     created () {

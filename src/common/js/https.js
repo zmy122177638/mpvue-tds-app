@@ -104,8 +104,8 @@ class Https {
 
   // get请求
   get(url, data) {
-    console.log('111111111token:');
-    console.log(this.token);
+    // console.log('111111111token:');
+    // console.log(this.token);
     mpvue.showLoading({
       title: '加载中' // 数据请求前loading，提高用户体验
     })
