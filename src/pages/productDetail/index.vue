@@ -284,14 +284,6 @@
         shareBoxShow: false,
         // 是否显示海报缩略图
         showPosterImg: false,
-        // 商品详情图列表
-        desImages: [
-          'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2273502388,3322259604&fm=11&gp=0.jpg',
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1323345190,1226122086&fm=27&gp=0.jpg',
-          'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=353153124,1043237645&fm=27&gp=0.jpg',
-          'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1253085446,1898506634&fm=26&gp=0.jpg',
-          'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2052142394,3437240018&fm=26&gp=0.jpg'
-        ],
         // 规格选择子组件传回的数据
         specSelected: {},
         // 海报图片路径
@@ -427,6 +419,15 @@
         // mpvue.navigateTo({
         //   url: '../sub_my/my_unpaid/main'
         // })
+      },
+      getProductData (id) {
+        this.$http.get('goods/detail', {id})
+          .then(res => {
+            console.log('数据：：');
+            console.log(res);
+            this.productData = res.resource;
+            // console.log(this.productsData)
+          })
       }
     },
     // 分享监听
@@ -456,12 +457,14 @@
     onLoad (options) {
       console.log('根据传递的ID值请求商品详情：');
       console.log(options);
-
-      // console.log('根据商品结束时间，开始商品倒计时')
-      this.setEndTime();
-      this.timeIntval = setInterval(function () {
-        this.setEndTime();
-      }.bind(this), 1000);
+      // let goods_id = options.goods_id;
+      let id = 188;
+      this.getProductData(id);
+      // // console.log('根据商品结束时间，开始商品倒计时')
+      // this.setEndTime();
+      // this.timeIntval = setInterval(function () {
+      //   this.setEndTime();
+      // }.bind(this), 1000);
       // 开启群分享获取信息设置
       mpvue.showShareMenu({
         withShareTicket: true
