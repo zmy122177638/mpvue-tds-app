@@ -3,7 +3,7 @@
 
     <div class="service-content">
       <!-- 商品信息 -->
-      <Layout-goods-item></Layout-goods-item>
+      <Layout-goods-item :item="orderData"></Layout-goods-item>
 
       <!-- 售后 -->
       <div class="service-list">
@@ -46,7 +46,8 @@ export default {
   data() {
     return {
       // 订单Id
-      orderId: 0,
+      orderId: '',
+      orderData: {},
       // 服务数据
       serviceList: [
         { label: '仅退款', title: '退款原因', status: 1, content: '未收到货(包含未签收)，或团大师客服协商同意', iconPath: require('../../../../static/images/Refund_iCon.png'), placeholder: '请输入不超过140字的退款说明！' },
@@ -65,8 +66,30 @@ export default {
     this.orderId = options.orderId
     console.log(options)
   },
-
+  mounted() {
+    this.getOrderDetail(this.orderId)
+  },
   methods: {
+    /**
+    * @description: 获取订单详情
+    * @param {type}
+    * @Date: 2019-04-27 19:54:00
+    */
+    getOrderDetail(id) {
+      return this.$http.request('get', 'orders/' + id).then(({ code, resource }) => {
+        console.log(resource)
+        if (code === 200) {
+          // 订单详情
+          this.orderData = resource.order;
+        } else {
+          mpvue.showToast({
+            title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
     /**
      * @description: 售后处理选择
      * @Date: 2019-04-19 09:59:43

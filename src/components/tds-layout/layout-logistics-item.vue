@@ -5,6 +5,7 @@
     <div class="logistics-title">
       <div class="title-left">订单状态</div>
       <div
+        v-if="status >= 7"
         class="title-right"
         @click="$emit('onService')"
       >申请售后</div>
@@ -13,32 +14,15 @@
     <!-- 主体内容 -->
     <div class="logistics-info">
       <div class="order-status-box">
-        <div :class="['order-status-item', 'on']">
+        <div
+          :class="['order-status-item', {'on':item.time}]"
+          v-for="(item,index) in stateList"
+          :key="index"
+        >
           <div class="step-box"></div>
           <div class="order-status-btn">
-            <p class="order-status">已付款</p>
-            <p class="order-status-time">19/04/09 12:53:50</p>
-          </div>
-        </div>
-        <div :class="['order-status-item', 'on']">
-          <div class="step-box"></div>
-          <div class="order-status-btn">
-            <p class="order-status">代发货</p>
-            <p class="order-status-time">19/04/09 12:53:50</p>
-          </div>
-        </div>
-        <div :class="['order-status-item']">
-          <div class="step-box"></div>
-          <div class="order-status-btn">
-            <p class="order-status">待收货</p>
-            <p class="order-status-time">19/04/09 12:53:50</p>
-          </div>
-        </div>
-        <div :class="['order-status-item']">
-          <div class="step-box"></div>
-          <div class="order-status-btn">
-            <p class="order-status">已完成</p>
-            <p class="order-status-time">19/04/09 12:53:50</p>
+            <p class="order-status">{{item.val}}</p>
+            <p class="order-status-time">{{item.time}}</p>
           </div>
         </div>
       </div>
@@ -48,7 +32,17 @@
 
 <script>
 export default {
-
+  props: {
+    // 状态列表
+    stateList: {
+      type: Boolean,
+      required: true
+    },
+    // 物流状态
+    status: {
+      default: 3
+    }
+  }
 }
 </script>
 
@@ -88,7 +82,7 @@ export default {
       .order-status-item {
         margin-left: 25px;
         padding: 10px 0 10px 21.5px;
-        border-left:1px solid #F6F8FA;
+        border-left: 1px solid #f6f8fa;
         position: relative;
         .step-box {
           position: absolute;
@@ -99,7 +93,7 @@ export default {
           height: 18px;
           border: 3px solid #c1c1c1;
           box-sizing: border-box;
-          background-color:#ffffff;
+          background-color: #ffffff;
           border-radius: 50%;
           &::before {
             width: 0;
@@ -186,9 +180,6 @@ export default {
               color: #ff6666;
             }
           }
-        }
-        &::nth-last-child(1) {
-
         }
       }
     }

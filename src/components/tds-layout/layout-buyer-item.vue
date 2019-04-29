@@ -9,38 +9,44 @@
     <!-- 主体内容 -->
     <div class="buyer-info">
       <img
-        :src="userInfo.headimgurl"
+        :src="item.headimgurl"
         class="buyer-userimg"
         alt=""
       >
       <div class="buyer-cont">
-        <div class="buyer-nickname">{{userInfo.nickname}}</div>
+        <div class="buyer-nickname">{{item.nickname}}</div>
         <div class="buyer-pipe">
           <div class="buyer-pipe-item">
             <div class="item-key">收货姓名：</div>
-            <div class="item-value">钱多多</div>
+            <div class="item-value">{{item.consignee}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">联系手机：</div>
-            <div class="item-value">136 1234 5678</div>
+            <div class="item-value">{{item.consignee_mobile}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">收货地址：</div>
-            <div class="item-value">广东省广州市白云区石井镇 联滘路滘心村公交站旁</div>
+            <div class="item-value">{{item.consignee_address}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">备注信息：</div>
-            <div class="item-value">请放到小区丰巢快递柜！谢谢！</div>
+            <div class="item-value">{{item.remark || '无备注'}}</div>
           </div>
-          <div class="buyer-pipe-item">
+          <div
+            class="buyer-pipe-item"
+            v-if="item.status === 3"
+          >
             <div class="item-key">物流信息：</div>
             <div class="item-value">暂无</div>
           </div>
-          <div class="buyer-pipe-item">
-            <div class="item-key">圆通速递：</div>
-            <div class="item-value">165465631354 <img
+          <div
+            class="buyer-pipe-item"
+            v-else
+          >
+            <div class="item-key">{{item.shipper_code}}：</div>
+            <div class="item-value">{{item.logistic_code}} <img
                 class="vehicle-icon"
-                src="../../../static/images/vehicle.png"
+                src="../../../static/images/Express44_iCon.png"
               /></div>
           </div>
           <!-- 
@@ -61,11 +67,6 @@ export default {
     item: {
       type: Boolean,
       required: true
-    }
-  },
-  computed: {
-    userInfo() {
-      return this.$store.state.userInfo
     }
   }
 }
@@ -125,11 +126,13 @@ export default {
           }
           .vehicle-icon {
             margin-top: -2px;
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             display: inline-block;
             margin-left: 5px;
             vertical-align: middle;
+            border-radius: 50%;
+            box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
           }
         }
       }

@@ -84,7 +84,7 @@ export default {
           this.tagList = resource.tag_list;
           this.addressList = resource.list;
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '获取收货列表失败',
             icon: 'none',
             duration: 2000
@@ -103,13 +103,13 @@ export default {
       return this.$http.request('post', 'addresses', params).then((res) => {
         if (res.code === 200) {
           this.getAddressList();
-          wx.showToast({
+          mpvue.showToast({
             title: '新增成功',
             icon: 'success',
             duration: 2000
           })
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '新增失败',
             icon: 'none',
             duration: 2000
@@ -128,13 +128,13 @@ export default {
       return this.$http.request('put', 'addresses/' + params.id, params).then((res) => {
         if (res.code === 200) {
           this.getAddressList()
-          wx.showToast({
+          mpvue.showToast({
             title: '修改成功',
             icon: 'success',
             duration: 2000
           })
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '修改失败',
             icon: 'none',
             duration: 2000
@@ -152,13 +152,13 @@ export default {
       return this.$http.request('delete', 'addresses/' + id).then((res) => {
         if (res.code === 200) {
           this.getAddressList()
-          wx.showToast({
+          mpvue.showToast({
             title: '删除成功',
             icon: 'success',
             duration: 2000
           })
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '删除失败',
             icon: 'none',
             duration: 2000
@@ -201,7 +201,7 @@ export default {
     longpressAddressItem(item) {
       this.activeId = item.id;
       let that = this;
-      wx.showActionSheet({
+      mpvue.showActionSheet({
         itemList: ['删除'],
         itemColor: '#FF6666',
         success(res) {

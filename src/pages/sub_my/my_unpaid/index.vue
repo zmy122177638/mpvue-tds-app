@@ -93,8 +93,6 @@ export default {
   },
   data() {
     return {
-      // 订单信息是否有(分为待提交和已提交)
-      //
       // 订单ID
       orderId: '',
       // 是否未生成订单
@@ -127,7 +125,7 @@ export default {
       // 传入商品订单ID(已生成订单)
       this.orderId = options.orderId;
     } else {
-      wx.showToast({
+      mpvue.showToast({
         title: '传入options参数错误orders || orderId',
         icon: 'none',
         duration: 2000
@@ -197,7 +195,7 @@ export default {
           // 下架时间
           this.endTime = resource.goods.end_time;
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '获取失败,请重试',
             icon: 'none',
             duration: 2000
@@ -220,7 +218,7 @@ export default {
           this.addressData.consignee_address = resource.area.join(' ') + ' ' + resource.address;
           console.log(resource)
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '获取失败,请重试',
             icon: 'none',
             duration: 2000
@@ -246,8 +244,38 @@ export default {
     handleGotoBuy() {
       if (this.isOrder) {
         // 已生成订单（待支付）
-        this.$http.request('put', 'orders/' + this.orderData.id, { ...this.addressData, remark: this.remark }).then((res) => {
-          console.log(res)
+        this.$http.request('put', 'orders/' + this.orderData.id, { ...this.addressData, remark: this.remark }).then(({ code, resource }) => {
+          if (code === 200) {
+            // 发起支付
+            mpvue.requestPayment({
+              ...resource,
+              success(res) {
+                mpvue.showToast({
+                  title: '支付成功',
+                  icon: 'success',
+                  duration: 2000,
+                  success() {
+                    mpvue.navigateTo({
+                      url: '../my_order/main?current=paid'
+                    })
+                  }
+                })
+              },
+              fail(res) {
+                mpvue.showToast({
+                  title: '支付失败',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            })
+          } else {
+            mpvue.showToast({
+              title: '获取失败,请重试',
+              icon: 'none',
+              duration: 2000
+            })
+          }
         })
       } else {
         // 传入 goods_id spu_id sharer_id num
