@@ -177,7 +177,7 @@ export default {
           if (resource.orderList.data.length <= 0 || resource.orderList.data.length < this.queryData.show) { this.isLoading = false }
           console.log(this.orderList)
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '获取失败,请重试',
             icon: 'none',
             duration: 2000

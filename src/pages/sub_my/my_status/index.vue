@@ -6,7 +6,11 @@
       <!-- 商品信息 -->
       <Layout-goods-item :item="orderData"></Layout-goods-item>
       <Layout-buyer-item :item="orderData"></Layout-buyer-item>
-      <Layout-logistics-item @onService="handleService"></Layout-logistics-item>
+      <Layout-logistics-item
+        @onService="handleService"
+        :status="orderData.status"
+        :stateList="stateList"
+      ></Layout-logistics-item>
 
     </div>
 
@@ -37,6 +41,7 @@ export default {
       // 是否显示弹窗
       isShow: false,
       orderData: {},
+      stateList: [],
       formData: { name: '132', tag: '', isNormal: '', phone: 18588419510, address: 'wwww' }
     }
   },
@@ -59,18 +64,9 @@ export default {
         if (code === 200) {
           // 订单详情
           this.orderData = resource.order;
-          // // 备注
-          // this.remark = resource.order.remark;
-          // // 地址信息
-          // this.addressData = {
-          //   consignee: resource.order.consignee,
-          //   consignee_mobile: resource.order.consignee_mobile,
-          //   consignee_address: resource.order.consignee_address
-          // }
-          // // 下架时间
-          // this.endTime = resource.goods.end_time;
+          this.stateList = resource.state;
         } else {
-          wx.showToast({
+          mpvue.showToast({
             title: '获取失败,请重试',
             icon: 'none',
             duration: 2000
@@ -83,7 +79,7 @@ export default {
      * @Date: 2019-04-19 11:01:46
      */
     handleService() {
-      mpvue.navigateTo({ url: '../my_service/main' })
+      mpvue.navigateTo({ url: '../my_service/main?orderId=' + this.orderId })
     },
     /**
      * @description: 修改收货地址

@@ -8,7 +8,6 @@
     "pages/productList/main",
     "pages/productDetail/main",
     "pages/tomorrowProducts/main",
-    "pages/start/main",
     "pages/openShop/main",
     "pages/openGift/main"
   ],
