@@ -12,16 +12,19 @@
             <div class="user-grade">{{userInfo.shop_level}}</div>
           </div>
 
-          <h2 class="tds-header-shopname"><span class="tds-header-name">{{userInfo.nickname}}</span>的团大师小店</h2>
+          <h2
+            class="tds-header-shopname"
+            v-if="userInfo.is_real_check"
+          ><span class="tds-header-name">{{userInfo.nickname}}</span>的团大师小店</h2>
+          <h2
+            class="tds-header-shopname"
+            v-else
+          >未实名</h2>
         </slot>
       </div>
       <div class="tds-header-right">
         <slot name="right">
-          <img
-            src="../../../static/images/VVIP_1.png"
-            class="tds-header-shopicon"
-            alt=""
-          >
+          <div :class="['my-status-icon','vip0'+userInfo.vip_level]"></div>
         </slot>
       </div>
     </div>

@@ -65,6 +65,10 @@ export default {
           // 订单详情
           this.orderData = resource.order;
           this.stateList = resource.state;
+          // 设置title
+          mpvue.setNavigationBarTitle({
+            title: '订单' + this.orderData.mini_status
+          })
         } else {
           mpvue.showToast({
             title: '获取失败,请重试',

@@ -41,6 +41,7 @@ page {
   flex-direction: column;
   box-sizing: border-box;
   color: #282828;
+  font-family: PingFang SC;
   background: rgba(246, 248, 250, 1); /*所有页面初始背景颜色*/
   font-size: 28rpx;
 }
@@ -50,6 +51,36 @@ page {
   height: 0;
   color: transparent;
   display: none;
+}
+// vip等级公用
+.my-status-icon {
+  width: 82px;
+  height: 24px;
+  display: block;
+  &.vip01 {
+    background: url('../static/images/VIP_1.png') no-repeat;
+    background-size: 100% 100%;
+  }
+
+  &.vip02 {
+    background: url('../static/images/VIP_2.png') no-repeat;
+    background-size: 100% 100%;
+  }
+
+  &.vip03 {
+    background: url('../static/images/VIP_3.png') no-repeat;
+    background-size: 100% 100%;
+  }
+
+  &.vip04 {
+    background: url('../static/images/VIP_4.png') no-repeat;
+    background-size: 100% 100%;
+  }
+
+  &.vip05 {
+    background: url('../static/images/VIP_5.png') no-repeat;
+    background-size: 100% 100%;
+  }
 }
 /* this rule will be remove */
 * {
