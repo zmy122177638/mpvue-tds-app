@@ -105,7 +105,7 @@ export default {
     })
     // 获取订单列表 接收promise返回导航栏
     this.getOrderList(this.currentIndex).then((navList) => {
-      this.navList = navList;
+      this.navList = navList || this.navList;
     })
   },
 
@@ -185,6 +185,8 @@ export default {
         }
         // 返回导航标签
         return resource.state
+      }, () => {
+        this.isLoading = false;
       })
     },
 

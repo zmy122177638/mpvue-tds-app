@@ -22,7 +22,7 @@
           <div class="step-box"></div>
           <div class="order-status-btn">
             <p class="order-status">{{item.val}}</p>
-            <p class="order-status-time">{{item.time}}</p>
+            <p class="order-status-time" v-if="item.time">{{item.time}}</p>
           </div>
         </div>
       </div>

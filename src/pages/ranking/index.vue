@@ -5,38 +5,35 @@
     <div class="ranking-action">
       <div class="ranking-category">
         <div
-          :class="['ranking-category-item',{on: queryData.category === 0}]"
-          @click="searchRankChange(0,queryData.timer)"
-        >用户排行</div>
+          :class="['ranking-category-item',{on: queryData.category === 'goods'}]"
+          @click="searchRankChange('goods',queryData.timeDay)"
+        >本月热卖</div>
         <div
-          :class="['ranking-category-item',{on: queryData.category === 1}]"
-          @click="searchRankChange(1,queryData.timer)"
+          :class="['ranking-category-item',{on: queryData.category === 'shop'}]"
+          @click="searchRankChange('shop',queryData.timeDay)"
         >小店排行</div>
       </div>
-      <div class="ranking-timer">
+      <div
+        class="ranking-timer"
+        v-if="queryData.category !== 'goods'"
+      >
         <div
-          :class="['ranking-timer-item',{on: queryData.timer === 0}]"
-          @click="searchRankChange(queryData.category,0)"
-        >
-          今天
-        </div>
-        <div
-          :class="['ranking-timer-item',{on: queryData.timer === 1}]"
-          @click="searchRankChange(queryData.category,1)"
+          :class="['ranking-timer-item',{on: queryData.timeDay === 'yesterday'}]"
+          @click="searchRankChange(queryData.category,'yesterday')"
         >
           昨天
         </div>
         <div
-          :class="['ranking-timer-item',{on: queryData.timer === 2}]"
-          @click="searchRankChange(queryData.category,2)"
+          :class="['ranking-timer-item',{on: queryData.timeDay === 'last7day'}]"
+          @click="searchRankChange(queryData.category,'last7day')"
         >
-          本月累计
+          7天
         </div>
         <div
-          :class="['ranking-timer-item',{on: queryData.timer === 3}]"
-          @click="searchRankChange(queryData.category,3)"
+          :class="['ranking-timer-item',{on: queryData.timeDay === 'last30day'}]"
+          @click="searchRankChange(queryData.category,'last30day')"
         >
-          上月总榜
+          30天
         </div>
       </div>
     </div>
@@ -47,7 +44,7 @@
     >
       <div
         class="ranking-list-title"
-        v-if="queryData.category === 1"
+        v-if="queryData.category === 'shop'"
       >
         <div class="ranking-title-txt">排名</div>
         <div class="ranking-title-txt">小店信息</div>
@@ -56,7 +53,7 @@
 
       <div
         class="ranking-list"
-        :style="queryData.category === 1?'padding-top:0':''"
+        :style="queryData.category === 'shop'?'padding-top:0':''"
       >
         <div
           class="ranking-item"
@@ -64,37 +61,39 @@
           :key="index"
         >
           <div class="item-left">
-            <div class="item-num">No.{{index+1}}</div>
+            <div class="item-num">No.{{item.ranking}}</div>
             <img
-              class="item-img"
-              :src="item.img"
+              :class="['item-img',{'on':queryData.category === 'goods'}]"
+              :src="item.image_url"
               alt=""
             >
             <div class="item-info">
               <div class="item-name">
-                <div class="item-tx">{{item.name}}</div>
+                <div class="item-tx">{{item.title}}</div>
                 <div
                   class="item-grade"
-                  v-if="item.grade"
-                >Lv.{{item.grade}}</div>
+                  v-if="item.shop_level"
+                >{{item.shop_level}}</div>
               </div>
               <div
                 class="item-status"
-                v-if="item.status"
-              >{{item.status}}</div>
+                v-if="item.vip_level"
+              >{{item.vip_level}}</div>
             </div>
           </div>
-          <div class="item-right">{{item.orderNum}}</div>
+          <div class="item-right">{{item.score}}</div>
         </div>
       </div>
-      <div :class="['ranking-ponint',{'on':queryData.category === 1}]">仅显示前二十名用户排行</div>
+      <div :class="['ranking-ponint',{'on':queryData.category === 'shop'}]">
+        {{queryData.category === 'shop'?'仅显示前十名小店排行':'仅显示前十名商品排行'}}
+      </div>
       <!-- 悬浮店铺排名 -->
       <div
         class="ranking-self"
-        v-if="queryData.category === 1"
+        v-if="queryData.category === 'shop'"
       >
-        <div class="ranking-rknum">我的小店排名: <span>No.351</span></div>
-        <div class="ranking-rkmoney">金额: 357</div>
+        <div class="ranking-rknum">我的小店排名: <span>No.{{my_ranking.ranking}}</span></div>
+        <div class="ranking-rkmoney">金额: {{my_ranking.score}}</div>
       </div>
     </scroll-view>
   </section>
@@ -106,10 +105,10 @@ import kaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn'
 export default {
   data() {
     return {
-      // category 排行类别  timer 排行时间
+      // category 排行类别  timeDay 排行时间
       queryData: {
-        category: 0,
-        timer: 0
+        category: 'shop',
+        timeDay: 'yesterday'
       },
       // scrollTop位置
       scrollTopNum: '',
@@ -125,8 +124,9 @@ export default {
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
         { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 }
-
-      ]
+      ],
+      // 我的排行
+      my_ranking: {}
     }
   },
 
@@ -134,27 +134,51 @@ export default {
     TdsHeader,
     kaidianYouliBtn
   },
-
+  mounted() {
+    this.getShopRanking(this.queryData);
+  },
   methods: {
+    getShopRanking(queryData) {
+      this.$http.request('get', `rankings/${queryData.category}/${queryData.timeDay}`).then(({ code, resource }) => {
+        if (code === 200) {
+          if (queryData.category === 'shop') {
+            this.rankingList = resource.all;
+            this.my_ranking = resource.my_ranking;
+          } else if (queryData.category === 'goods') {
+            this.rankingList = resource;
+          }
+        } else {
+          mpvue.showToast({
+            title: '获取排行失败，请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+
+        console.log(resource)
+      })
+    },
     /**
      * @description: 切换排行条件
      * @param {Number}  category 排行分类
-     * @param {Number}  timer 排行时间
+     * @param {Number}  timeDay 排行时间
      * @return: undefined
      * @Date: 2019-04-16 11:08:04
      */
-    searchRankChange(category, timer) {
-      this.queryData = { category, timer }
-      console.log(this.queryData)
-      this.scrollTopNum = 0
-      this.$nextTick(() => {
-        this.scrollTopNum = ''
-      })
-      if (this.queryData.category === 1) {
-        this.rankingList = this.rankingList.fill({ img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10, status: '资深掌柜', grade: 4 }, 0, this.rankingList.length)
-      } else {
-        this.rankingList = this.rankingList.fill({ img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 }, 0, this.rankingList.length)
+    searchRankChange(category, timeDay) {
+      if (category === 'goods') {
+        timeDay = 'month';
+      } else if (category === 'shop' && timeDay === 'month') {
+        timeDay = 'yesterday'
       }
+      this.queryData = { category, timeDay };
+      console.log(this.queryData)
+      this.getShopRanking(this.queryData);
+
+      // this.scrollTopNum = 0
+      // this.$nextTick(() => {
+      //   this.scrollTopNum = ''
+      // })
     }
   }
 }
@@ -244,9 +268,9 @@ img {
     flex: 1;
     height: 100%;
     overflow-y: scroll;
+    background-color: #ffffff;
     -webkit-overflow-scrolling: touch;
     .ranking-list {
-      background-color: #ffffff;
       padding-top: 25px;
       .ranking-item {
         padding: 0 30px;
@@ -275,6 +299,9 @@ img {
             height: 44px;
             border-radius: 50%;
             margin-right: 15px;
+            &.on {
+              border-radius: 6px;
+            }
           }
           .item-info {
             display: flex;

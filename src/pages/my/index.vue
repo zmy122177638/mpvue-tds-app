@@ -3,24 +3,31 @@
     <!-- 开店 -->
     <kaidianYouliBtn></kaidianYouliBtn>
     <!-- 用户信息 -->
-    <div :class="['my-info-box',{'vip':isVip}]">
-      <div :class="['my-info',{'vip':isVip}]">
+    <div :class="['my-info-box',{'vip':infoData.vip_level}]">
+      <div :class="['my-info',{'vip':infoData.vip_level}]">
         <div class="my-info-left">
           <img
-            src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg"
+            :src="infoData.headimgurl"
             class="my-img"
             alt=""
           >
           <div class="my-show">
-            <div class="my-name">王多多</div>
-            <div class="my-status">普通用户</div>
+            <div class="my-name">{{infoData.nickname}}</div>
+            <div
+              class="my-status"
+              v-if="!infoData.vip_level"
+            >普通用户</div>
+            <div
+              :class="['my-status-icon','vip0'+infoData.vip_level]"
+              v-else
+            ></div>
           </div>
         </div>
       </div>
       <!-- 升级 -->
       <div
         class="my-upgrade"
-        v-if="!isVip"
+        v-if="!infoData.vip_level"
       >
         <div class="upgrade-left">
           <img
@@ -32,7 +39,10 @@
             <div class="my-upgrade-f">自购省钱，开团赚钱</div>
           </div>
         </div>
-        <div class="my-upgrade-btn">立即开通</div>
+        <div
+          class="my-upgrade-btn"
+          @click="navigateToGift"
+        >立即开通</div>
       </div>
       <!-- progress -->
       <div
@@ -40,20 +50,20 @@
         v-else
       >
         <div class="progress-assert">
-          <div class="progress-count">上月店铺等级<span class="progress-grade">Lv.2</span></div>
+          <div class="progress-count">上月店铺等级<span class="progress-grade">{{infoData.current_month_shop.level}}</span></div>
         </div>
         <div class="progress-box">
           <div class="progress-pack">
             <div
               class="progress-active"
-              style="width:40%"
+              :style="'width:'+infoData.current_month_shop.level_current_percent+'%'"
             >
               <img
-                src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+                :src="infoData.headimgurl"
                 class="user-avator"
                 alt=""
               >
-              <div class="user-money">￥1680</div>
+              <div class="user-money">￥{{infoData.current_month_shop.amount}}</div>
             </div>
             <div class="progress-grade-item">
               <div class="grade-txt">Lv.1</div>
@@ -124,47 +134,56 @@
             @click="navigaToOrder('unpaid')"
           >
             <div class="img-figure">
-              <span class="item-num">12</span>
+              <span
+                class="item-num"
+                v-if="infoData.order_pending.unpaid"
+              >{{infoData.order_pending.unpaid}}</span>
               <img
                 class="item-icon"
                 src="../../../static/images/Pay_iCon.png"
               >
             </div>
 
-            <div class="item-name">代付款</div>
+            <div class="item-name">待付款</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder('paid')"
           >
             <div class="img-figure">
-              <span class="item-num">12</span>
+              <span
+                class="item-num"
+                v-if="infoData.order_pending.paid"
+              >{{infoData.order_pending.paid}}</span>
               <img
                 class="item-icon"
                 src="../../../static/images/Shipment_iCon.png"
               >
             </div>
-            <div class="item-name">代发货</div>
+            <div class="item-name">待发货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder('shipped')"
           >
             <div class="img-figure">
-              <span class="item-num">12</span>
+              <span
+                class="item-num"
+                v-if="infoData.order_pending.shipped"
+              >{{infoData.order_pending.shipped}}</span>
               <img
                 class="item-icon"
                 src="../../../static/images/Collection_iCon.png"
               >
             </div>
-            <div class="item-name">代收货</div>
+            <div class="item-name">待收货</div>
           </div>
           <div
             class="my-order-item"
             @click="navigaToOrder('finish')"
           >
             <div class="img-figure">
-              <span class="item-num">12</span>
+              <!-- <span class="item-num">{{infoData.order_pending.finish}}</span> -->
               <img
                 class="item-icon"
                 src="../../../static/images/Completed_iCon.png"
@@ -177,7 +196,10 @@
             @click="navigaToOrder('refund')"
           >
             <div class="img-figure">
-              <span class="item-num">12</span>
+              <span
+                class="item-num"
+                v-if="infoData.order_pending.refund"
+              >{{infoData.order_pending.refund}}</span>
               <img
                 class="item-icon"
                 src="../../../static/images/Refund_iCon.png"
@@ -282,14 +304,38 @@ export default {
   },
   data() {
     return {
-      isVip: false
+      infoData: {
+        order_pending: {},
+        current_month_shop: {}
+      }
     }
   },
   mounted() {
+    this.getMyInfo();
+  },
+  computed: {
 
   },
-
   methods: {
+    getMyInfo() {
+      this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
+        console.log(resource)
+        if (code === 200) {
+          this.infoData = resource;
+        } else {
+          mpvue.showToast({
+            title: '获取用户信息失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+    navigateToGift() {
+      mpvue.navigateTo({
+        url: '../openShop/main'
+      })
+    },
     navigaToOrder(current) {
       mpvue.navigateTo({
         url: './../sub_my/my_order/main?current=' + current
@@ -352,6 +398,7 @@ img {
   // 用户信息
   .my-info-box {
     background: #ff6666;
+    min-height: 160px;
     &.vip {
       background-color: #ffffff;
       position: relative;
@@ -405,6 +452,7 @@ img {
           font-size: 12px;
           text-align: center;
         }
+        
       }
     }
     .my-upgrade {

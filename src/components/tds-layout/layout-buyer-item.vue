@@ -34,7 +34,7 @@
           </div>
           <div
             class="buyer-pipe-item"
-            v-if="item.status === 3"
+            v-if="!item.logistic_code"
           >
             <div class="item-key">物流信息：</div>
             <div class="item-value">暂无</div>
