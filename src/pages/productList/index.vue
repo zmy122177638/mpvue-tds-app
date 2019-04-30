@@ -6,6 +6,7 @@
     <section class="top-kong"></section>
     <tomorrow-image :imgUrl="topImg"></tomorrow-image>
     <section class="item-list">
+      <div v-if="isNoData" class="no-data">暂无数据</div>
       <block v-for="(item,i) in productsData" :key="i">
         <pruduct-item
           :itemTpye="type"
@@ -31,8 +32,10 @@
       return {
         type: 1,
         position: 1,
-        productsData: {},
-        topImg: ''
+        productsData: [],
+        topImg: '',
+        // 是否没有数据
+        isNoData: false
       }
     },
 
@@ -55,6 +58,9 @@
             console.log('数据：：');
             console.log(res);
             this.topImg = res.resource.img_src;
+            if (res.resource.list.length <= 0) {
+              this.isNoData = true;
+            }
             this.productsData = res.resource.list;
             // console.log(this.productsData)
           })
@@ -64,8 +70,10 @@
     created () {
     },
     onLoad (options) {
-      console.log('有倒计时')
-      // console.log(options)
+      if (Number(options.type) !== this.type) {
+        this.productsData = []
+      }
+      console.log(options)
       this.type = Number(options.type);
       this.position = Number(options.position);
       // 分类设置头部导航
@@ -91,9 +99,14 @@
           })
           break
       }
+
+      this.getProductsData()
     },
     onShow () {
-      this.getProductsData()
+
+    },
+    onHide () {
+
     }
   }
 </script>
@@ -116,6 +129,13 @@
     .item-list{
       @include common-width;
       margin-top: 20rpx;
+      .no-data{
+        height: 300rpx;
+        line-height: 300rpx;
+        text-align: center;
+        color: #B1B1B1;
+        font-size: 34rpx;
+      }
     }
     .kong{
       height: 50rpx;

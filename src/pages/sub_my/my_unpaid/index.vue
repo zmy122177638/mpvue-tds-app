@@ -114,12 +114,16 @@ export default {
     }
   },
   onLoad(options) {
+    console.log('传递过来的参数：')
+    console.log(JSON.parse(options.orders));
+
     // 传入商品信息(未生成订单)
     if (options.orders) {
+      let orders = JSON.parse(options.orders);
       console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount等参数')
       this.isOrder = false;
       // 如果未生成订单不获取订单详情，使用传入的orders
-      this.orderData = options.orders
+      this.orderData = orders
     } else if (options.orderId) {
       this.isOrder = true;
       // 传入商品订单ID(已生成订单)
@@ -278,16 +282,62 @@ export default {
           }
         })
       } else {
+        console.log('所有订单信息');
+        console.log(this.orderData);
         // 传入 goods_id spu_id sharer_id num
-        let goodsData = {
-          goods_id: '',
-          spu_id: '',
-          sharer_id: '',
-          num: ''
-        }
+        let goodsData = {}
+        goodsData.goods_id = this.orderData.goods_id;
+        goodsData.spu_id = this.orderData.spu.id;
+        goodsData.sharer_id = this.$store.state.userInfo.id;
+        goodsData.num = this.orderData.num;
+
         // 未生成订单（下单中）
         this.$http.request('POST', 'orders', { ...this.addressData, remark: this.remark, ...goodsData }).then((res) => {
+          console.log('成功生成订单');
           console.log(res)
+          if (res.code === 200) {
+            // 发起支付
+            mpvue.requestPayment({
+              ...res.resource,
+              success(res) {
+                mpvue.showToast({
+                  title: '支付成功',
+                  icon: 'success',
+                  duration: 2000,
+                  success() {
+                    mpvue.navigateTo({
+                      url: '../my_order/main?current=paid'
+                    })
+                  }
+                })
+              },
+              fail(res) {
+                mpvue.showToast({
+                  title: '支付失败',
+                  icon: 'none',
+                  duration: 2000
+                })
+              }
+            })
+          } else if (res.code === 10406) {
+            mpvue.showModal({
+              title: '提示',
+              content: res.message,
+              showCancel: false,
+              confirmText: '确定',
+              success() {
+                mpvue.navigateBack({
+                  delta: 1
+                })
+              }
+            })
+          } else {
+            mpvue.showToast({
+              title: '获取失败,请重试',
+              icon: 'none',
+              duration: 2000
+            })
+          }
         })
       }
       console.log('调起支付接口')

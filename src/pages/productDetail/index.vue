@@ -6,6 +6,7 @@
     </section>
     <section class="lunbo-box">
       <lunbo-images
+        v-if="productData.small_image && productData.small_image.length > 0"
         swiperH="562rpx"
         :imgArr="productData.small_image">
       </lunbo-images>
@@ -38,14 +39,14 @@
         <div class="video-box" v-if="productData.video_url">
           <video class="video"  :src="productData.video_url"></video>
         </div>
-        <div class="img-list">
+        <div class="img-list" v-if="productData.detail_image && productData.detail_image.length > 0">
           <block v-for="(item,i) in productData.detail_image" :key="i">
             <image :src="item" mode="widthFix" />
           </block>
         </div>
       </section>
     </section>
-    <section class="hw-pt">
+    <section v-if="false" class="hw-pt">
       <header class="ban-header">热门拼团</header>
       <block v-for="i in 6" :key="i">
         <pruduct-item
@@ -61,7 +62,7 @@
       :close-on-click-overlay="true"
       @close="handleCloseProductType"
       >
-      <spec-params-selected @submit-order="handleSubmitOrder"></spec-params-selected>
+      <spec-params-selected :pData="productData" @submit-order="handleSubmitOrder"></spec-params-selected>
     </van-action-sheet>
 
     <!--分享响应上拉菜单-->
@@ -71,33 +72,8 @@
       @close="handleCloseShareBox"
     >
       <section class="share-box">
-        <header class="share-header"  v-if="!showPosterImg">选择分享渠道</header>
-        <div class="share-item-box" v-if="showPosterImg">
-          <div class="share-item">
-            <div class="share-item-t">
-              <button class="share-btn"
-                      :plain="true"
-                      open-type="share"
-                      id="productShare"
-                >
-                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
-              </button>
-            </div>
-            <div class="share-item-b">保存到本地相册</div>
-          </div>
-          <div class="share-item">
-            <div class="share-item-t">
-              <button class="share-btn"
-                      :plain="true"
-                      @click="handleCreatePosterImg"
-              >
-                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
-              </button>
-            </div>
-            <div class="share-item-b">分享微信好友</div>
-          </div>
-        </div>
-        <div class="share-item-box" v-else>
+        <header class="share-header">选择分享渠道</header>
+        <div class="share-item-box">
           <div class="share-item">
             <div class="share-item-t">
               <button class="share-btn"
@@ -126,8 +102,9 @@
     </van-action-sheet>
 
     <!--海报缩略图-->
-    <section class="haibao-img" v-if="showPosterImg">
-      <img @click="handleShowPreviewPosterImg" :src="posterImgUrl">
+    <section class="haibao-img" v-if="showPosterImg" @click="handleClosePosterImg">
+      <img @click.stop="handleShowPreviewPosterImg" :src="posterImgUrl">
+      <p class="haibao-img-p">点击海报 - 长按海报 - 发送给朋友</p>
     </section>
 
     <!--底部固定按钮栏-->
@@ -172,110 +149,10 @@
     },
     data () {
       return {
-        // 商品详情
-        productData: {
-          // tag: ['立省30元', '全场包邮', '给我而非', '立省30元', '全场包邮', '给我而非'],
-          goods_id: 391,
-          goods_name: '测试商品请勿下单',
-          small_image: [
-            '',
-            'http://oss.baidichan.com/store/images/20190325/5izy0JXzXnumKgnHNK0AQIuQgLHqJYFFkDGqLavu.jpeg',
-            'http://oss.baidichan.com/store/images/20190325/09AT8wCGqY2sZbeDWDuCSnPMVq6PY0IajG0ikQlw.jpeg',
-            'http://oss.baidichan.com/store/images/20190325/KkuUL9uMpByx8y00iA7KzS9zRQUcTAR9yMRJI8aG.jpeg'
-          ],
-          detail_image: [
-            'http://oss.baidichan.com/store/images/20190325/l6qf0XfRQzO9toyoprcCCQVhavZAhdUMzpAsrXhF.jpeg',
-            'http://oss.baidichan.com/store/images/20190325/cravBB0nKulPSS5dc8YWUji4te2b7Jtaj73oQabd.webp',
-            'http://oss.baidichan.com/store/images/20190325/4MGe7aAecg5PxY0xm6Ou0Q9Iygt0dUz1b69PjMSw.webp',
-            'http://oss.baidichan.com/store/images/20190325/LI2UjHXv19smHhf8tvni6TlO9N92mNRtHMcK9vBO.webp'
-          ],
-          goods_price: '0.01',
-          market_price: '99.00',
-          stock: 100,
-          unit: '台',
-          weight: 250,
-          goods_desc: '',
-          sales_count: 3002,
-          // video_url: 'http://oss.baidichan.com/store/video/20190228/YacyKT8F4DY5m9pCLg3VmBaBFDevNFb1vO25ssKl.mp4',
-          video_url: 'http://oss.baidichan.com/store/video/20190428/QAEOd5N47DHyRIKUORzZN6yMQIQwkCI3BQUjTmzS.mp4',
-          end_time: '2019/04/29 14:08:00',
-          limit_num: 2,
-          spec: [
-            {
-              'spec_name': '款式',
-              'spec_attr': [
-                '自动款',
-                '手动款'
-              ],
-              'params_child_has_del': true
-            },
-            {
-              'spec_name': '颜色',
-              'spec_attr': [
-                '白色',
-                '黄色'
-              ],
-              'params_child_has_del': true
-            }
-          ],
-          spu: [
-            {
-              'spec_attr_arr': [],
-              'spec_attr': '自动款-白色',
-              'stock': 50,
-              'price': 0.01,
-              'goods_no': '0001',
-              'item_image': 'http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg'
-            },
-            {
-              'spec_attr_arr': [],
-              'spec_attr': '自动款-黄色',
-              'stock': 20,
-              'price': 0.02,
-              'goods_no': '0002',
-              'item_image': 'http://oss.baidichan.com/store/images/20190325/9hvuYDv2qX2Dj1VRmjDGsVBZjMBesEAiLfnF2hiG.jpeg'
-            },
-            {
-              'spec_attr_arr': [],
-              'spec_attr': '手动款-白色',
-              'stock': 10,
-              'price': 0.01,
-              'goods_no': '0003',
-              'item_image': 'http://oss.baidichan.com/store/images/20190325/PN8ZHudQRhzt3brpeGrfaF6H3vLb6YIDZzPzyMMW.jpeg'
-            },
-            {
-              'spec_attr_arr': [],
-              'spec_attr': '手动款-黄色',
-              'stock': 20,
-              'price': 0.04,
-              'goods_no': '0004',
-              'item_image': 'http://oss.baidichan.com/store/images/20190325/A3nJkwHe44mQ8XL2VTxV3i9DlpVr41S0NhOuTBO8.jpeg'
-            }
-          ],
-          charge_zone: '',
-          unshipping_zone: '',
-          detail_sales_desc: '已售 3002 台',
-          charge_zone: ['青海', '西藏', '甘肃'],
-          // 不发货地区
-          unshipping_zone: [
-            '新疆',
-            '内蒙古'
-          ],
-          user_info: {
-            'id': 3,
-            'uid': 1,
-            'consignee': '12323',
-            'consignee_mobile': '1369085077 9',
-            'consignee_area_id': '1,2,3',
-            'address': '广东省惠州市惠阳区世贸广场1',
-            'is_default': 1,
-            'tag': '',
-            'created_at': '2019-04-17 14:03:10',
-            'updated_at': '2019-04-17 12:03:10',
-            'area': null
-          },
-          limit_text: '团大师价 ￥0.01'
-        },
+        // shareBack 表示是否为分享中打开登录后进入该页面,false表示正常的进入，则正常的后退
+        shareBack: false,
+        // 商品详情，格式如下
+        productData: {},
         // 判断是否为掌柜、团长
         isManager: true,
         // 商品规格上拉弹窗是否显示
@@ -287,7 +164,7 @@
         // 规格选择子组件传回的数据
         specSelected: {},
         // 海报图片路径
-        posterImgUrl: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2624716811,1190583056&fm=26&gp=0.jpg',
+        posterImgUrl: '',
         // 商品是否还有倒计时以及时分秒设置
         timeOut: true,
         p_h: '',
@@ -321,10 +198,16 @@
       },
       // 顶部返回上一页按钮响应
       handleGoBack () {
-        // console.log('自定义返回按钮,返回上一页，若没有上一页则返回首页')
-        mpvue.navigateBack({
-          delta: 1
-        })
+        console.log('如果是分享进入，则需要点击回退按钮返回到首页中');
+        if (this.shareBack) {
+          mpvue.reLaunch({
+            url: '../home/main'
+          })
+        } else {
+          mpvue.navigateBack({
+            delta: 1
+          })
+        }
       },
       // 底部返回首页按钮响应
       handleGoHome () {
@@ -345,7 +228,6 @@
       // 关闭分享弹窗响应
       handleCloseShareBox () {
         this.shareBoxShow = false
-        this.showPosterImg = false
       },
       // 立即购买按钮响应
       handleGoBuy () {
@@ -365,15 +247,22 @@
         let that = this
         console.log('向后台请求生成海报')
         mpvue.showLoading({
-          title: '正在生成海报...',
-          success: function (res) {
-            setTimeout(function () {
-              mpvue.hideLoading()
-              that.shareBoxShow = true
-              that.showPosterImg = true
-            }, 3000)
-          }
+          title: '正在生成海报...'
         })
+        let tempData = {};
+        // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
+        tempData.type = 1;
+        tempData.id = this.productData.goods_id;
+        tempData.uid = this.$store.state.userInfo.id;
+        this.$http.get('goods/getShareImage', tempData)
+          .then(res => {
+            console.log('获得的海报信息：');
+            console.log(res);
+            that.shareBoxShow = false
+            that.showPosterImg = true
+            that.posterImgUrl = res.resource;
+            mpvue.hideLoading()
+          })
       },
       // 点击查看海报预览图
       handleShowPreviewPosterImg () {
@@ -382,51 +271,72 @@
           urls: [this.posterImgUrl]
         })
       },
+      // 点击蒙版，关闭海报弹出层
+      handleClosePosterImg () {
+        console.log('关闭海报图')
+        this.showPosterImg = false;
+      },
       // 拼接商品订单提交
       setgoodData () {
         let that = this;
         // 拼接商品订单信息
         let goodData = {};
-        // 商品id
-        goodData.goods_id = this.productData.goods_id;
-        // 商品名称
-        goodData.goods_name = this.productData.goods_name;
         //  根据用户选择，获得spu
         this.productData.spu.map(function (value, index, array) {
           if (value.spec_attr === that.specSelected.xuanze) {
             goodData.spu = value;
           }
         })
+        // 商品id
+        goodData.goods_id = this.productData.goods_id;
+        // 商品名称
+        goodData.goods_name = this.productData.goods_name;
+        // 缩略图
+        goodData.goods_image_url = goodData.spu.item_image;
+        // 规格拼接字符串
+        goodData.spec_attr = goodData.spu.spec_attr;
         // 单位
         goodData.unit = this.productData.unit;
         // 购买个数
         goodData.num = this.specSelected.num
-
+        // 总金额
+        goodData.amount = goodData.spu.price * goodData.num
         return goodData;
       },
       // 规格选择子组件提交订单响应
       handleSubmitOrder (options) {
-        console.log('子组件数据')
-        console.log(options)
+        // console.log('子组件数据')
+        // console.log(options)
         this.specSelected = options
         // 拼接的商品订单信息
-        let data = this.setgoodData();
+        let data = JSON.stringify(this.setgoodData());
         console.log('订单信息：');
         console.log(data);
-        return;
-        this.productTypeShow = false
         // 跳转到未付款订单页面
-        // mpvue.navigateTo({
-        //   url: '../sub_my/my_unpaid/main'
-        // })
+        mpvue.navigateTo({
+          url: '../sub_my/my_unpaid/main?orders=' + data
+        })
+        this.productTypeShow = false
       },
+      // 根据id获得商品详情
       getProductData (id) {
         this.$http.get('goods/detail', {id})
           .then(res => {
-            console.log('数据：：');
+            console.log('商品详情信息：');
             console.log(res);
             this.productData = res.resource;
+            // 现有数据库详情图片数据有误，直接覆盖
+            this.productData.detail_image = [
+              'http://oss.baidichan.com/store/images/20190325/l6qf0XfRQzO9toyoprcCCQVhavZAhdUMzpAsrXhF.jpeg',
+              'http://oss.baidichan.com/store/images/20190325/cravBB0nKulPSS5dc8YWUji4te2b7Jtaj73oQabd.webp',
+              'http://oss.baidichan.com/store/images/20190325/4MGe7aAecg5PxY0xm6Ou0Q9Iygt0dUz1b69PjMSw.webp',
+              'http://oss.baidichan.com/store/images/20190325/LI2UjHXv19smHhf8tvni6TlO9N92mNRtHMcK9vBO.webp'
+            ];
             // console.log(this.productsData)
+            this.setEndTime();
+            this.timeIntval = setInterval(function () {
+              this.setEndTime();
+            }.bind(this), 1000);
           })
       }
     },
@@ -434,20 +344,19 @@
     onShareAppMessage (res) {
       // console.log('进入分享逻辑111111111')
       // console.log(res)
+      let uid = this.$store.state.userInfo.id;
       return {
-        title: '转发当前商品',
-        path: '/pages/productDetail/main?id=210',
-        success: function (res) {
+        title: this.productData.goods_name,
+        // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
+        // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
+        path: 'pages/start/main?goPath=../productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
+        imageUrl: this.productData.small_image[0],
+        // 回调函数在2018.10之后的新版本中不再有任何回调
+        success(res) {
           console.log('分享成功')
-          // console.log(data)
-          // mpvue.getShareInfo({
-          //   success: function (d) {
-          //     console.log('获取到的群信息：')
-          //     console.log(d)
-          //   }
-          // })
         },
-        fail: function (e) {
+        fail(e) {
+          console.log('分享失败')
           // 转发失败
         }
       }
@@ -455,20 +364,21 @@
 
     // 页面加载监听
     onLoad (options) {
+      // 开启群分享获取信息设置，但当前页不能获得群id等信息
+      // mpvue.showShareMenu({
+      //   withShareTicket: true
+      // })
+      if (options.shareBack) {
+        this.shareBack = options.shareBack;
+      }
+
       console.log('根据传递的ID值请求商品详情：');
       console.log(options);
-      // let goods_id = options.goods_id;
-      let id = 188;
+      let id = options.goods_id;
+      // let id = 188;
       this.getProductData(id);
       // // console.log('根据商品结束时间，开始商品倒计时')
-      // this.setEndTime();
-      // this.timeIntval = setInterval(function () {
-      //   this.setEndTime();
-      // }.bind(this), 1000);
-      // 开启群分享获取信息设置
-      mpvue.showShareMenu({
-        withShareTicket: true
-      })
+
     },
     onUnload () {
       console.log('停止商品倒计时')
@@ -491,7 +401,7 @@
   }
   .go-back{
     position: absolute;
-    top: 60rpx;
+    top: 70rpx;
     left: 20rpx;
     z-index: 1000;
     font-weight: bold;
@@ -514,7 +424,7 @@
 
   .lunbo-box{
     width: 100%;
-    height: 600rpx;
+    height: 562rpx;
   }
 
   .main{
@@ -702,19 +612,32 @@
 
   .haibao-img{
     position: fixed;
-    top: 100rpx;
+    top: 0rpx;
     left: 0rpx;
-    right: 0rpx;
-    margin: auto;
     z-index: 1000;
-    width: 76%;
-    height: 70%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
     img{
-      height: 100%;
-      width: 100%;
+      position: absolute;
+      left: 0rpx;
+      right: 0rpx;
+      width: 80%;
+      height: 80%;
+      margin: 8% auto 0;
       -webkit-border-radius: 12rpx;
       -moz-border-radius: 12rpx;
       border-radius: 12rpx;
+    }
+    .haibao-img-p{
+      position: absolute;
+      left: 0rpx;
+      bottom: 7%;
+      width: 100%;
+      text-align: center;
+      color: #FFFFFF;
+      font-size: 30rpx;
+      letter-spacing: 4rpx;
     }
   }
 

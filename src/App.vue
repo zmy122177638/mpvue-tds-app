@@ -11,27 +11,17 @@ export default {
      * 支付宝(蚂蚁)：mpvue === my, mpvuePlatform === 'my'
      */
   },
-  onLaunch(options) {
-    // 获取store中的ssid，判断用户是否已经授权登录，若已经授权登录，则直接跳转到首页面
-    // if (this.$store.state.ssid) {
-    //   mpvue.reLaunch({
-    //     url: './pages/home/main'
-    //   })
+  onLaunch (options) {
+    // 如果token
+    // if (this.$store.state.token) {
+    //   this.$http.token = this.$store.state.token;
+    //   console.log(this.$store.state.userInfo);
     // }
-    // mpvue.reLaunch({
-    //   url: './pages/sub_my/my_unpaid/main'
-    // })
-
-    // 如果token不为空，写入API接口封装库
-    if (this.$store.state.token) {
-      this.$http.token = this.$store.state.token;
-      console.log(this.$store.state.token);
-    }
-    console.log(options)
     console.log('进入小程序的场景值：')
     console.log(options.scene)
   },
   onShow(options) {
+    // console.log('app onShow');
     // console.log('小程序进入前台')
     // console.log(options)
   },

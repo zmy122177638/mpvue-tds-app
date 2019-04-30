@@ -22,33 +22,31 @@ class Https {
     // 必须：小程序私钥secret
     this.secret = '81314d87c17307bfe22996c48c1f4c3d';
     // token 和 openid,由登录成功后写入
-    this.token = '';
+    this.token = store.state.token;
   }
   // 小程序登录流程
   // async 异步处理登录流程，保证每个环节获取数据正确
   async loginFlow() {
-    if (!this.hasOpenId) {
-      // 用户未授权登录，则进入登录流程
-      let codeInfo = await this.login();
-      let userInfo = await this.getUserInfo();
-      // 获取到code和userInfo之后调起请求，返回openId/token
-      // console.log('用户授权登录获取的信息：codeInfo、userInfo：')
-      // console.log(codeInfo);
-      // console.log(userInfo);
-      // 根据code、encryptedData、iv三个参数项后台请求open_id以及用户信息
-      let tempData = {};
-      tempData.code = codeInfo.code;
-      tempData.enc_data = userInfo.encryptedData;
-      tempData.iv = userInfo.iv;
-      let requestData = await this.post('auth/login', tempData);
-      // console.log('服务器后台登录成功，数据：');
-      // console.log(requestData);
-      // console.log('走了授权登录流程，更新了token');
-      this.token = requestData.data.token;
-      return requestData
-    } else {
-      return '登录流程失败'
-    }
+    mpvue.showLoading({});
+    // 用户未授权登录，则进入登录流程
+    let codeInfo = await this.login();
+    let userInfo = await this.getUserInfo();
+    // 获取到code和userInfo之后调起请求，返回openId/token
+    // console.log('用户授权登录获取的信息：codeInfo、userInfo：')
+    // console.log(codeInfo);
+    // console.log(userInfo);
+    // 根据code、encryptedData、iv三个参数项后台请求open_id以及用户信息
+    let tempData = {};
+    tempData.code = codeInfo.code;
+    tempData.enc_data = userInfo.encryptedData;
+    tempData.iv = userInfo.iv;
+    let requestData = await this.post('auth/login', tempData);
+    // console.log('服务器后台登录成功，数据：');
+    // console.log(requestData);
+    // console.log('走了授权登录流程，更新了token');
+    this.token = requestData.data.token;
+    mpvue.hideLoading();
+    return requestData
   }
   // 获得code,检查到登录态失效时调用
   login() {

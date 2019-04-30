@@ -12,10 +12,8 @@ const store = new Vuex.Store({
     token: '',
     // 用户信息
     userInfo: {},
-    // 明日预告图片信息
-    tomorrowImg: {},
-    // 小程序进入场景值,默认为1001 ；主要用来判断用户是否从被人分享中进入小程序
-    scene: 1001
+    // 分享人信息，如果没有上级分享人(即不是别人分享入口进入的，则分享人信息为当前用户信息)
+    sharerInfo: {}
   },
   mutations: {
     // 写入用户登录信息
@@ -28,9 +26,18 @@ const store = new Vuex.Store({
     // 写入token 登录凭证
     writeToken(state, data) {
       state.token = data.token;
+    },
+    // 写入分享人信息
+    writeSharerInfo(state, data) {
+      state.sharerInfo = data.sharerInfo;
     }
   },
-  getters: {},
+  getters: {
+    // 判断用户是否为VIP会员，如果是返回会员等级，如果不是，返回false
+    isVip(state) {
+      return state.userInfo.vip_level === 0 ? false : state.userInfo.vip_level;
+    }
+  },
   actions: {},
   // 设置store本地存储,这里使用的是微信同步本地读写方式
   plugins: [

@@ -26,7 +26,7 @@
           </div>
         </div>
       </section>
-      <section class="jr-tp"  v-if="regiment">
+      <section class="jr-tp"  v-if="regiment.type && regiment.list.length > 0">
         <header class="ban-header">{{regiment.title}}</header>
         <block v-for="(item,i) in regiment.list" :key="i">
           <pruduct-item
@@ -39,7 +39,7 @@
       <section class="tomorrow-img">
         <img @click="handleToTomorrowPage" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1533275126,1287779573&fm=26&gp=0.jpg" />
       </section>
-      <section class="hw-pt">
+      <section class="hw-pt" v-if="group.type && group.list.length > 0">
         <header class="ban-header">{{group.title}}</header>
         <block v-for="(item,i) in group.list" :key="i">
           <pruduct-item
@@ -48,7 +48,7 @@
           ></pruduct-item>
         </block>
       </section>
-      <section class="yl-tg">
+      <section class="yl-tg" v-if="special.type && special.list.length > 0">
         <header class="ban-header">{{special.title}}</header>
         <block v-for="(item,i) in special.list" :key="i">
           <pruduct-item
@@ -57,7 +57,7 @@
           ></pruduct-item>
         </block>
       </section>
-      <section class="bp-fc">
+      <section class="bp-fc" v-if="encore.tpye && encore.list.length > 0">
         <header class="ban-header">
           {{encore.title}}
           <span class="tip">所投票商品将于 <span class="time">2019年4月16日</span> 返场</span>
@@ -108,7 +108,7 @@
         // 好物拼团
         group: {},
         // 爆品返场
-        encore: { }
+        encore: {}
       }
     },
     methods: {
@@ -166,13 +166,16 @@
       }
     },
     onShow () {
-      console.log('home 页面 onShow 读取 token 和用户数据 ：')
-      console.log(this.$store.state.token)
-      console.log(this.$store.state.userInfo)
     },
     onLoad () {
       this.getHomePageSetting();
       this.getAllPruductsData();
+      console.log('用户登录信息--userInfo：');
+      console.log(this.$store.state.userInfo);
+      console.log('分享用户信息--sharerInfo：');
+      console.log(this.$store.state.sharerInfo);
+      console.log('用户登录信息--token：');
+      console.log(this.$store.state.token);
     },
     created () {
     }

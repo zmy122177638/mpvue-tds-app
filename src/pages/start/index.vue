@@ -9,7 +9,7 @@
       <div class="des">团大师，您身边的好物管家</div>
       <div class="home-bnt">
         <button class="bnt-1" v-if="!hasOpenId" type="warn" open-type="getUserInfo" @getuserinfo="handleGetUserInfo">立即登录</button>
-        <button class="bnt-1" v-if="hasOpenId && !hasPhoneNumber" type="warn" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber">微信登录</button>
+        <button class="bnt-1" v-else type="warn" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber">微信登录</button>
       </div>
       <div class="bottom-des">
         <p>轻轻松松卖货，不费精力</p>
@@ -26,8 +26,10 @@
       return {
         // 判断是否授权登录成功
         hasOpenId: false,
-        // 是否已绑定手机号
-        hasPhoneNumber: false
+        // 当前进入的场景值：
+        scene: 1001,
+        // 传入的参数,当场景值为用户分享入口进入时用到，用于判断用户登录后应该跳转的页面以及附带的页面参数
+        query: {}
       }
     },
 
@@ -39,7 +41,81 @@
         const url = '../home/main'
         mpvue.reLaunch({ url })
       },
-
+      // 判断是否从用户分享中进入小程序
+      isShareInto () {
+        let isShare = false;
+        switch (this.scene) {
+          case 1007:
+            // 单人聊天小程序分享打开
+            isShare = true;
+            break;
+          case 1008:
+            // 群聊小程序分享打开
+            isShare = true;
+            break;
+          case 1044:
+            // 群聊小程序分享打开(带shareTicket)
+            isShare = true;
+            break;
+          case 1012:
+            // 长按图片识别二维码打开小程序
+            isShare = true;
+            break;
+          case 1011:
+            // 扫描二维码打开小程序
+            isShare = true;
+            break;
+          case 1047:
+            // 扫描小程序码
+            isShare = true;
+            break;
+          case 1048:
+            // 长按图片识别小程序码
+            isShare = true;
+            break;
+          default:
+            isShare = false;
+            break;
+        }
+        return isShare;
+      },
+      // 判断是否从分享进入小程序，再进行跳转页面,跳转到主页或根据不同条件跳转到不同页面
+      goPage () {
+        let  that = this;
+        if (this.isShareInto()) {
+          console.log('分享点击进入');
+          // 分享进入跳转到其他页面后，跳转的页面根据 fx 判断后退按钮操作
+          let shareBack = true;
+          let goPath = this.query.goPath;
+          goPath = goPath + '?shareBack=' + shareBack;
+          if (this.query.goods_id) {
+            // 如果是商品分享，则有goods_id
+            goPath = goPath + '&goods_id=' + this.query.goods_id;
+          }
+          // 根据分享人uid信息请求分享人信息
+          this.$http.get('user/getBaseInfo', {uid: this.query.uid})
+            .then(res => {
+              console.log('分享人信息');
+              console.log(res.resource);
+              // 写入上级分享人信息
+              that.$store.commit({
+                type: 'writeSharerInfo',
+                sharerInfo: res.resource
+              });
+              mpvue.reLaunch({
+                url: goPath
+              })
+            })
+        } else {
+          console.log('非分享点击进入，跳转到主页面');
+          // 当前用户信息作为上级分享人信息
+          this.$store.commit({
+            type: 'writeSharerInfo',
+            sharerInfo: this.$store.state.userInfo
+          });
+          this.goHome();
+        }
+      },
       // 监测用户信息有效性
       authorUserInfo () {
         let that = this;
@@ -47,21 +123,15 @@
         mpvue.checkSession({
           success: function () {
             mpvue.hideLoading();
-            console.log('sessionKey未过期')
+            // console.log('sessionKey未过期')
             // 如果登录态未过期，还要考虑用户登录信息是否拿到，如果没有拿到，则需要重新授权登录
-            if (that.$store.state.userInfo.openid) {
+            if (that.$store.state.token) {
               that.hasOpenId = true;
               // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
               if (that.$store.state.userInfo.mobile_phone) {
                 // 用户手机号存在，说明用户信息完整
-                mpvue.reLaunch({
-                  url: '../../pages/home/main'
-                })
-              } else {
-                // console.log('11111111111')
+                that.goPage();
               }
-              // 如果已经授权登录但是手机号还没有，则需要将store中的token同步到http.token属性中
-              that.$http.token = that.$store.state.token;
             } else {
               console.log('sessionKey虽然没失效，但是授权登录失败,需要重新授权')
             }
@@ -90,7 +160,7 @@
           });
           //  判断手机号是否已经存在
           if (res.data.user.mobile_phone) {
-            this.goHome();
+            this.goPage();
           } else {
             this.hasOpenId = true;
           }
@@ -101,9 +171,6 @@
       handleGetPhoneNumber (e) {
         if (e.mp.detail.encryptedData) {
           // console.log('手机号信息：');
-          // console.log(e.mp.detail);
-          // this.hasPhoneNumber = true;
-          // this.goHome();
           let tempData = {};
           tempData.enc_data = e.mp.detail.encryptedData;
           tempData.iv = e.mp.detail.iv;
@@ -116,7 +183,7 @@
                 type: 'writeUserInfo',
                 userInfo: res.data
               });
-              this.goHome();
+              this.goPage();
             })
         } else {
           console.log('用户拒绝了绑定手机号');
@@ -124,6 +191,14 @@
       }
     },
     onShow () {
+    },
+    onLoad () {
+      //  获取app进入参数
+      console.log('app参数：');
+      console.log(wx.getLaunchOptionsSync());
+      let appOption = wx.getLaunchOptionsSync();
+      this.scene = appOption.scene;
+      this.query = appOption.query;
       this.authorUserInfo();
     },
     created () {

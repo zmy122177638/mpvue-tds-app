@@ -7,7 +7,7 @@
       <div class="right">
         <div class="b">
           <span class="n"><span>￥</span>{{currentPrice}}</span>
-          <span class="o"><span>￥</span>{{markPrice}}</span>
+          <span class="o"><span>￥</span>{{productData.market_price}}</span>
         </div>
         <div class="t">
           <div class="t-left">已选:</div>
@@ -18,7 +18,7 @@
     <section class="spec-list-box">
       <div
         class="list-type-box"
-        v-for="(item,i) in spec"
+        v-for="(item,i) in productData.spec"
         :key="i"
       >
         <header class="title">{{item.spec_name}}</header>
@@ -57,7 +57,7 @@
         >-</span>
         <span class="number">{{selectedNum}}</span>
         <span
-          v-if="selectedNum <= limit_num"
+          v-if="selectedNum < productData.limit_num"
           class="add"
           @click="handleAddNum"
         >+</span>
@@ -80,13 +80,14 @@
 export default {
   name: 'SpecParamsSelected',
   props: {
-    produ: {
+    pData: {
       type: Object,
       required: true
     }
   },
   data() {
     return {
+      productData: this.pData,
       // 规格数组
       spec: [
         {
@@ -149,8 +150,6 @@ export default {
       userSelectedStr: '',
       // 当前图片
       currentImgUrl: '',
-      // 原价
-      markPrice: '23.54',
       // 当前价格
       currentPrice: '',
       // 限制购买数量
@@ -162,32 +161,33 @@ export default {
   methods: {
     // 设置默认的用户选择，默认为每组规格组的第一个
     setDefaultSelected() {
-      this.currentImgUrl = this.spu[0].item_image
-      this.currentPrice = this.spu[0].price
-      this.spec.map(function (value, index, array) {
+      this.currentImgUrl = this.productData.spu[0].item_image
+      this.currentPrice = this.productData.spu[0].price
+      this.productData.spec.map(function (value, index, array) {
         this.userSelected.push(value.spec_attr[0])
       }.bind(this))
-      this.concatStr()
+      this.concatStr();
+      this.findInfoFromSpu()
     },
     // 根据用户选择拼接成字符串
     concatStr() {
       this.userSelectedStr = this.userSelected[0]
-      if (this.userSelected.length == 1) {
+      if (this.userSelected.length === 1) {
         // 只有一个元素时，无需拼接
         return false
       } else {
         this.userSelected.map(function (value, index) {
-          if (index != 0) {
+          if (index !== 0) {
             this.userSelectedStr = this.userSelectedStr + '-' + value
           }
         }.bind(this))
       }
-      // console.log('拼接好的字符串')
-      // console.log(this.userSelectedStr)
+      console.log('拼接好的字符串')
+      console.log(this.userSelectedStr)
     },
     // 根据用户选择，匹配不同SPU的信息
     findInfoFromSpu() {
-      this.spu.map(function (value, index, array) {
+      this.productData.spu.map(function (value, index, array) {
         if (value.spec_attr === this.userSelectedStr) {
           this.currentImgUrl = value.item_image
           this.currentPrice = value.price
@@ -224,12 +224,15 @@ export default {
     }
   },
   watch: {
-    produ: function (nVal, oVal) {
+    pData: function (nVal, oVal) {
+      // console.log('改变')
       //  改变现有数据
+      this.productData = nVal;
+      // 值改变时设置默认值：
+      this.setDefaultSelected()
     }
   },
   created() {
-    this.setDefaultSelected()
   }
 }
 </script>
