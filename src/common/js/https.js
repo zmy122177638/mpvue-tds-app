@@ -32,9 +32,9 @@ class Https {
     let codeInfo = await this.login();
     let userInfo = await this.getUserInfo();
     // 获取到code和userInfo之后调起请求，返回openId/token
-    // console.log('用户授权登录获取的信息：codeInfo、userInfo：')
-    // console.log(codeInfo);
-    // console.log(userInfo);
+    console.log('用户授权登录获取的信息：codeInfo、userInfo：')
+    console.log(codeInfo);
+    console.log(userInfo);
     // 根据code、encryptedData、iv三个参数项后台请求open_id以及用户信息
     let tempData = {};
     tempData.code = codeInfo.code;
@@ -71,6 +71,7 @@ class Https {
           if (res.authSetting['scope.userInfo']) {
             // console.log('已经有权限');
             mpvue.getUserInfo({
+              lang: 'zh_CN',
               withCredentials: true,
               success: function (res) {
                 resolve(res)

@@ -154,7 +154,7 @@
         // 商品详情，格式如下
         productData: {},
         // 判断是否为掌柜、团长
-        isManager: true,
+        isManager: this.$store.getters.isVip,
         // 商品规格上拉弹窗是否显示
         productTypeShow: false,
         // 分享上拉弹窗是否显示

@@ -77,6 +77,10 @@
     <section class="kong"></section>
     <!--开店礼包按钮，如果用户是会员则不需要显示-->
     <kaidian-youli-btn></kaidian-youli-btn>
+
+    <!--分享页面返回之后，判断当前用户是否不等于分享人，而且当前用户是普通用户时显示 返回我的小店按钮-->
+    <!--<section class="back-my-shop"></section>-->
+
   </section>
 </template>
 
@@ -176,6 +180,8 @@
       console.log(this.$store.state.sharerInfo);
       console.log('用户登录信息--token：');
       console.log(this.$store.state.token);
+      // console.log('获取菜单按钮位置信息：');
+      // console.log(mpvue.getMenuButtonBoundingClientRect());
     },
     created () {
     }
@@ -325,5 +331,19 @@
 
   }
 
+  .back-my-shop{
+    position: fixed;
+    left: 0rpx;
+    right: 0rpx;
+    bottom: 100rpx;
+    margin: 0 auto;
+    width: 40%;
+    height: 88rpx;
+    -webkit-border-radius: 44rpx;
+    -moz-border-radius: 44rpx;
+    border-radius: 44rpx;
+    border: 1px solid red;
+    background: #000;
+  }
 
 </style>
