@@ -11,7 +11,10 @@
           v-if="formData.activeIndex === ''"
         >
           <div class="select-label">请选择证件类型</div>
-          <img src="../../../../static/images/DownGray_iCon.png" class="select-icon"/>
+          <img
+            src="../../../../static/images/DownGray_iCon.png"
+            class="select-icon"
+          />
         </div>
 
         <div
@@ -29,7 +32,7 @@
       <div class="form-item">
         <input
           type="text"
-          :value="name"
+          :value="formData.name"
           @input="getNameChange"
           placeholder="请输入姓名"
         >
@@ -37,7 +40,7 @@
       <div class="form-item">
         <input
           type="idcard"
-          :value="id"
+          :value="formData.id"
           @input="getIdChange"
           placeholder="请输入证件号码"
         >
@@ -52,21 +55,27 @@
 </template>
 
 <script>
+import { IdCodeValid } from '@/common/js/index'
 export default {
   data() {
     return {
       // 身份类型
-      atteList: ['身份证', '居住证', '驾驶证', '港澳通行证', '护照'],
+      atteList: ['身份证'],
       // 表单数据
       formData: {
-        activeIndex: '',
+        activeIndex: 0,
         name: '',
         id: ''
       }
     }
   },
-
-  components: {
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    },
+    sharerInfo() {
+      return this.$store.state.sharerInfo
+    }
   },
 
   methods: {
@@ -81,11 +90,53 @@ export default {
       this.formData.id = ev.target.value;
     },
     submit() {
-      console.log(this.formData)
+      const { name, id } = this.formData;
+      if (!name) {
+        mpvue.showToast({
+          title: '请输入姓名',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      } else if (!id) {
+        mpvue.showToast({
+          title: '请输入身份证号码',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      } else {
+        const { pass, msg } = IdCodeValid(id);
+        if (!pass) {
+          mpvue.showToast({
+            title: msg,
+            icon: 'none',
+            duration: 2000
+          })
+          return;
+        }
+      }
+      this.$http.request('put', 'user/idCard', { id_card: id, user_name: name }).then(({ code, resource, message }) => {
+        if (code === 200) {
+          mpvue.showToast({
+            title: '认证成功',
+            icon: 'success',
+            duration: 2000,
+            success() {
+              mpvue.redirectTo({
+                url: '../my_info/main'
+              })
+            }
+          })
+        } else {
+          mpvue.showToast({
+            title: message,
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
     }
-  },
-
-  created() {
   }
 }
 </script>
@@ -110,7 +161,7 @@ export default {
     .select-icon {
       width: 11px;
       height: 7px;
-      display:block;
+      display: block;
     }
     .select-value {
       font-size: 16px;

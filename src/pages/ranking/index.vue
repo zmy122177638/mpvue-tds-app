@@ -92,8 +92,8 @@
         class="ranking-self"
         v-if="queryData.category === 'shop'"
       >
-        <div class="ranking-rknum">我的小店排名: <span>No.{{my_ranking.ranking}}</span></div>
-        <div class="ranking-rkmoney">金额: {{my_ranking.score}}</div>
+        <div class="ranking-rknum">我的小店排名: <span>{{'No.'+(my_ranking.ranking || 0)}}</span></div>
+        <div class="ranking-rkmoney">金额: {{my_ranking.score || 0}}</div>
       </div>
     </scroll-view>
   </section>

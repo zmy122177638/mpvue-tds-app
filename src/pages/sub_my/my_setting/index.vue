@@ -33,7 +33,7 @@
           <div class="item-label">我的邀请人</div>
         </div>
         <div class="item-right">
-          <div class="item-value">三千零一页</div>
+          <div class="item-value">{{userInfo.upper_name}}</div>
           <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
@@ -45,11 +45,11 @@
           <div class="item-label">绑定微信</div>
         </div>
         <div class="item-right">
-          <div class="item-value">江湖一点光</div>
-          <img
+          <div class="item-value">{{userInfo.nickname}}</div>
+          <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
-          />
+          /> -->
         </div>
       </div>
       <div
@@ -71,7 +71,7 @@
     <!-- 授权书弹窗 -->
     <Tds-public-popup v-model="isShow">
       <img
-        src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2153937626,1074119156&fm=27&gp=0.jpg"
+        :src="userInfo.letter_of_authorization"
         style="width:100%;"
         alt=""
       >
@@ -103,11 +103,16 @@ export default {
       })
     },
     handleAuthorizeChange() {
-      this.isShow = !this.isShow;
+      if (this.userInfo.type) {
+        this.isShow = !this.isShow;
+      } else {
+        mpvue.showToast({
+          title: '赞未获得授权书，快去成为团长吧',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     }
-  },
-
-  created() {
   }
 }
 </script>
@@ -142,6 +147,10 @@ export default {
       justify-content: flex-end;
       align-items: center;
       .item-value {
+        overflow: hidden;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         font-size: 15px;
         color: #b1b1b1;
       }

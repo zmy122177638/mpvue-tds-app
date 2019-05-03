@@ -200,7 +200,7 @@ export default {
                 duration: 2000,
                 success() {
                   mpvue.switchTab({
-                    url: '../my/main'
+                    url: '../my/main?refresh=1'
                   })
                 }
               })

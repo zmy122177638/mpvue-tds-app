@@ -28,12 +28,15 @@
           /> -->
         </div>
       </div>
-      <div class="setting-item">
+      <div
+        class="setting-item"
+        @click="navigateTowechatID"
+      >
         <div class="item-left">
           <div class="item-label">微信号</div>
         </div>
         <div class="item-right">
-          <div class="item-value">wdd001</div>
+          <div class="item-value">{{userInfo.wechat_number}}</div>
           <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
@@ -48,48 +51,56 @@
           <div class="item-label">实名认证</div>
         </div>
         <div class="item-right">
-          <div class="item-value">未实名</div>
+          <div
+            class="item-value"
+            v-if="!userInfo.is_real_check"
+          >未认证</div>
+          <div
+            class="item-value"
+            v-else
+            style="color:#FF6666"
+          >已认证</div>
           <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
           />
         </div>
       </div>
-      <picker
+      <!-- <picker
         @change="selectSexChange"
         :value="sexActive"
         :range="sexList"
-      >
-        <div class="setting-item">
-          <div class="item-left">
-            <div class="item-label">性别</div>
-          </div>
-          <div class="item-right">
-            <div class="item-value">{{sexList[sexActive]}}</div>
-            <img
+      > -->
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">性别</div>
+        </div>
+        <div class="item-right">
+          <div class="item-value">{{userInfo.sex === 2 ? '女' : '男'}}</div>
+          <!-- <img
               src="../../../../static/images/ToRightGray_iCon.png"
               class="item-more-icon"
-            />
-          </div>
+            /> -->
         </div>
-      </picker>
-      <picker
+      </div>
+      <!-- </picker> -->
+      <!-- <picker
         mode="region"
         @change="selectAddressChange"
-      >
-        <div class="setting-item">
-          <div class="item-left">
-            <div class="item-label">所在地区</div>
-          </div>
-          <div class="item-right">
-            <div class="item-value">{{region}}</div>
-            <img
+      > -->
+      <div class="setting-item">
+        <div class="item-left">
+          <div class="item-label">所在地区</div>
+        </div>
+        <div class="item-right">
+          <div class="item-value">{{region}}</div>
+          <!-- <img
               src="../../../../static/images/ToRightGray_iCon.png"
               class="item-more-icon"
-            />
-          </div>
+            /> -->
         </div>
-      </picker>
+      </div>
+      <!-- </picker> -->
     </div>
   </section>
 </template>
@@ -98,8 +109,6 @@
 export default {
   data() {
     return {
-      // 是否验证
-      isAttestation: true,
       // 性别列表
       sexList: ['女', '男'],
       // 选中性别index
@@ -114,7 +123,28 @@ export default {
   computed: {
     userInfo() {
       return this.$store.state.userInfo
+    },
+    sharerInfo() {
+      return this.$store.state.sharerInfo
     }
+  },
+  onShow() {
+    this.$http.request('get', 'user/getBaseInfo', { uid: this.userInfo.id }).then(({ code, resource }) => {
+      // 重新存入
+      if (code === 200) {
+        // 如果分享人id和用户id是一致，同步信息
+        if (this.sharerInfo.id === resource.id) {
+          this.$store.commit('writeSharerInfo', { sharerInfo: { ...resource } })
+        }
+        this.$store.commit('writeUserInfo', { userInfo: { ...resource } })
+      } else {
+        mpvue.showToast({
+          title: '获取用户信息失败',
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
   },
   methods: {
     /**
@@ -132,11 +162,20 @@ export default {
       this.region = ev.target.value;
     },
     /**
+     * @description: 绑定微信id
+     * @Date: 2019-05-03 14:56:45
+     */
+    navigateTowechatID() {
+      mpvue.navigateTo({
+        url: '../my_info_input/main'
+      })
+    },
+    /**
      * @description: 身份认证
      * @Date: 2019-04-25 17:39:35
      */
     navigateToAttestation() {
-      if (this.isAttestation) {
+      if (this.userInfo.is_real_check) {
         mpvue.navigateTo({
           url: '../my_attestation/main'
         })
@@ -174,12 +213,16 @@ export default {
     }
     .item-right {
       flex: 1;
-      overflow: hidden;
       display: flex;
       justify-content: flex-end;
       align-items: center;
+      overflow: hidden;
       .item-value {
         font-size: 15px;
+        overflow: hidden;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         color: #b1b1b1;
       }
       .item-avator {

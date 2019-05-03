@@ -3,22 +3,22 @@
     <!-- 开店 -->
     <kaidianYouliBtn></kaidianYouliBtn>
     <!-- 用户信息 -->
-    <div :class="['my-info-box',{'vip':infoData.vip_level}]">
-      <div :class="['my-info',{'vip':infoData.vip_level}]">
+    <div :class="['my-info-box',{'vip':userInfo.vip_level}]">
+      <div :class="['my-info',{'vip':userInfo.vip_level}]">
         <div class="my-info-left">
           <img
-            :src="infoData.headimgurl"
+            :src="userInfo.headimgurl"
             class="my-img"
             alt=""
           >
           <div class="my-show">
-            <div class="my-name">{{infoData.nickname}}</div>
+            <div class="my-name">{{userInfo.nickname}}</div>
             <div
               class="my-status"
-              v-if="!infoData.vip_level"
+              v-if="!userInfo.vip_level"
             >普通用户</div>
             <div
-              :class="['my-status-icon','vip0'+infoData.vip_level]"
+              :class="['my-status-icon','vip0'+userInfo.vip_level]"
               v-else
             ></div>
           </div>
@@ -310,18 +310,41 @@ export default {
       }
     }
   },
-  mounted() {
+  onShow(options) {
     this.getMyInfo();
   },
   computed: {
-
+    userInfo() {
+      return this.$store.state.userInfo
+    },
+    sharerInfo() {
+      return this.$store.state.sharerInfo
+    }
   },
   methods: {
-    getMyInfo() {
-      this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
-        console.log(resource)
+    async getMyInfo() {
+      await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
         if (code === 200) {
           this.infoData = resource;
+        } else {
+          mpvue.showToast({
+            title: '获取失败',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+      await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }).then(({ code, resource }) => {
+        console.log(resource)
+        // 重新存入
+        if (code === 200) {
+          // 重新写入
+          console.log(resource)
+          // 如果分享人id和用户id是一致，同步信息
+          if (this.sharerInfo.id === resource.id) {
+            this.$store.commit('writeSharerInfo', { sharerInfo: {...resource} })
+          }
+          this.$store.commit('writeUserInfo', { userInfo: {...resource} })
         } else {
           mpvue.showToast({
             title: '获取用户信息失败',
@@ -452,7 +475,6 @@ img {
           font-size: 12px;
           text-align: center;
         }
-        
       }
     }
     .my-upgrade {

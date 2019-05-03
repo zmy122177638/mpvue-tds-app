@@ -5,17 +5,17 @@
         <slot name="left">
           <div class="tds-header-figure">
             <img
-              :src="userInfo.headimgurl"
+              :src="sharerInfo.headimgurl"
               class="tds-header-img"
               alt=""
             >
-            <div class="user-grade">{{userInfo.shop_level}}</div>
+            <div class="user-grade">{{sharerInfo.shop_level}}</div>
           </div>
 
           <h2
             class="tds-header-shopname"
-            v-if="userInfo.is_real_check"
-          ><span class="tds-header-name">{{userInfo.nickname}}</span>的团大师小店</h2>
+            v-if="sharerInfo.is_real_check"
+          ><span class="tds-header-name">{{sharerInfo.user_name}}</span>的团大师小店</h2>
           <h2
             class="tds-header-shopname"
             v-else
@@ -24,7 +24,7 @@
       </div>
       <div class="tds-header-right">
         <slot name="right">
-          <div :class="['my-status-icon','vip0'+userInfo.vip_level]"></div>
+          <div :class="['my-status-icon','vip0'+sharerInfo.vip_level]"></div>
         </slot>
       </div>
     </div>
@@ -34,8 +34,8 @@
 <script>
 export default {
   computed: {
-    userInfo() {
-      return this.$store.state.userInfo
+    sharerInfo() {
+      return this.$store.state.sharerInfo
     }
   }
 }
