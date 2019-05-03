@@ -31,7 +31,8 @@
         "my_setting/main",
         "my_info/main",
         "my_attestation/main",
-        "my_attestation_no/main"
+        "my_attestation_no/main",
+        "my_info_input/main"
       ]
     }
   ],

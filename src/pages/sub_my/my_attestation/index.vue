@@ -9,13 +9,13 @@
         >
         <div class="item-info">
           <img
-            src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3544639926,1213429070&fm=27&gp=0.jpg"
+            :src="userInfo.headimgurl"
             class="item-avator"
             alt=""
           >
-          <div class="item-name">王多多</div>
+          <div class="item-name">{{userInfo.user_name}}</div>
         </div>
-        <p class="item-num">证件号码: 4**********************6</p>
+        <p class="item-num">证件号码: {{userInfo.id_card}}</p>
         <p class="item-point">个人隐私信息安全保障中</p>
       </div>
     </div>
@@ -26,11 +26,11 @@
           <div class="item-label">姓名</div>
         </div>
         <div class="item-right">
-          <div class="item-value">王多多</div>
-          <img
+          <div class="item-value">{{userInfo.user_name}}</div>
+          <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
-          />
+          /> -->
         </div>
       </div>
       <div class="setting-item">
@@ -39,10 +39,10 @@
         </div>
         <div class="item-right">
           <div class="item-value">身份证</div>
-          <img
+          <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
-          />
+          /> -->
         </div>
       </div>
     </div>
@@ -54,14 +54,12 @@ export default {
   data() {
     return {}
   },
-
-  components: {
-  },
-
-  methods: {},
-
-  created() {
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
   }
+
 }
 </script>
 

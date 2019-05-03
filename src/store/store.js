@@ -42,7 +42,9 @@ const store = new Vuex.Store({
       return state.sharerInfo.vip_level === 0 ? false : state.sharerInfo.vip_level;
     }
   },
-  actions: {},
+  actions: {
+
+  },
   // 设置store本地存储,这里使用的是微信同步本地读写方式
   plugins: [
     createPersistedState({
