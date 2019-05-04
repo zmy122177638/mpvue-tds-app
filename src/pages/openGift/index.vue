@@ -200,7 +200,7 @@ export default {
                 duration: 2000,
                 success() {
                   mpvue.switchTab({
-                    url: '../my/main?refresh=1'
+                    url: '../my/main'
                   })
                 }
               })
@@ -303,7 +303,6 @@ export default {
     // 成为团长
     handlePayChange() {
       if (this.isAgreement) {
-        console.log(this.inviteNum)
         if (!this.inviteNum) {
           mpvue.showToast({
             title: '请输入邀请码',

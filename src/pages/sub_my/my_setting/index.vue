@@ -107,7 +107,7 @@ export default {
         this.isShow = !this.isShow;
       } else {
         mpvue.showToast({
-          title: '赞未获得授权书，快去成为团长吧',
+          title: '未获得授权书，快去成为团长吧',
           icon: 'none',
           duration: 2000
         })

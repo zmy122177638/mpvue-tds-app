@@ -8,16 +8,18 @@
       v-show="isMask"
       @click="isMaskClick?isShow = !isShow:null"
     ></div>
-    <div class="popup-wrapper" :style="'width:' + width">
-      <div
-        v-if="!isClose"
-        class="popup-close"
-        @click="isShow = !isShow"
-      >
-        <span class="popup-close-l"></span>
-        <span class="popup-close-l"></span>
-      </div>
+    <div class="popup-wrapper">
       <slot>
+        <div class="popup-title">您还未实名认证</div>
+        <div class="popup-content">
+          <p class="popup-p">您和赚钱之间的距离只差一个实名认证！实名认证后才能分享商品和销售开店礼包赚钱!</p>
+
+          <!-- btn -->
+          <div
+            class="popup-btn"
+            @click="navigateToAttestation"
+          >去实名</div>
+        </div>
       </slot>
     </div>
   </section>
@@ -32,10 +34,6 @@ export default {
       type: Boolean,
       default: false
     },
-    width: {
-      type: String,
-      default: '90%'
-    },
     // 是否显示mask
     isMask: {
       type: Boolean,
@@ -43,11 +41,6 @@ export default {
     },
     // 是否开启mask事件关闭
     isMaskClick: {
-      type: Boolean,
-      default: false
-    },
-    // 是否关闭close
-    isClose: {
       type: Boolean,
       default: false
     }
@@ -60,6 +53,13 @@ export default {
       set(val) {
         this.$emit('input', val)
       }
+    }
+  },
+  methods: {
+    navigateToAttestation() {
+      mpvue.navigateTo(
+        { url: '../../pages/sub_my/my_attestation_no/main' }
+      )
     }
   }
 }
@@ -88,38 +88,16 @@ export default {
   }
   .popup-wrapper {
     transition: all 0.3s;
-    width: 90%;
+    width: 80%;
+    border-radius: 18px;
     position: absolute;
     box-sizing: border-box;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    padding: 40px 15px 15px;
+    padding: 30px 15px 15px;
     background-color: #fff;
-    border-radius: 6px;
     overflow: hidden;
-    .popup-close {
-      width: 18px;
-      height: 18px;
-      position: absolute;
-      right: 20px;
-      top: 15px;
-      overflow: hidden;
-      .popup-close-l {
-        width: 100%;
-        height: 1px;
-        background-color: #282828;
-        border-radius: 17px;
-        left: 0;
-        right: 0;
-        top: 9px;
-        position: absolute;
-        transform: rotate(-45deg);
-        &:nth-last-child(1) {
-          transform: rotate(45deg);
-        }
-      }
-    }
   }
   &.on {
     .popup-bg {
@@ -147,4 +125,31 @@ export default {
     }
   }
 }
+.popup-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #282828;
+  text-align: center;
+}
+.popup-content {
+  padding: 30px 15px 0;
+}
+.popup-p {
+  font-size: 16px;
+  color: #252525;
+  line-height: 30px;
+}
+.popup-btn {
+  margin: 40px 0 15px;
+  height: 39px;
+  line-height: 39px;
+  text-align: center;
+  color: #fff;
+  width: 100%;
+  font-size: 15px;
+  background-color: #ff6666;
+  box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+  border-radius: 22px;
+}
 </style>
+

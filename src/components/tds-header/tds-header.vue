@@ -14,12 +14,17 @@
 
           <h2
             class="tds-header-shopname"
-            v-if="sharerInfo.is_real_check"
+            v-if="sharerInfo.is_real_check && sharerInfo.type"
           ><span class="tds-header-name">{{sharerInfo.user_name}}</span>的团大师小店</h2>
+
+          <h2
+            class="tds-header-shopname"
+            v-else-if="sharerInfo.type"
+          >未实名</h2>
           <h2
             class="tds-header-shopname"
             v-else
-          >未实名</h2>
+          >你还没有店铺哦</h2>
         </slot>
       </div>
       <div class="tds-header-right">
