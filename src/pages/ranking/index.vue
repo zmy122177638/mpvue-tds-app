@@ -90,7 +90,7 @@
       <!-- 悬浮店铺排名 -->
       <div
         class="ranking-self"
-        v-if="queryData.category === 'shop'"
+        v-if="queryData.category === 'shop' && my_ranking.ranking"
       >
         <div class="ranking-rknum">我的小店排名: <span>{{'No.'+(my_ranking.ranking || 0)}}</span></div>
         <div class="ranking-rkmoney">金额: {{my_ranking.score || 0}}</div>
@@ -107,8 +107,8 @@ export default {
     return {
       // category 排行类别  timeDay 排行时间
       queryData: {
-        category: 'shop',
-        timeDay: 'yesterday'
+        category: 'goods',
+        timeDay: 'month'
       },
       // scrollTop位置
       scrollTopNum: '',

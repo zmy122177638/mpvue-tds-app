@@ -293,19 +293,25 @@
         </div>
       </div>
     </scroll-view>
+    <!-- 认证弹窗 -->
+    <Tds-attestation-popup v-model="isShowAttestPopup"></Tds-attestation-popup>
   </section>
 </template>
 
 <script>
 import kaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn'
+import TdsAttestationPopup from '@/components/tds-popup/tds-attestation-popup.vue'
 export default {
   components: {
-    kaidianYouliBtn
+    kaidianYouliBtn,
+    TdsAttestationPopup
   },
   data() {
     return {
       infoData: {
+        // 订单数
         order_pending: {},
+        // 本月销售数据
         current_month_shop: {}
       }
     }
@@ -314,14 +320,21 @@ export default {
     this.getMyInfo();
   },
   computed: {
+    // 用户信息
     userInfo() {
       return this.$store.state.userInfo
     },
+    // 分享人信息
     sharerInfo() {
       return this.$store.state.sharerInfo
+    },
+    // 是否完成开店任务，否则必须实名制
+    isShowAttestPopup() {
+      return (this.$store.state.userInfo.type && !this.$store.state.userInfo.is_real_check)
     }
   },
   methods: {
+    // 获取用户信息
     async getMyInfo() {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
         if (code === 200) {
@@ -335,16 +348,17 @@ export default {
         }
       })
       await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }).then(({ code, resource }) => {
-        console.log(resource)
         // 重新存入
         if (code === 200) {
           // 重新写入
           console.log(resource)
           // 如果分享人id和用户id是一致，同步信息
           if (this.sharerInfo.id === resource.id) {
-            this.$store.commit('writeSharerInfo', { sharerInfo: {...resource} })
+            this.$store.commit('writeSharerInfo', { sharerInfo: { ...resource } })
           }
-          this.$store.commit('writeUserInfo', { userInfo: {...resource} })
+          this.$store.commit('writeUserInfo', { userInfo: { ...resource } })
+
+          // 是否认证
         } else {
           mpvue.showToast({
             title: '获取用户信息失败',

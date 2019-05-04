@@ -93,7 +93,7 @@
           <div class="item-label">所在地区</div>
         </div>
         <div class="item-right">
-          <div class="item-value">{{region}}</div>
+          <div class="item-value">{{userInfo.province+ ' ' +userInfo.city}}</div>
           <!-- <img
               src="../../../../static/images/ToRightGray_iCon.png"
               class="item-more-icon"

@@ -11,7 +11,7 @@ export default {
      * 支付宝(蚂蚁)：mpvue === my, mpvuePlatform === 'my'
      */
   },
-  onLaunch (options) {
+  onLaunch(options) {
     // 如果token
     // if (this.$store.state.token) {
     //   this.$http.token = this.$store.state.token;
