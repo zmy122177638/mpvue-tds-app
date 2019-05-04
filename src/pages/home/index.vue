@@ -1,10 +1,16 @@
 <template>
   <section class="container">
-    <section class="top">
+    <section
+      class="top"
+      v-if="sharerInfo.type"
+    >
       <tds-header></tds-header>
     </section>
     <section class="main">
-      <section class="top-kong"></section>
+      <section
+        class="top-kong"
+        v-if="sharerInfo.type"
+      ></section>
       <section class="ban-1">
         <lunbo-images
           :hasLink="true"
@@ -154,6 +160,12 @@ export default {
       group: {},
       // 爆品返场
       encore: {}
+    }
+  },
+  computed: {
+    // 分享人信息
+    sharerInfo() {
+      return this.$store.state.sharerInfo
     }
   },
   onShow() {

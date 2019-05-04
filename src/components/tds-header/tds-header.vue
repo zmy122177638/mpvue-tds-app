@@ -1,5 +1,8 @@
 <template>
-  <header class="tds-header">
+  <header
+    class="tds-header"
+    v-if="sharerInfo.type"
+  >
     <div class="tds-header-box">
       <div class="tds-header-left">
         <slot name="left">
@@ -21,10 +24,6 @@
             class="tds-header-shopname"
             v-else-if="sharerInfo.type"
           >未实名</h2>
-          <h2
-            class="tds-header-shopname"
-            v-else
-          >你还没有店铺哦</h2>
         </slot>
       </div>
       <div class="tds-header-right">
