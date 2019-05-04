@@ -115,7 +115,10 @@
     <kaidian-youli-btn></kaidian-youli-btn>
 
     <!--分享页面返回之后，判断当前用户是否不等于分享人，而且当前用户是普通用户时显示 返回我的小店按钮-->
-    <section class="back-my-shop" v-if="isShowBackMyShopBtn"></section>
+    <section
+      class="back-my-shop"
+      v-if="isShowBackMyShopBtn"
+    ></section>
 
   </section>
 </template>
@@ -127,94 +130,6 @@ import ActiveLunboMsg from '@/components/activeLunboMsg/ActiveLunboMsg.vue'
 import PruductItem from '@/components/productItem/ProductItem.vue'
 import KaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn.vue'
 
-  export default {
-    components: {
-      TdsHeader,
-      LunboImages,
-      ActiveLunboMsg,
-      PruductItem,
-      KaidianYouliBtn
-    },
-    data () {
-      return {
-        // 顶部轮播图数据数组
-        linkImgUrls: [],
-        // 商品分类按钮信息
-        typeInfoList: [],
-        // 最新动态氖数组
-        newActiveData: [],
-        // 引流特供数据
-        special: {},
-        // 今日团品数据
-        regiment: {},
-        // 好物拼团
-        group: {},
-        // 爆品返场
-        encore: {}
-      }
-    },
-    methods: {
-      // 判断是否显示返回我的小店按钮
-      isShowBackMyShopBtn () {
-        // 判断当前用户是否不等于分享人，而且当前用户是vip用户时显示 返回我的小店按钮
-       let userId = this.$store.state.userInfo.id;
-       let shareId = this.$store.state.sharerInfo.id;
-       return userId !== shareId ? (this.$store.state.getters.isVip) : false;
-      },
-      // 板块分类点击响应
-      handleClickGo (i, path, param) {
-        // type== 1：引流，2,：团品，3：拼团，4：返场
-        if (i === 2 || i === 3) {
-          mpvue.showToast({
-            title: '此功能未开通',
-            icon: 'none'
-          })
-          return
-        }
-        let url = path + '?' + param;
-        console.log(url)
-        mpvue.navigateTo({url: url})
-      },
-      // 跳转到明日预告页面响应
-      handleToTomorrowPage () {
-        mpvue.navigateTo({
-          url: '/pages/tomorrowProducts/main'
-        })
-      },
-      // 获取商品列表数据
-      getAllPruductsData () {
-        this.$http.get('goods/list')
-          .then(res => {
-            // console.log('返回的数据：');
-            // console.log(res);
-            // 数据替换
-            this.special = res.resource.special;
-            this.regiment = res.resource.regiment;
-            this.group = res.resource.group;
-            this.encore = res.resource.encore;
-            // console.log('替换的数据：')
-            // console.log(this.regiment);
-          })
-      },
-      // 获取首页配置项：轮播图，分类按钮信息
-      getHomePageSetting () {
-        this.$http.get('conf/getIndexConf')
-          .then(res => {
-            // console.log('首页设置信息：：');
-            // console.log(res);
-            this.linkImgUrls = res.resource.banner;
-            this.typeInfoList = res.resource.lead;
-          })
-      },
-      // 获取最新动态数据
-      getNewActiveData () {
-        this.$http.get('getReleaseInfo')
-          .then(res => {
-            console.log('最新动态信息：');
-            console.log(res);
-            this.newActiveData = res.resource;
-          })
-=======
 export default {
   components: {
     TdsHeader,
@@ -229,6 +144,8 @@ export default {
       linkImgUrls: [],
       // 商品分类按钮信息
       typeInfoList: [],
+      // 最新动态氖数组
+      newActiveData: [],
       // 引流特供数据
       special: {},
       // 今日团品数据
@@ -240,6 +157,13 @@ export default {
     }
   },
   methods: {
+    // 判断是否显示返回我的小店按钮
+    isShowBackMyShopBtn() {
+      // 判断当前用户是否不等于分享人，而且当前用户是vip用户时显示 返回我的小店按钮
+      let userId = this.$store.state.userInfo.id;
+      let shareId = this.$store.state.sharerInfo.id;
+      return userId !== shareId ? (this.$store.state.getters.isVip) : false;
+    },
     // 板块分类点击响应
     handleClickGo(i, path, param) {
       // type== 1：引流，2,：团品，3：拼团，4：返场
@@ -249,39 +173,17 @@ export default {
           icon: 'none'
         })
         return
->>>>>>> 176f75491a8c78267facf56cebdceb9480f95995
       }
       let url = path + '?' + param;
       console.log(url)
       mpvue.navigateTo({ url: url })
     },
-    // 商品点击跳转到详情响应
-    handleGoDetail(i) {
-      console.log('跳转到详情')
-      mpvue.navigateTo({
-        url: '#?id=' + i
-      })
-    },
     // 跳转到明日预告页面响应
     handleToTomorrowPage() {
       mpvue.navigateTo({
-        url: '../tomorrowProducts/main'
+        url: '/pages/tomorrowProducts/main'
       })
     },
-<<<<<<< HEAD
-    onLoad () {
-      this.getHomePageSetting();
-      this.getAllPruductsData();
-      this.getNewActiveData();
-      console.log('用户登录信息--userInfo：');
-      console.log(this.$store.state.userInfo);
-      console.log('分享用户信息--sharerInfo：');
-      console.log(this.$store.state.sharerInfo);
-      console.log('用户登录信息--token：');
-      console.log(this.$store.state.token);
-      // console.log('获取菜单按钮位置信息：');
-      // console.log(mpvue.getMenuButtonBoundingClientRect());
-=======
     // 获取商品列表数据
     getAllPruductsData() {
       this.$http.get('goods/list')
@@ -296,7 +198,6 @@ export default {
           // console.log('替换的数据：')
           // console.log(this.regiment);
         })
->>>>>>> 176f75491a8c78267facf56cebdceb9480f95995
     },
     // 获取首页配置项：轮播图，分类按钮信息
     getHomePageSetting() {
@@ -307,23 +208,41 @@ export default {
           this.linkImgUrls = res.resource.banner;
           this.typeInfoList = res.resource.lead;
         })
+    },
+    // 获取最新动态数据
+    getNewActiveData() {
+      this.$http.get('getReleaseInfo')
+        .then(res => {
+          console.log('最新动态信息：');
+          console.log(res);
+          this.newActiveData = res.resource;
+        })
+    },
+
+    // 商品点击跳转到详情响应
+    handleGoDetail(i) {
+      console.log('跳转到详情')
+      mpvue.navigateTo({
+        url: '#?id=' + i
+      })
+    },
+    onShow() {
+    },
+    onLoad() {
+      this.getHomePageSetting();
+      this.getAllPruductsData();
+      this.getNewActiveData();
+      console.log('用户登录信息--userInfo：');
+      console.log(this.$store.state.userInfo);
+      console.log('分享用户信息--sharerInfo：');
+      console.log(this.$store.state.sharerInfo);
+      console.log('用户登录信息--token：');
+      console.log(this.$store.state.token);
+      // console.log('获取菜单按钮位置信息：');
+      // console.log(mpvue.getMenuButtonBoundingClientRect());
+    },
+    created() {
     }
-  },
-  onShow() {
-  },
-  onLoad() {
-    this.getHomePageSetting();
-    this.getAllPruductsData();
-    console.log('用户登录信息--userInfo：');
-    console.log(this.$store.state.userInfo);
-    console.log('分享用户信息--sharerInfo：');
-    console.log(this.$store.state.sharerInfo);
-    console.log('用户登录信息--token：');
-    console.log(this.$store.state.token);
-    // console.log('获取菜单按钮位置信息：');
-    // console.log(mpvue.getMenuButtonBoundingClientRect());
-  },
-  created() {
   }
 }
 </script>
