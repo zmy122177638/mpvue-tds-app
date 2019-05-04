@@ -22,7 +22,7 @@
             <p>动态</p>
           </div>
           <div class="active-right">
-            <active-lunbo-msg></active-lunbo-msg>
+            <active-lunbo-msg :mesList="newActiveData"></active-lunbo-msg>
           </div>
         </div>
       </section>
@@ -79,7 +79,7 @@
     <kaidian-youli-btn></kaidian-youli-btn>
 
     <!--分享页面返回之后，判断当前用户是否不等于分享人，而且当前用户是普通用户时显示 返回我的小店按钮-->
-    <!--<section class="back-my-shop"></section>-->
+    <section class="back-my-shop" v-if="isShowBackMyShopBtn"></section>
 
   </section>
 </template>
@@ -105,6 +105,8 @@
         linkImgUrls: [],
         // 商品分类按钮信息
         typeInfoList: [],
+        // 最新动态氖数组
+        newActiveData: [],
         // 引流特供数据
         special: {},
         // 今日团品数据
@@ -116,6 +118,13 @@
       }
     },
     methods: {
+      // 判断是否显示返回我的小店按钮
+      isShowBackMyShopBtn () {
+        // 判断当前用户是否不等于分享人，而且当前用户是vip用户时显示 返回我的小店按钮
+       let userId = this.$store.state.userInfo.id;
+       let shareId = this.$store.state.sharerInfo.id;
+       return userId !== shareId ? (this.$store.state.getters.isVip) : false;
+      },
       // 板块分类点击响应
       handleClickGo (i, path, param) {
         // type== 1：引流，2,：团品，3：拼团，4：返场
@@ -130,17 +139,10 @@
         console.log(url)
         mpvue.navigateTo({url: url})
       },
-      // 商品点击跳转到详情响应
-      handleGoDetail (i) {
-        console.log('跳转到详情')
-        mpvue.navigateTo({
-          url: '#?id=' + i
-        })
-      },
       // 跳转到明日预告页面响应
       handleToTomorrowPage () {
         mpvue.navigateTo({
-          url: '../tomorrowProducts/main'
+          url: '/pages/tomorrowProducts/main'
         })
       },
       // 获取商品列表数据
@@ -167,6 +169,15 @@
             this.linkImgUrls = res.resource.banner;
             this.typeInfoList = res.resource.lead;
           })
+      },
+      // 获取最新动态数据
+      getNewActiveData () {
+        this.$http.get('getReleaseInfo')
+          .then(res => {
+            console.log('最新动态信息：');
+            console.log(res);
+            this.newActiveData = res.resource;
+          })
       }
     },
     onShow () {
@@ -174,6 +185,7 @@
     onLoad () {
       this.getHomePageSetting();
       this.getAllPruductsData();
+      this.getNewActiveData();
       console.log('用户登录信息--userInfo：');
       console.log(this.$store.state.userInfo);
       console.log('分享用户信息--sharerInfo：');

@@ -2,6 +2,7 @@
   <section class="main">
     <div class="meng"></div>
     <swiper
+      v-if="messageList.length > 0 "
       style="height: 120rpx;"
       :indicator-dots="indicatorDots"
       :indicator-color="indicatorColor"
@@ -18,11 +19,15 @@
       @change="handleSwiperChange"
     >
       <block v-for="(item,i) in messageList" :key="i">
-        <swiper-item :item-id="i" catchtouchmove="stopSwiper" >
-          <p class="row"><span class="name">{{item.name}}</span><span>{{item.des}}</span></p>
+        <swiper-item :item-id="i" catchtouchmove="stopSwiper">
+          <div class="content">
+            <div class="row"><span class="name">{{item.name}}</span><span>{{item.desc}}</span></div>
+            <div class="row"><span class="name">{{item.upper_name}}</span><span>{{item.upper_desc}}</span></div>
+          </div>
         </swiper-item>
       </block>
     </swiper>
+    <section class="no-data" v-else>未有最新动态</section>
   </section>
 </template>
 
@@ -30,43 +35,14 @@
   export default {
     name: 'ActiveLunboMsg',
     props: {
+      mesList: {
+        type: Array,
+        required: true
+      }
     },
     data () {
       return {
-        messageList: [
-          {
-            name: '唐伯虎点蚊香',
-            des: '111111111111过会儿过去而各大水电费好气哦让单反噶水电费噶的说法大声地'
-          },
-          {
-            name: '嘎达是打芬',
-            des: '22222222222222会玩儿童玩儿过水电费感受到法国'
-          },
-          {
-            name: '课题研究儿童画',
-            des: '33333333333333开始是大法官杀人放火委托函胜多负少的，阿哈尔'
-          },
-          {
-            name: '我听不出v',
-            des: '444444444444444444将儿童房VB百度翻译而体育课'
-          },
-          {
-            name: '金田一做',
-            des: '55555555555555红烧豆腐给我讨厌你收到货'
-          },
-          {
-            name: '好气儿',
-            des: '666666666666666红烧豆腐给我讨厌你收到货'
-          },
-          {
-            name: '我二姨太温柔风格',
-            des: '7777777777777777777红烧豆腐给我讨厌你收到货'
-          },
-          {
-            name: '名人堂有句话叫',
-            des: '888888888888888888888红烧豆腐给我讨厌你收到货'
-          }
-        ],
+        messageList: this.mesList,
         // 是否显示指示点
         indicatorDots: false,
         // 指示点颜色
@@ -78,7 +54,7 @@
         // 是否自动播放
         autoplay: true,
         // 切换间隔时间
-        interval: 2000,
+        interval: 4000,
         // 滑动动画时长
         duration: 1000,
         // 是否采用衔接滑动
@@ -86,7 +62,7 @@
         // 滑动方向是否为纵向
         vertical: true,
         // 同时显示的滑块数量
-        displayMultipleItems: 2,
+        displayMultipleItems: 1,
         // 前边距，可露出前一项的一小部分，px或rpx
         previousMargin: '0rpx',
         // 后边距，可露出后一项的一小部分，px或rpx
@@ -95,24 +71,10 @@
         twoActive: true
       }
     },
-    methods: {
-      handleTouchMove () {
-      //  无用
-      },
-      handleSwiperChange (detail) {
-        let len = this.messageList.length;
-        if (detail.target.current !== len - 1) {
-          // console.log('进来了')
-          if (this.twoActive) {
-            this.current = detail.target.current + 1;
-          }
-        } else {
-          // console.log('滑块改变的值：');
-          // console.log(detail.target.current);
-          // console.log(len - detail.target.current - 1)
-          this.current = 0;
-        }
-        this.twoActive = !this.twoActive;
+    methods: {},
+    watch: {
+      mesList: function (val) {
+        this.messageList = val;
       }
     },
     // 禁止滑块手势滑动
@@ -135,18 +97,33 @@
       background: rgba(0,0,0,0);
       z-index: 999;
     }
-    .row{
+    .content{
       width: 100%;
-      line-height: 60rpx;
-      overflow: hidden;
-      -ms-text-overflow: ellipsis;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      .name{
-        color: #FF6666;
-        margin-right: 20rpx;
+      height: 100%;
+      .row{
+        width: 100%;
+        line-height: 60rpx;
+        height:60rpx;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .name{
+          color: #FF6666;
+          margin-right: 20rpx;
+        }
       }
     }
+    .no-data{
+      width: 100%;
+      height: 120rpx;
+      line-height: 120rpx;
+      text-align: center;
+      color: #BCBCBC;
+      letter-spacing: 4rpx;
+      font-size: 30rpx;
+    }
+
   }
 
 </style>

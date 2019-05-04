@@ -131,7 +131,8 @@ export default {
     handleGoDetail(id) {
       console.log('跳转到详情');
       mpvue.navigateTo({
-        url: '../productDetail/main?goods_id=' + id
+        // url: '../productDetail/main?goods_id=' + id
+        url: '/pages/productDetail/main?goods_id=' + id
       })
     },
     // 返场投票点击
