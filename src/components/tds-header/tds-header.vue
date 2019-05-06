@@ -77,6 +77,8 @@ export default {
       display: block;
       width: 44px;
       height: 44px;
+      background: url('../../../static/images/AvatarNull.png') no-repeat;
+      background-size: 100% 100%;
       border-radius: 50%;
     }
     .tds-header-shopname {

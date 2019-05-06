@@ -230,6 +230,8 @@ export default {
         height: 39px;
         border-radius: 50%;
         display: block;
+        background: url('../../../../static/images/AvatarNull.png') no-repeat;
+        background-size: 100% 100%;
       }
       .item-more-icon {
         width: 7px;

@@ -4,7 +4,8 @@
     <kaidianYouliBtn
       :isYqylShow="true"
       :userIsVip="userInfo.type"
-      @click-btn="handleClickBtn">
+      @click-btn="handleClickBtn"
+    >
     </kaidianYouliBtn>
     <!-- 用户信息 -->
     <div :class="['my-info-box',{'vip':userInfo.vip_level}]">
@@ -339,7 +340,7 @@ export default {
   },
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
-    handleClickBtn () {
+    handleClickBtn() {
       console.log('父组件响应')
     },
     // 获取用户信息
@@ -472,6 +473,9 @@ img {
         height: 54px;
         border-radius: 50%;
         margin-right: 20px;
+        display: block;
+        background: url('../../../static/images/AvatarNull.png') no-repeat;
+        background-size: 100% 100%;
       }
       .my-show {
         flex: 1;
@@ -596,6 +600,8 @@ img {
             top: 50%;
             margin-top: -11px;
             box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+            background: url('../../../static/images/AvatarNull.png') no-repeat;
+            background-size: 100% 100%;
           }
           .user-money {
             font-size: 10px;
