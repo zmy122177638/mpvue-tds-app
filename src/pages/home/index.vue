@@ -190,8 +190,8 @@ export default {
     // console.log(this.$store.state.userInfo);
     // console.log('分享用户信息--sharerInfo：');
     // console.log(this.$store.state.sharerInfo);
-    // console.log('用户登录信息--token：');
-    // console.log(this.$store.state.token);
+    console.log('用户登录信息--token：');
+    console.log(this.$store.state.token);
     // console.log('获取菜单按钮位置信息：');
     // console.log(mpvue.getMenuButtonBoundingClientRect());
   },
