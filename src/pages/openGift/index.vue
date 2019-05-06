@@ -175,12 +175,19 @@ export default {
       // 邀请码
       inviteNum: '',
       // 邀请人信息
-      inviteData: {}
+      inviteData: {},
+      // 是否可更换邀请人
+      isInputInviter: true
     }
   },
   onLoad(options) {
-    if (options.code) {
-
+    console.log(options)
+    // 如果携带邀请码执行
+    if (options && options.inviterId) {
+      // 禁止切换邀请人
+      this.isInputInviter = false;
+      // 获取携带人信息
+      this.getcodeInfo(options.inviterId)
     }
   },
   onShow() {
@@ -245,12 +252,12 @@ export default {
     },
     /**
      * @description: 获取邀请码用户信息
-     * @param {String} id  邀请码
+     * @param {String} inviteNum  邀请码
      * @Date: 2019-04-29 19:22:33
      */
-    getcodeInfo(id) {
-      if (this.inviteNum) {
-        this.$http.request('get', 'upgrades/' + id).then(({ code, resource }) => {
+    getcodeInfo(inviteNum) {
+      if (inviteNum) {
+        this.$http.request('get', 'upgrades/' + inviteNum).then(({ code, resource }) => {
           console.log(resource)
           if (code === 200) {
             this.inviteData = resource;
@@ -267,8 +274,11 @@ export default {
     },
     // 切换输入
     checkoutInput() {
-      this.isShowInfo = !this.isShowInfo;
-      this.autoFocus = true;
+      // 可编辑下执行
+      if (this.isInputInviter) {
+        this.isShowInfo = false;
+        this.autoFocus = true;
+      }
     },
     // swiper切换
     handleChange(e) {
@@ -392,24 +402,28 @@ export default {
   position: relative;
   width: 100%;
   height: 245px;
+  swiper-item {
+    overflow: initial;
+  }
   .item {
     transform: scale(0.9);
     transform-origin: 50% 50% 0px;
-    border-radius: 6px;
     opacity: 0.6;
+    border-radius: 6px;
+    overflow: hidden;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   }
   .active_item {
     transform: scale(1);
     opacity: 1;
     border-radius: 6px;
+    overflow: hidden;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
   }
   .goods-img {
     width: 100%;
     vertical-align: middle;
     height: 236px;
-    border-radius: 6px;
   }
 }
 

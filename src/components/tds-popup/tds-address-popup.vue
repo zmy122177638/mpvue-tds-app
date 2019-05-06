@@ -9,7 +9,7 @@
       @click="closePopupChange"
     ></div>
     <div class="address-popup-cont">
-      <div class="address-title">{{formData_v.use === 'add' ? '新增售后地址' : '修改售后地址'}}</div>
+      <div class="address-title">{{formData_v.use === 'add' ? '新增收货地址' : '修改收货地址'}}</div>
       <img
         src="../../../static/images/delete.png"
         class="address-close"
@@ -61,7 +61,8 @@
               placeholder="请输入详细街道、门牌号"
               :fixed="true"
               class="input-value02"
-              @input="getAddressStreet"
+              :contenteditable="true"
+              @blur="getAddressStreet($event)"
               :value="formData_v.address"
             />
             </div>
@@ -69,11 +70,11 @@
         <div class="address-info-item" v-if="tagList">
           <div class="item-label">标签</div>
           <div class="item-tag-list">
-            <div :class="['item-tag-item',{on:formData_v.tag === item}]" v-for="(item,index) in tagList" :key="index" @click="formData_v.tag === item?formData_v.tag = null:formData_v.tag = item">{{item}}</div>
+            <div :class="['item-tag-item',{on:formData_v.tag === item}]" v-for="(item,index) in tagList" :key="index" @tap="formData_v.tag === item?formData_v.tag = null:formData_v.tag = item">{{item}}</div>
           </div>
         </div>
       </div>
-      <div class="set-normal" @click="formData_v.is_default = !formData_v.is_default">
+      <div class="set-normal" @tap="formData_v.is_default = !formData_v.is_default">
         <img :src="'../../../static/images/select_'+(formData_v.is_default?'on':'no')+'.png'" class="set-icon"/>
         <span class="set-txt">设为默认</span>
       </div>
@@ -94,7 +95,7 @@ export default {
     },
     tagList: {
       type: Array,
-      default: null
+      default: ['家', '公司', '学校']
     },
     // tag 和 isNormal 必传
     data: {
@@ -162,6 +163,7 @@ export default {
      * @Date: 2019-04-22 16:33:27
      */
     getAddressStreet(e) {
+      console.log(e.target.value)
       this.formData_v.address = e.target.value;
     },
 
@@ -295,6 +297,7 @@ export default {
         }
         .input-value02 {
           font-size: 15px;
+          line-height: 1.4;
           color: #282828;
           padding: 11px 15px;
           box-sizing: border-box;
@@ -354,15 +357,15 @@ export default {
   }
   &.on {
     .address-popup-cont {
-      animation: movescale 0.35s ease-out;
+      animation: movescale 0.5s ease;
     }
   }
   @keyframes movescale {
     0% {
-      transform: translate3d(-50%, -70%, 0);
+      opacity: 0;
     }
     100% {
-      transform: translate3d(-50%, -50%, 0);
+      opacity: 1;
     }
   }
 }

@@ -87,13 +87,21 @@ export default {
   components: {
   },
   data() {
-    return {}
+    return {
+      // 邀请码
+      inviterId: ''
+    }
   },
-
+  onLoad(options) {
+    // 传递邀请码参数 inviterId
+    if (options && options.inviterId) {
+      this.inviterId = options.inviterId;
+    }
+  },
   methods: {
     openShopChange() {
       mpvue.navigateTo({
-        url: '../openGift/main'
+        url: `../openGift/main${this.inviterId ? `?inviterId=${this.inviterId}` : ''}`
       })
     }
   }
