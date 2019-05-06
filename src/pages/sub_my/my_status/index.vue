@@ -83,7 +83,12 @@ export default {
      * @Date: 2019-04-19 11:01:46
      */
     handleService() {
-      mpvue.navigateTo({ url: '../my_service/main?orderId=' + this.orderId })
+      mpvue.showToast({
+        title: '暂未开放',
+        icon: 'none',
+        duration: 2000
+      })
+      // mpvue.navigateTo({ url: '../my_service/main?orderId=' + this.orderId })
     },
     /**
      * @description: 修改收货地址

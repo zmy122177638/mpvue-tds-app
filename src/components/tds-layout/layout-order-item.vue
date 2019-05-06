@@ -10,7 +10,14 @@
     <div class="order-goods">
       <img
         :src="item.goods_image_url"
+        v-if="item.goods_image_url"
         class="goods-img"
+        alt=""
+      >
+      <img
+        src="../../../static/images/CommodityNull.png"
+        class="goods-img"
+        v-else
         alt=""
       >
       <div class="goods-info">

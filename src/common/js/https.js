@@ -10,8 +10,9 @@
 // 小程序跳转
 // 配置信息获取
 // 支付接口
-
 import store from '../../store/store';
+const path = require('path')
+console.log(path)
 class Https {
   constructor() {
     // 服务器baseUrl
@@ -202,7 +203,7 @@ class Https {
    */
   request(method, url, params = {}, config = {}) {
     // 是否显示loading
-    if (config && !config.ISLOADING) {
+    if (config && !config.ISLOADINGHIDE) {
       mpvue.showLoading({
         title: config.tip ? config.tip : '加载中'
       })
@@ -233,7 +234,7 @@ class Https {
             resolve(res.data);
           } else if (res.statusCode === 401) {
             mpvue.navigateTo({
-              url: '../../pages/start/main'
+              url: path.resolve(__dirname, '../../pages/start/main')
             })
             console.log('用户没有权限或token失效,需要跳转到登录页')
           } else {

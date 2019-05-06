@@ -17,6 +17,13 @@
       <img
         :src="item.goods_image_url"
         class="goods-img"
+        v-if="item.goods_image_url"
+        alt=""
+      >
+      <img
+        src="../../../static/images/CommodityNull.png"
+        class="goods-img"
+        v-else
         alt=""
       >
       <div class="goods-info">

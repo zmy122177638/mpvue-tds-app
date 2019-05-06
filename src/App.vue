@@ -52,6 +52,17 @@ page {
   color: transparent;
   display: none;
 }
+// 兼容低版本微信Bug input textarea
+[contenteditable='true'],
+input,
+textarea {
+  -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  -o-user-select: auto !important;
+  user-select: auto !important;
+}
 // vip等级公用
 .my-status-icon {
   width: 82px;

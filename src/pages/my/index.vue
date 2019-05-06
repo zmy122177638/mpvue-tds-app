@@ -355,7 +355,7 @@ export default {
           })
         }
       })
-      await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }).then(({ code, resource }) => {
+      await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }, { ISLOADINGHIDE: true }).then(({ code, resource }) => {
         // 重新存入
         if (code === 200) {
           // 重新写入

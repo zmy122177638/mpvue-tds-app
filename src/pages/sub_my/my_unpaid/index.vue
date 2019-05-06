@@ -47,8 +47,9 @@
               <textarea
                 :auto-height="false"
                 placeholder="请输入你的备注信息"
+                :contenteditable="true"
                 :value="remark"
-                @input="(ev)=>{remark = ev.target.value}"
+                @blur="(ev)=>{remark = ev.target.value}"
                 name="textarea"
               />
               </div>
