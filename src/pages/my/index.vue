@@ -1,7 +1,11 @@
 <template>
   <section class="my-container">
     <!-- 开店 -->
-    <kaidianYouliBtn></kaidianYouliBtn>
+    <kaidianYouliBtn
+      :isYqylShow="true"
+      :userIsVip="userInfo.type"
+      @click-btn="handleClickBtn">
+    </kaidianYouliBtn>
     <!-- 用户信息 -->
     <div :class="['my-info-box',{'vip':userInfo.vip_level}]">
       <div :class="['my-info',{'vip':userInfo.vip_level}]">
@@ -334,6 +338,10 @@ export default {
     }
   },
   methods: {
+    // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
+    handleClickBtn () {
+      console.log('父组件响应')
+    },
     // 获取用户信息
     async getMyInfo() {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {

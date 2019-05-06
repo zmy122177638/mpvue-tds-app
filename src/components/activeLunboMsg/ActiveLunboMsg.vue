@@ -16,10 +16,9 @@
       :display-multiple-items="displayMultipleItems"
       :previous-margin="previousMargin"
       :next-margin="nextMargin"
-      @change="handleSwiperChange"
     >
       <block v-for="(item,i) in messageList" :key="i">
-        <swiper-item :item-id="i" catchtouchmove="stopSwiper">
+        <swiper-item :item-id="i">
           <div class="content">
             <div class="row"><span class="name">{{item.name}}</span><span>{{item.desc}}</span></div>
             <div class="row"><span class="name">{{item.upper_name}}</span><span>{{item.upper_desc}}</span></div>
@@ -76,11 +75,6 @@
       mesList: function (val) {
         this.messageList = val;
       }
-    },
-    // 禁止滑块手势滑动
-    stopSwiper () {
-    //  使用这种方法有缺陷：滑动手势操作时，虽然不会产生滑动效果，但是会影响到自动滑动效果
-    //  所以换成了蒙版遮罩的方式实现
     }
   }
 </script>

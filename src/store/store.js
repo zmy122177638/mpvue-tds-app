@@ -35,11 +35,11 @@ const store = new Vuex.Store({
   getters: {
     // 判断用户是否为VIP会员，如果是返回会员等级，如果不是，返回false
     isVip(state) {
-      return state.userInfo.vip_level === 0 ? false : state.userInfo.vip_level;
+      return state.userInfo.type;
     },
     // 判断分享人是否为VIP会员，如果分享进入，则必然是VIP，若果是用户自己进入，因为用户不一定是会员，所以判断
     shareIsVip(state) {
-      return state.sharerInfo.vip_level === 0 ? false : state.sharerInfo.vip_level;
+      return state.sharerInfo.type;
     }
   },
   actions: {

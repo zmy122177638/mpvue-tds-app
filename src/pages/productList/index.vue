@@ -1,10 +1,10 @@
 <template>
   <section class="container">
-    <section class="top">
+    <section class="top"  v-if="sharerInfo.type">
       <tds-header></tds-header>
     </section>
-    <section class="top-kong"></section>
-    <tomorrow-image :imgUrl="topImg"></tomorrow-image>
+    <section class="top-kong"  v-if="sharerInfo.type"></section>
+    <tomorrow-image :img_url="topImg"></tomorrow-image>
     <section class="item-list">
       <div v-if="isNoData" class="no-data">暂无数据</div>
       <block v-for="(item,i) in productsData" :key="i">
@@ -17,7 +17,7 @@
     </section>
     <section class="kong"></section>
     <!--开店礼包按钮，如果用户是会员则不需要显示-->
-    <kaidian-youli-btn></kaidian-youli-btn>
+    <kaidian-youli-btn  :userIsVip="userInfo.type"></kaidian-youli-btn>
   </section>
 </template>
 
@@ -45,8 +45,24 @@
       PruductItem,
       KaidianYouliBtn
     },
-
+    computed: {
+      // 分享人信息
+      sharerInfo() {
+        return this.$store.state.sharerInfo
+      },
+      // 用户信息
+      userInfo () {
+        return this.$store.state.userInfo;
+      }
+    },
     methods: {
+      // 初始化页面参数
+      setDefault () {
+        console.log('页面重置')
+        // this.productsData = [];
+        this.isNoData = false;
+        this.topImg = '';
+      },
       // 获取列表
       getProductsData () {
         let data = {};
@@ -70,12 +86,16 @@
     created () {
     },
     onLoad (options) {
+      // 初始化页面变量
+      this.setDefault();
       if (Number(options.type) !== this.type) {
         this.productsData = []
       }
       console.log(options)
-      this.type = Number(options.type);
-      this.position = Number(options.position);
+      // this.type = Number(options.type);
+      // this.position = Number(options.position);
+      this.type = options.type;
+      this.position = options.position;
       // 分类设置头部导航
       switch (options.type) {
         case '1':
@@ -99,11 +119,9 @@
           })
           break
       }
-
       this.getProductsData()
     },
     onShow () {
-
     },
     onHide () {
 

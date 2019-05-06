@@ -20,7 +20,7 @@
         :display-multiple-items="displayMultipleItems"
         :previous-margin="previousMargin"
         :next-margin="nextMargin"
-        @change="handleChange"
+        @change="handleImgChange"
       >
         <block v-if="isLink">
           <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
@@ -78,7 +78,7 @@
         // 是否自动播放
         autoplay: true,
         // 切换间隔时间
-        interval: 3000,
+        interval: 5000,
         // 滑动动画时长
         duration: 1000,
         // 是否采用衔接滑动
@@ -109,10 +109,11 @@
         mpvue.navigateTo({url})
       },
       // 轮播图改变响应
-      handleChange (detail) {
+      handleImgChange (detail) {
         // console.log('改变');
-        // console.log(detail.target.current);
+        // console.log(detail);
         this.cuttentImg = detail.target.current + 1;
+        // console.log('下标改变' + this.cuttentImg);
       }
     },
     watch: {

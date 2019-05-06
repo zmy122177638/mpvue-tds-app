@@ -1,4 +1,5 @@
 {
   "navigationBarTitleText": "商城首页",
-  "backgroundTextStyle": "light"
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
 }

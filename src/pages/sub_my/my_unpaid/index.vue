@@ -288,8 +288,10 @@ export default {
         let goodsData = {}
         goodsData.goods_id = this.orderData.goods_id;
         goodsData.spu_id = this.orderData.spu.id;
-        goodsData.sharer_id = this.$store.state.userInfo.id;
+        goodsData.sharer_id = this.$store.state.sharerInfo.id;
         goodsData.num = this.orderData.num;
+        console.log('提交信息：')
+        console.log(goodsData);
 
         // 未生成订单（下单中）
         this.$http.request('POST', 'orders', { ...this.addressData, remark: this.remark, ...goodsData }).then((res) => {

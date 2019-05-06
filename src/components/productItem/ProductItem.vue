@@ -103,6 +103,12 @@ export default {
       p_s: ''
     }
   },
+  computed: {
+    // 用户是否为VIP
+    userInfoType () {
+      return this.$store.state.userInfo.type;
+    }
+  },
   methods: {
     // 设置倒计时
     setEndTime () {
@@ -130,10 +136,26 @@ export default {
     // 商品点击跳转到详情响应
     handleGoDetail(id) {
       console.log('跳转到详情');
-      mpvue.navigateTo({
-        // url: '../productDetail/main?goods_id=' + id
-        url: '/pages/productDetail/main?goods_id=' + id
-      })
+      // 判断是否有权限跳转到详情购买商品
+      if (this.$store.state.userInfo.type) {
+        mpvue.navigateTo({
+          // url: '../productDetail/main?goods_id=' + id
+          url: '/pages/productDetail/main?goods_id=' + id
+        })
+      } else {
+        mpvue.showModal({
+          title: '提示',
+          content: '先成为会员，点击确定去到充值页面',
+          success: function (res) {
+            if (res.confirm) {
+              // 弹出提示跳转到会员充值页面
+              mpvue.navigateTo({
+                url: '/pages/openShop/main'
+              })
+            }
+          }
+        })
+      }
     },
     // 返场投票点击
     handleNetworkVote () {
@@ -157,7 +179,7 @@ export default {
   },
   mounted () {
     // 只有团品才需要倒计时
-    if (this.type === 2) {
+    if (this.type == 2) {
       // console.log('根据商品结束时间，开始商品倒计时')
       this.setEndTime();
       this.timeIntval = setInterval(function () {

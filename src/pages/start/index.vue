@@ -96,6 +96,9 @@ export default {
           isShare = false;
           break;
       }
+      if (this.query.uid) {
+        isShare = true;
+      }
       return isShare;
     },
     // 判断是否从分享进入小程序，再进行跳转页面,跳转到主页或根据不同条件跳转到不同页面
@@ -217,14 +220,19 @@ export default {
     }
   },
   onShow() {
+
   },
-  onLoad() {
+  onLoad(options) {
+    this.query = {};
+    console.log('start页面参数：');
+    console.log(options);
     //  获取app进入参数
-    console.log('app参数：');
+    console.log('app参数,query：');
     console.log(wx.getLaunchOptionsSync());
     let appOption = wx.getLaunchOptionsSync();
     this.scene = appOption.scene;
-    this.query = appOption.query;
+    this.query = options;
+    console.log(this.query);
     this.authorUserInfo();
   },
   created() {

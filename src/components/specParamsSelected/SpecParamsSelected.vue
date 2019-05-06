@@ -2,11 +2,12 @@
   <section class="spec-box">
     <section class="product-box">
       <div class="left">
-        <img :src="currentImgUrl" />
+        <img v-if="currentSpu.item_image" :src="currentSpu.item_image" />
+        <img v-else src="../../../static/images/CommodityNull.png" />
       </div>
       <div class="right">
         <div class="b">
-          <span class="n"><span>￥</span>{{currentPrice}}</span>
+          <span class="n"><span>￥</span>{{currentSpu.price}}</span>
           <span class="o"><span>￥</span>{{productData.market_price}}</span>
         </div>
         <div class="t">
@@ -57,7 +58,7 @@
         >-</span>
         <span class="number">{{selectedNum}}</span>
         <span
-          v-if="selectedNum < productData.limit_num"
+          v-if="productData.limit_num == 0 || (productData.limit_num != 0 && selectedNum < productData.limit_num)"
           class="add"
           @click="handleAddNum"
         >+</span>
@@ -87,87 +88,33 @@ export default {
   },
   data() {
     return {
+      // 商品信息
       productData: this.pData,
-      // 规格数组
-      spec: [
-        {
-          spec_name: '款式',
-          spec_attr: [
-            '儿童床【床单款三件套】- 适用120×150被子',
-            '自动款',
-            '手动款'
-          ],
-          params_child_has_del: true
-        },
-        {
-          spec_name: '颜色',
-          spec_attr: [
-            '白色',
-            '黄色'
-          ],
-          params_child_has_del: true
-        }
-      ],
-      // 拼接数据修改参考
-      spu: [
-        {
-          spec_attr_arr: [],
-          spec_attr: '自动款-白色',
-          stock: 50,
-          price: 0.08,
-          goods_no: '0001',
-          item_image: 'http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg'
-        },
-        {
-          spec_attr_arr: [],
-          spec_attr: '自动款-黄色',
-          stock: 20,
-          price: 0.02,
-          goods_no: '0002',
-          item_image: 'http://oss.baidichan.com/store/images/20190325/9hvuYDv2qX2Dj1VRmjDGsVBZjMBesEAiLfnF2hiG.jpeg'
-        },
-        {
-          spec_attr_arr: [],
-          spec_attr: '手动款-白色',
-          stock: 10,
-          price: 0.01,
-          goods_no: '0003',
-          item_image: 'http://oss.baidichan.com/store/images/20190325/PN8ZHudQRhzt3brpeGrfaF6H3vLb6YIDZzPzyMMW.jpeg'
-        },
-        {
-          spec_attr_arr: [],
-          spec_attr: '手动款-黄色',
-          stock: 20,
-          price: 0.04,
-          goods_no: '0004',
-          item_image: 'http://oss.baidichan.com/store/images/20190325/A3nJkwHe44mQ8XL2VTxV3i9DlpVr41S0NhOuTBO8.jpeg'
-        }
-      ],
-
       // 客户端用户选择的数组 ---每个一维数组内选择的作为一个元素,有多少个规格组就有多少个值，默认每个规格组的第一个
       userSelected: [],
-      // 由用户选择拼接出来的规则字符串
+      // 由用户选择拼接拼接出来的规则字符串
       userSelectedStr: '',
-      // 当前图片
-      currentImgUrl: '',
-      // 当前价格
-      currentPrice: '',
-      // 限制购买数量
-      limit_num: 2,
-      // 购买数量
-      selectedNum: 1
+      // 购买数量,默认为1
+      selectedNum: 1,
+      // 当前用户选择的spu
+      currentSpu: {}
     }
   },
   methods: {
     // 设置默认的用户选择，默认为每组规格组的第一个
     setDefaultSelected() {
-      this.currentImgUrl = this.productData.spu[0].item_image
-      this.currentPrice = this.productData.spu[0].price
-      this.productData.spec.map(function (value, index, array) {
-        this.userSelected.push(value.spec_attr[0])
-      }.bind(this))
-      this.concatStr();
-      this.findInfoFromSpu()
+      this.userSelected = [];
+      this.userSelectedStr = '';
+      if (this.productData.goods_id) {
+        // 以第一个spu作为默认
+        this.currentSpu = this.productData.spu[0];
+        this.productData.spec.map(function (value, index, array) {
+          // 以spec中的所有选项中的第一个作为默认选项
+          this.userSelected.push(value.spec_attr[0])
+        }.bind(this))
+        this.concatStr();
+        this.findInfoFromSpu();
+      }
     },
     // 根据用户选择拼接成字符串
     concatStr() {
@@ -182,19 +129,20 @@ export default {
           }
         }.bind(this))
       }
-      console.log('拼接好的字符串')
-      console.log(this.userSelectedStr)
+      // console.log('拼接好的字符串')
+      // console.log(this.userSelectedStr)
     },
     // 根据用户选择，匹配不同SPU的信息
     findInfoFromSpu() {
       this.productData.spu.map(function (value, index, array) {
         if (value.spec_attr === this.userSelectedStr) {
-          this.currentImgUrl = value.item_image
-          this.currentPrice = value.price
+          this.currentSpu = value;
         }
       }.bind(this))
+      console.log('当前spu:');
+      console.log(this.currentSpu);
     },
-    // params : i：父级数组下标，j:二级数组下标，val：二级数组下标对应的值
+    // 用户选择不同spec选项时响应， params : i：父级数组下标，j:二级数组下标，val：二级数组下标对应的值
     handleSelected(i, j, val) {
       // console.log('用户选择：')
       // console.log(i+','+j+','+val)
@@ -211,15 +159,31 @@ export default {
     handleAddNum() {
       this.selectedNum += 1
     },
+    // 拼接商品订单提交
+    setgoodData () {
+      // 拼接商品订单信息
+      let goodData = {};
+      // 用户选择的spu
+      goodData.spu = this.currentSpu;
+      // 商品id
+      goodData.goods_id = this.productData.goods_id;
+      // 商品名称
+      goodData.goods_name = this.productData.goods_name;
+      // 缩略图
+      goodData.goods_image_url = goodData.spu.item_image;
+      // 规格拼接字符串
+      goodData.spec_attr = goodData.spu.spec_attr;
+      // 单位
+      goodData.unit = this.productData.unit;
+      // 购买个数
+      goodData.num = this.selectedNum;
+      // 总金额
+      goodData.amount = goodData.spu.price * goodData.num
+      return goodData;
+    },
     // 提交订单
-    handleSubmitOrder() {
-      console.log('aaa')
-      let xuanze = this.userSelectedStr
-      let num = this.selectedNum
-      let obj = {
-        xuanze,
-        num
-      }
+    handleSubmitOrder () {
+      let obj = this.setgoodData();
       this.$emit('submit-order', obj)
     }
   },
@@ -232,7 +196,10 @@ export default {
       this.setDefaultSelected()
     }
   },
-  created() {
+  mounted() {
+    // console.log('选择---------====mounted')
+    // 值改变时设置默认值：
+    this.setDefaultSelected()
   }
 }
 </script>

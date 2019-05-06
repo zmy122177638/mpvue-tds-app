@@ -1,5 +1,5 @@
 <template>
-  <movable-area class="movable-box" v-if="!vipLevel || isShow">
+  <movable-area class="movable-box" v-if="!vipLevel || isYqylShow">
     <movable-view
       class="movable-item"
       direction="vertical"
@@ -8,7 +8,7 @@
       y="900rpx"
     >
       <img
-        v-if="isShow"
+        v-if="vipLevel"
         @click="handleGotoYaoqing"
         src="../../../static/images/yqyl.png"
       >
@@ -25,8 +25,12 @@
 export default {
   name: 'KaidianYouliBtn',
   props: {
+    userIsVip: {
+      type: Boolean,
+      default: false
+    },
     // 是否显示
-    isShow: {
+    isYqylShow: {
       type: Boolean,
       default: false
     }
@@ -34,31 +38,36 @@ export default {
   data() {
     return {
       // 用户是否为会员
-      vipLevel: this.$store.getters.isVip,
-      // 是否要显示该组件，(该参数为用户传值，与是否为会员无关)
-      isShowBox: this.isShowBox
+      vipLevel: this.userIsVip
     }
   },
   methods: {
     // 开店有礼按钮响应
     handleGotoKaidian() {
       mpvue.navigateTo({
-        url: '../../pages/openShop/main'
+        url: '/pages/openShop/main'
       })
     },
     // 邀请有礼按钮响应
     handleGotoYaoqing() {
-      console.log('弹出邀请有礼弹窗')
+      // console.log('弹出邀请有礼弹窗')
+      this.$emit('click-btn');
+    },
+    getVip () {
+      this.vipLevel = this.$store.state.userInfo.type;
     }
   },
   watch: {
-    isShow: function (val) {
-      this.isShowBox = val;
+    userIsVip: function (val) {
+      this.vipLevel = val;
     }
   },
   mounted () {
+    this.getVip();
     console.log('是否为会员：');
     console.log(this.vipLevel);
+  },
+  updated () {
   }
 }
 </script>

@@ -24,7 +24,7 @@
             <span class="d-d-msg">{{item}}</span>
           </block>
         </div>
-        <div class="d-sale-time" v-if="timeOut">
+        <div class="d-sale-time" v-if="productData.type == 2 && timeOut">
           <span class="des">今日团品限时购：</span>
           <span class="time">{{p_h}}</span>:
           <span class="time">{{p_m}}</span>:
@@ -173,6 +173,18 @@
       }
     },
     methods: {
+      // 页面初始化
+      setPageDefault () {
+        // 重置信息
+        console.log('商品详情页面重置信息：')
+        this.productData = {};
+        this.specSelected = {};
+        this.posterImgUrl = {};
+        this.timeOut = true;
+        this.p_h = '';
+        this.p_m = '';
+        this.p_s = '';
+      },
       // 倒计时显示
       setEndTime () {
         let endTime = new Date(this.productData.end_time).getTime();
@@ -276,42 +288,11 @@
         console.log('关闭海报图')
         this.showPosterImg = false;
       },
-      // 拼接商品订单提交
-      setgoodData () {
-        let that = this;
-        // 拼接商品订单信息
-        let goodData = {};
-        //  根据用户选择，获得spu
-        this.productData.spu.map(function (value, index, array) {
-          if (value.spec_attr === that.specSelected.xuanze) {
-            goodData.spu = value;
-          }
-        })
-        // 商品id
-        goodData.goods_id = this.productData.goods_id;
-        // 商品名称
-        goodData.goods_name = this.productData.goods_name;
-        // 缩略图
-        goodData.goods_image_url = goodData.spu.item_image;
-        // 规格拼接字符串
-        goodData.spec_attr = goodData.spu.spec_attr;
-        // 单位
-        goodData.unit = this.productData.unit;
-        // 购买个数
-        goodData.num = this.specSelected.num
-        // 总金额
-        goodData.amount = goodData.spu.price * goodData.num
-        return goodData;
-      },
       // 规格选择子组件提交订单响应
       handleSubmitOrder (options) {
-        // console.log('子组件数据')
-        // console.log(options)
-        this.specSelected = options
-        // 拼接的商品订单信息
-        let data = JSON.stringify(this.setgoodData());
         console.log('订单信息：');
-        console.log(data);
+        console.log(options);
+        let data = JSON.stringify(options);
         // 跳转到未付款订单页面
         mpvue.navigateTo({
           url: '../sub_my/my_unpaid/main?orders=' + data
@@ -325,18 +306,13 @@
             console.log('商品详情信息：');
             console.log(res);
             this.productData = res.resource;
-            // 现有数据库详情图片数据有误，直接覆盖
-            this.productData.detail_image = [
-              'http://oss.baidichan.com/store/images/20190325/l6qf0XfRQzO9toyoprcCCQVhavZAhdUMzpAsrXhF.jpeg',
-              'http://oss.baidichan.com/store/images/20190325/cravBB0nKulPSS5dc8YWUji4te2b7Jtaj73oQabd.webp',
-              'http://oss.baidichan.com/store/images/20190325/4MGe7aAecg5PxY0xm6Ou0Q9Iygt0dUz1b69PjMSw.webp',
-              'http://oss.baidichan.com/store/images/20190325/LI2UjHXv19smHhf8tvni6TlO9N92mNRtHMcK9vBO.webp'
-            ];
             // console.log(this.productsData)
-            this.setEndTime();
-            this.timeIntval = setInterval(function () {
+            if (this.productData.type == 2) {
               this.setEndTime();
-            }.bind(this), 1000);
+              this.timeIntval = setInterval(function () {
+                this.setEndTime();
+              }.bind(this), 1000);
+            }
           })
       }
     },
@@ -361,9 +337,11 @@
         }
       }
     },
-
+    onHide () {
+    },
     // 页面加载监听
     onLoad (options) {
+      this.setPageDefault();
       // 开启群分享获取信息设置，但当前页不能获得群id等信息
       // mpvue.showShareMenu({
       //   withShareTicket: true
@@ -371,14 +349,12 @@
       if (options.shareBack) {
         this.shareBack = options.shareBack;
       }
-
       console.log('根据传递的ID值请求商品详情：');
       console.log(options);
       let id = options.goods_id;
       // let id = 188;
       this.getProductData(id);
       // // console.log('根据商品结束时间，开始商品倒计时')
-
     },
     onUnload () {
       console.log('停止商品倒计时')
@@ -401,7 +377,7 @@
   }
   .go-back{
     position: absolute;
-    top: 70rpx;
+    top: 68rpx;
     left: 20rpx;
     z-index: 1000;
     font-weight: bold;

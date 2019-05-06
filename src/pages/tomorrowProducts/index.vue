@@ -6,7 +6,7 @@
     <section class="main">
       <section class="top-kong"></section>
       <section class="img-list-box">
-        <div class="img-list">
+        <div class="img-list" v-if="dataList.length > 0">
           <block v-for="(item,i) in dataList" :key="i">
             <div class="goods-item">
               <image class="goods-img" :src="item.goods_image_url" mode="widthFix" />
@@ -14,6 +14,7 @@
             </div>
           </block>
         </div>
+        <div class="no-data" v-else>暂无数据</div>
       </section>
     </section>
 
@@ -113,6 +114,12 @@
             }
           }
         }
+      }
+      .no-data{
+        line-height: 200rpx;
+        text-align: center;
+        font-size: 30rpx;
+        color: #ccc;
       }
     }
 

@@ -22,11 +22,11 @@
             class="type-item"
             v-for="(item,i) in typeInfoList"
             :key="i"
-            @click="handleClickGo(i,item.path,item.param)"
+            @click="handleClickGo(item.is_show,item.path,item.param)"
           >
             <div class="type-item-t"><img
                 :src="item.img_src"
-                :style="'box-shadow: 0rpx 10rpx 20rpx ' + item.shadow_color "
+                style="box-shadow: 0rpx 5rpx 10rpx #ccc"
               ></div>
             <div class="type-item-t">{{item.ad_name}}</div>
           </div>
@@ -60,7 +60,7 @@
       <section class="tomorrow-img">
         <img
           @click="handleToTomorrowPage"
-          src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1533275126,1287779573&fm=26&gp=0.jpg"
+          :src="regiment.img_src"
         />
       </section>
       <section
@@ -118,13 +118,17 @@
     </section>
     <section class="kong"></section>
     <!--开店礼包按钮，如果用户是会员则不需要显示-->
-    <kaidian-youli-btn></kaidian-youli-btn>
+    <kaidian-youli-btn :userIsVip="userInfo.type"></kaidian-youli-btn>
 
     <!--分享页面返回之后，判断当前用户是否不等于分享人，而且当前用户是普通用户时显示 返回我的小店按钮-->
     <section
       class="back-my-shop"
-      v-if="isShowBackMyShopBtn"
-    ></section>
+      v-if="showBackMyShopBtn"
+      @click="handleGoBackMyShop"
+    >
+      <span class="return-bg"></span>
+      返回我的小店
+    </section>
 
   </section>
 </template>
@@ -159,29 +163,46 @@ export default {
       // 好物拼团
       group: {},
       // 爆品返场
-      encore: {}
+      encore: {},
+      // 是否显示返回我的小店按钮
+      showBackMyShopBtn: false
     }
   },
   computed: {
     // 分享人信息
     sharerInfo() {
       return this.$store.state.sharerInfo
+    },
+    // 用户信息
+    userInfo () {
+      return this.$store.state.userInfo;
     }
   },
   onShow() {
   },
   onLoad() {
+    console.log('ddddddddddd')
     this.getHomePageSetting();
     this.getAllPruductsData();
     this.getNewActiveData();
-    console.log('用户登录信息--userInfo：');
-    console.log(this.$store.state.userInfo);
-    console.log('分享用户信息--sharerInfo：');
-    console.log(this.$store.state.sharerInfo);
-    console.log('用户登录信息--token：');
-    console.log(this.$store.state.token);
+    this.isShowBackMyShopBtn();
+    // console.log('用户登录信息--userInfo：');
+    // console.log(this.$store.state.userInfo);
+    // console.log('分享用户信息--sharerInfo：');
+    // console.log(this.$store.state.sharerInfo);
+    // console.log('用户登录信息--token：');
+    // console.log(this.$store.state.token);
     // console.log('获取菜单按钮位置信息：');
     // console.log(mpvue.getMenuButtonBoundingClientRect());
+  },
+  onPullDownRefresh () {
+    this.getHomePageSetting();
+    this.getAllPruductsData();
+    this.getNewActiveData();
+    let t = setTimeout(function () {
+      clearTimeout(t)
+      mpvue.stopPullDownRefresh();
+    }, 1000);
   },
   created() {
   },
@@ -189,14 +210,39 @@ export default {
     // 判断是否显示返回我的小店按钮
     isShowBackMyShopBtn() {
       // 判断当前用户是否不等于分享人，而且当前用户是vip用户时显示 返回我的小店按钮
+      let userIsVip = this.$store.state.userInfo.type;
       let userId = this.$store.state.userInfo.id;
       let shareId = this.$store.state.sharerInfo.id;
-      return userId !== shareId ? (this.$store.state.getters.isVip) : false;
+      // console.log('判断条件');
+      // console.log(userIsVip)
+      // console.log(userId)
+      // console.log(shareId)
+      if (userId !== shareId) {
+        this.showBackMyShopBtn = userIsVip;
+      } else {
+        this.showBackMyShopBtn = false;
+      }
+    },
+    // 返回我的小店
+    handleGoBackMyShop () {
+      // console.log('返回自己的小店')
+      mpvue.showLoading({
+        title: '正在返回...',
+        mask: true
+      })
+      setTimeout(function () {
+        this.$store.commit({
+          type: 'writeSharerInfo',
+          sharerInfo: this.$store.state.userInfo
+        });
+        this.isShowBackMyShopBtn()
+        mpvue.hideLoading();
+      }.bind(this), 600)
     },
     // 板块分类点击响应
     handleClickGo(i, path, param) {
       // type== 1：引流，2,：团品，3：拼团，4：返场
-      if (i === 2 || i === 3) {
+      if (i === 0) {
         mpvue.showToast({
           title: '此功能未开通',
           icon: 'none'
@@ -217,13 +263,13 @@ export default {
     getAllPruductsData() {
       this.$http.get('goods/list')
         .then(res => {
-          // console.log('返回的数据：');
-          // console.log(res);
+          console.log('返回的数据：');
+          console.log(res);
           // 数据替换
           this.special = res.resource.special;
           this.regiment = res.resource.regiment;
-          this.group = res.resource.group;
-          this.encore = res.resource.encore;
+          // this.group = res.resource.group;
+          // this.encore = res.resource.encore;
           // console.log('替换的数据：')
           // console.log(this.regiment);
         })
@@ -232,7 +278,7 @@ export default {
     getHomePageSetting() {
       this.$http.get('conf/getIndexConf')
         .then(res => {
-          // console.log('首页设置信息：：');
+          // console.log('首页设置信息：');
           // console.log(res);
           this.linkImgUrls = res.resource.banner;
           this.typeInfoList = res.resource.lead;
@@ -242,8 +288,8 @@ export default {
     getNewActiveData() {
       this.$http.get('getReleaseInfo')
         .then(res => {
-          console.log('最新动态信息：');
-          console.log(res);
+          // console.log('最新动态信息：');
+          // console.log(res);
           this.newActiveData = res.resource;
         })
     },
@@ -409,14 +455,27 @@ export default {
   position: fixed;
   left: 0rpx;
   right: 0rpx;
-  bottom: 100rpx;
+  bottom: 60rpx;
   margin: 0 auto;
   width: 40%;
   height: 88rpx;
+  line-height: 88rpx;
+  color: #fff;
+  text-align: center;
   -webkit-border-radius: 44rpx;
   -moz-border-radius: 44rpx;
   border-radius: 44rpx;
-  border: 1px solid red;
-  background: #000;
+  box-shadow:0rpx 10rpx 20rpx rgba(255,102,102,0.35);
+  background: #FF6666;
+  .return-bg{
+    display: inline-block;
+    width: 48rpx;
+    height: 48rpx;
+    background: url("../../../static/images/Return2.png");
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin-right: 16rpx;
+    margin-top: -5rpx;
+  }
 }
 </style>

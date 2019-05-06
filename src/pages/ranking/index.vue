@@ -1,7 +1,7 @@
 <template>
   <section class="ranking-container">
     <Tds-header></Tds-header>
-    <kaidianYouliBtn></kaidianYouliBtn>
+    <kaidianYouliBtn :userIsVip="userInfo.type"></kaidianYouliBtn>
     <div class="ranking-action">
       <div class="ranking-category">
         <div
@@ -136,6 +136,12 @@ export default {
   },
   mounted() {
     this.getShopRanking(this.queryData);
+  },
+  computed: {
+    // 用户信息
+    userInfo () {
+      return this.$store.state.userInfo;
+    }
   },
   methods: {
     getShopRanking(queryData) {
