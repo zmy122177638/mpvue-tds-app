@@ -113,18 +113,7 @@ export default {
       // scrollTop位置
       scrollTopNum: '',
       // 排行列表
-      rankingList: [
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 },
-        { img: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1393987749,3422146058&fm=27&gp=0.jpg', name: '黄凤梨黄凤', orderNum: 10 }
-      ],
+      rankingList: [],
       // 我的排行
       my_ranking: {}
     }
@@ -139,7 +128,7 @@ export default {
   },
   computed: {
     // 用户信息
-    userInfo () {
+    userInfo() {
       return this.$store.state.userInfo;
     }
   },
@@ -305,8 +294,13 @@ img {
             height: 44px;
             border-radius: 50%;
             margin-right: 15px;
+            background: url('../../../static/images/AvatarNull.png') no-repeat;
+            background-size: 100% 100%;
             &.on {
               border-radius: 6px;
+              background: url('../../../static/images/CommodityNull.png')
+                no-repeat;
+              background-size: 100% 100%;
             }
           }
           .item-info {

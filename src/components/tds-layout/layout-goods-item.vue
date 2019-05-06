@@ -17,13 +17,6 @@
       <img
         :src="item.goods_image_url"
         class="goods-img"
-        v-if="item.goods_image_url"
-        alt=""
-      >
-      <img
-        src="../../../static/images/CommodityNull.png"
-        class="goods-img"
-        v-else
         alt=""
       >
       <div class="goods-info">
@@ -102,6 +95,8 @@ export default {
       border-radius: 6px;
       display: block;
       margin-right: 15px;
+      background: url('../../../static/images/CommodityNull.png') no-repeat;
+      background-size: 100% 100%;
     }
     .goods-info {
       flex: 1;

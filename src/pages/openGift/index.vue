@@ -424,6 +424,8 @@ export default {
     width: 100%;
     vertical-align: middle;
     height: 236px;
+    background: url('../../../static/images/BannerNull.png') no-repeat;
+    background-size: 100% 100%;
   }
 }
 
