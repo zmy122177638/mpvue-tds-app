@@ -2,7 +2,7 @@
   <section class="container">
     <section>
       <!--<van-icon name="arrow-left" class="go-back" @click="handleGoBack" />-->
-      <img src="../../../static/images/Return_iCon.png" class="go-back" @click="handleGoBack" />
+      <img src="../../../static/images/Return_iCon.png" :class="isIPhoneX?'go-back-iphoneX':'go-back'" @click="handleGoBack" />
     </section>
     <section class="lunbo-box">
       <lunbo-images
@@ -14,7 +14,7 @@
     <section class="main">
       <section class="content">
         <header class="d-head">{{productData.goods_name}}</header>
-        <div class="d-price">
+        <div class="d-price" v-if="productData.goods_price">
           <span class="n"><span>￥</span>{{productData.goods_price}}</span>
           <span class="o"><span>￥</span>{{productData.market_price}}</span>
           <span class="sale-num">{{productData.detail_sales_desc}}</span>
@@ -103,7 +103,8 @@
 
     <!--海报缩略图-->
     <section class="haibao-img" v-if="showPosterImg" @click="handleClosePosterImg">
-      <img @click.stop="handleShowPreviewPosterImg" :src="posterImgUrl">
+      <!--<img @click.stop="handleShowPreviewPosterImg" :src="posterImgUrl">-->
+      <image mode="widthFix" @click.stop="handleShowPreviewPosterImg" :src="posterImgUrl"></image>
       <p class="haibao-img-p">点击海报 - 长按海报 - 发送给朋友</p>
     </section>
 
@@ -118,7 +119,6 @@
         <van-goods-action-icon
           icon="chat-o"
           text="客服"
-          info="5"
           open-type="contact"
           @contact="handleServiceCall"
         />
@@ -139,16 +139,16 @@
 
 <script>
   import LunboImages from '@/components/lunboImages/LunboImages.vue'
-  import PruductItem from '@/components/productItem/ProductItem.vue'
   import SpecParamsSelected from '@/components/specParamsSelected/SpecParamsSelected.vue'
   export default {
     components: {
       LunboImages,
-      PruductItem,
       SpecParamsSelected
     },
     data () {
       return {
+        // 传递过来的goods_id
+        goods_id: 0,
         // shareBack 表示是否为分享中打开登录后进入该页面,false表示正常的进入，则正常的后退
         shareBack: false,
         // 商品详情，格式如下
@@ -169,7 +169,9 @@
         timeOut: true,
         p_h: '',
         p_m: '',
-        p_s: ''
+        p_s: '',
+        // 设备是否为iphone X
+        isIPhoneX: false
       }
     },
     methods: {
@@ -264,8 +266,10 @@
         let tempData = {};
         // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
         tempData.type = 1;
-        tempData.id = this.productData.goods_id;
+        tempData.goods_id = this.productData.goods_id;
         tempData.uid = this.$store.state.userInfo.id;
+        tempData.path = 'pages/start/main';
+        tempData.goPath = '/pages/productDetail/main';
         this.$http.get('goods/getShareImage', tempData)
           .then(res => {
             console.log('获得的海报信息：');
@@ -325,7 +329,7 @@
         title: this.productData.goods_name,
         // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
         // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
-        path: 'pages/start/main?goPath=../productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
+        path: 'pages/start/main?goPath=/pages/productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
         imageUrl: this.productData.small_image[0],
         // 回调函数在2018.10之后的新版本中不再有任何回调
         success(res) {
@@ -337,24 +341,39 @@
         }
       }
     },
-    onHide () {
-    },
     // 页面加载监听
     onLoad (options) {
+      let that = this;
+      // iphoneX 兼容
+      mpvue.getSystemInfo({
+        success (res) {
+          let model = res.model;
+          if (model.search('iPhone X') != -1) {
+            console.log('是iPhone X111111111111111111111111')
+            that.isIPhoneX = true;
+          } else {
+            console.log('不是是iPhone X22222222222222222222')
+            that.isIPhoneX = false;
+          }
+        }
+      })
       this.setPageDefault();
       // 开启群分享获取信息设置，但当前页不能获得群id等信息
       // mpvue.showShareMenu({
       //   withShareTicket: true
       // })
+      // 如果是从分享进入，则为true;
       if (options.shareBack) {
         this.shareBack = options.shareBack;
       }
       console.log('根据传递的ID值请求商品详情：');
       console.log(options);
-      let id = options.goods_id;
-      // let id = 188;
-      this.getProductData(id);
+      // let id = options.goods_id;
+      this.goods_id = options.goods_id;
       // // console.log('根据商品结束时间，开始商品倒计时')
+      // setTimeout(function () {
+      //   this.getProductData(this.goods_id);
+      // }.bind(this), 1000)
     },
     onUnload () {
       console.log('停止商品倒计时')
@@ -363,8 +382,8 @@
     created () {
     },
     mounted () {
-      // console.log('获取用户信息：');
-      // console.log(this.$store.state.userInfo)
+      console.log('mounted:')
+      this.getProductData(this.goods_id);
     }
   }
 </script>
@@ -386,9 +405,21 @@
     height: 30rpx;
     width: 18rpx;
     /*border: 1px solid red;*/
-    padding: 15rpx 20rpx;
+    padding: 20rpx 30rpx;
   }
-
+  .go-back-iphoneX{
+    position: absolute;
+    left: 20rpx;
+    top: 100rpx;
+    z-index: 1000;
+    font-weight: bold;
+    font-size: 36rpx;
+    line-height: 50rpx;
+    height: 30rpx;
+    width: 18rpx;
+    /*border: 1px solid red;*/
+    padding: 20rpx 30rpx;
+  }
 
   .ban-header{
     margin-top: 10rpx;
@@ -594,13 +625,14 @@
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,.5);
-    img{
+    image{
       position: absolute;
       left: 0rpx;
       right: 0rpx;
+      top: 0rpx;
+      bottom: 0rpx;
       width: 80%;
-      height: 80%;
-      margin: 8% auto 0;
+      margin: auto;
       -webkit-border-radius: 12rpx;
       -moz-border-radius: 12rpx;
       border-radius: 12rpx;
@@ -608,7 +640,7 @@
     .haibao-img-p{
       position: absolute;
       left: 0rpx;
-      bottom: 7%;
+      bottom: 3%;
       width: 100%;
       text-align: center;
       color: #FFFFFF;

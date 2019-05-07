@@ -51,18 +51,18 @@
     "list": [{
       "text": "首页",
       "pagePath": "pages/home/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
+      "iconPath": "static/images/Home_Gray.png",
+      "selectedIconPath": "static/images/Home.png"
     }, {
       "text": "排行",
       "pagePath": "pages/ranking/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "iconPath": "static/images/Rank_Gray.png",
+      "selectedIconPath": "static/images/Rank.png"
     }, {
       "text": "我的",
       "pagePath": "pages/my/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "iconPath": "static/images/User_Gray.png",
+      "selectedIconPath": "static/images/User.png"
     }],
     "position": "bottom"
   }

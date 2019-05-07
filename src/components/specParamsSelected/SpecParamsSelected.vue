@@ -139,8 +139,8 @@ export default {
           this.currentSpu = value;
         }
       }.bind(this))
-      console.log('当前spu:');
-      console.log(this.currentSpu);
+      // console.log('当前spu:');
+      // console.log(this.currentSpu);
     },
     // 用户选择不同spec选项时响应， params : i：父级数组下标，j:二级数组下标，val：二级数组下标对应的值
     handleSelected(i, j, val) {

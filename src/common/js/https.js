@@ -104,10 +104,8 @@ class Https {
 
   // get请求
   get(url, data) {
-    // console.log('111111111token:');
-    // console.log(this.token);
     mpvue.showLoading({
-      title: '加载中' // 数据请求前loading，提高用户体验
+      title: '加载中...' // 数据请求前loading，提高用户体验
     })
     // 设置头部
     return new Promise((resolve, reject) => {
@@ -121,7 +119,9 @@ class Https {
         }, // 设置请求的 header
         success: function (res) {
           // success
-          mpvue.hideLoading();
+          setTimeout(function () {
+            mpvue.hideLoading();
+          }, 500)
           if (res.statusCode !== 200) {
             mpvue.showToast({
               title: '网络出错，稍后再试',
@@ -133,7 +133,9 @@ class Https {
         },
         fail: function (error) {
           // fail
-          mpvue.hideLoading();
+          setTimeout(function () {
+            mpvue.hideLoading();
+          }, 500)
           mpvue.showToast({
             title: '网络异常，稍后再试',
             icon: 'none'
@@ -141,7 +143,9 @@ class Https {
           reject(error);
         },
         complete: function () {
-          mpvue.hideLoading();
+          setTimeout(function () {
+            mpvue.hideLoading();
+          }, 500)
           // complete
         }
       })

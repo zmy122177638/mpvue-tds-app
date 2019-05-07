@@ -181,11 +181,6 @@ export default {
   onShow() {
   },
   onLoad() {
-    console.log('ddddddddddd')
-    this.getHomePageSetting();
-    this.getAllPruductsData();
-    this.getNewActiveData();
-    this.isShowBackMyShopBtn();
     // console.log('用户登录信息--userInfo：');
     // console.log(this.$store.state.userInfo);
     // console.log('分享用户信息--sharerInfo：');
@@ -205,6 +200,13 @@ export default {
     }, 1000);
   },
   created() {
+  },
+  mounted () {
+    console.log('ddddddddddd')
+    this.getHomePageSetting();
+    this.getAllPruductsData();
+    this.getNewActiveData();
+    this.isShowBackMyShopBtn();
   },
   methods: {
     // 判断是否显示返回我的小店按钮

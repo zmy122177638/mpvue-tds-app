@@ -85,6 +85,9 @@
 
     created () {
     },
+    mounted () {
+      this.getProductsData()
+    },
     onLoad (options) {
       // 初始化页面变量
       this.setDefault();
@@ -119,12 +122,10 @@
           })
           break
       }
-      this.getProductsData()
     },
     onShow () {
     },
     onHide () {
-
     }
   }
 </script>

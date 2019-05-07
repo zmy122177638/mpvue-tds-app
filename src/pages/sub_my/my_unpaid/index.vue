@@ -291,8 +291,8 @@ export default {
         goodsData.spu_id = this.orderData.spu.id;
         goodsData.sharer_id = this.$store.state.sharerInfo.id;
         goodsData.num = this.orderData.num;
-        console.log('提交信息：')
-        console.log(goodsData);
+        // console.log('提交信息：')
+        // console.log(goodsData);
 
         // 未生成订单（下单中）
         this.$http.request('POST', 'orders', { ...this.addressData, remark: this.remark, ...goodsData }).then((res) => {
@@ -336,7 +336,7 @@ export default {
             })
           } else {
             mpvue.showToast({
-              title: '获取失败,请重试',
+              title: res.message,
               icon: 'none',
               duration: 2000
             })

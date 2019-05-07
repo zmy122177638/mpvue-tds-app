@@ -340,7 +340,11 @@ export default {
   },
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
-    handleClickBtn() {
+    handleClickBtn () {
+      mpvue.showToast({
+        title: '功能即将开放',
+        icon: 'none'
+      })
       console.log('父组件响应')
     },
     // 获取用户信息

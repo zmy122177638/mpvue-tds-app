@@ -274,20 +274,23 @@ export default {
 
   .c-2 {
     margin-top: 20rpx;
-    height: 55rpx;
+    min-height: 55rpx;
     line-height: 55rpx;
+    text-align: right;
     .c-2-l {
       background: rgba(255, 102, 102, 0.1);
       -webkit-border-radius: 30rpx;
       -moz-border-radius: 30rpx;
       border-radius: 30rpx;
       display: inline-block;
-      height: 100%;
+      height: 55rpx;
       padding: 0 30rpx;
       color: rgba(255, 10, 10, 1);
+      float: left;
     }
     .c-2-r {
-      float: right;
+      display: inline-block;
+
       color: rgba(177, 177, 177, 1);
     }
   }
