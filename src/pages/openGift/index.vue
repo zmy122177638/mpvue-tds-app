@@ -518,15 +518,16 @@ export default {
   }
 }
 .equity-list {
-  padding: 0 22.5px 15px;
+  padding: 0 12.5px 15px;
   display: flex;
   flex-wrap: wrap;
+  box-sizing: border-box;
   align-items: center;
   .equity-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-right: 30px;
+    width: calc(100% / 4);
     margin-top: 20px;
     &:nth-child(4n) {
       margin-right: 0;
