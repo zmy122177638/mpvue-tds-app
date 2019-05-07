@@ -12,7 +12,6 @@
 // 支付接口
 import store from '../../store/store';
 const path = require('path')
-console.log(path)
 class Https {
   constructor() {
     // 服务器baseUrl

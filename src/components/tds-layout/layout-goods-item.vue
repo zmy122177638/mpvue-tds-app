@@ -29,7 +29,7 @@
     <div class="goods-pipe">
       <div class="goods-pipe-item">
         <div class="item-key">购买数量</div>
-        <div class="item-value">{{item.num}}</div>
+        <div class="item-value">{{item.num}}{{item.unit}}</div>
       </div>
       <div class="goods-pipe-item">
         <div class="item-key">配送方式</div>

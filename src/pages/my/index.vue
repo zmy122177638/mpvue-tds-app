@@ -141,7 +141,7 @@
             <div class="img-figure">
               <span
                 class="item-num"
-                v-if="infoData.order_pending.unpaid"
+                v-if="infoData.order_pending.unpaid > 0"
               >{{infoData.order_pending.unpaid}}</span>
               <img
                 class="item-icon"
@@ -158,7 +158,7 @@
             <div class="img-figure">
               <span
                 class="item-num"
-                v-if="infoData.order_pending.paid"
+                v-if="infoData.order_pending.paid > 0"
               >{{infoData.order_pending.paid}}</span>
               <img
                 class="item-icon"
@@ -174,7 +174,7 @@
             <div class="img-figure">
               <span
                 class="item-num"
-                v-if="infoData.order_pending.shipped"
+                v-if="infoData.order_pending.shipped > 0"
               >{{infoData.order_pending.shipped}}</span>
               <img
                 class="item-icon"
@@ -203,7 +203,7 @@
             <div class="img-figure">
               <span
                 class="item-num"
-                v-if="infoData.order_pending.refund"
+                v-if="infoData.order_pending.refund > 0"
               >{{infoData.order_pending.refund}}</span>
               <img
                 class="item-icon"
@@ -340,7 +340,7 @@ export default {
   },
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
-    handleClickBtn () {
+    handleClickBtn() {
       mpvue.showToast({
         title: '功能即将开放',
         icon: 'none'
@@ -352,6 +352,7 @@ export default {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
         if (code === 200) {
           this.infoData = resource;
+          console.log(resource)
         } else {
           mpvue.showToast({
             title: '获取失败',
@@ -408,7 +409,7 @@ export default {
     },
     handlePoint() {
       mpvue.showToast({
-        title: '暂未开放',
+        title: '功能即将开放',
         icon: 'none',
         duration: 2000
       })

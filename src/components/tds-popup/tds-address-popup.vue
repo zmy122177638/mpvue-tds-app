@@ -153,6 +153,16 @@ export default {
      * @Date: 2019-04-22 15:56:34
      */
     bindRegionChange(e) {
+      // 该地区不支持
+      let filterArr = ['澳门特别行政区', '香港特别行政区'];
+      if (filterArr.some(item => item === e.target.value[0])) {
+        mpvue.showToast({
+          title: '港澳地区不支持配送',
+          icon: 'none',
+          duration: 1000
+        })
+        return;
+      }
       this.formData_v.area = e.target.value;
       this.formData_v.consignee_area_id = e.target.code;
       console.log('picker发送选择改变，携带值为', e)
@@ -272,7 +282,7 @@ export default {
           margin-right: 15px;
         }
         .item-value {
-          height: 44px;
+          min-height: 44px;
           background-color: #f6f8fa;
           border-radius: 5px;
           flex: 1;
@@ -284,7 +294,7 @@ export default {
           padding: 0 15px;
           box-sizing: border-box;
           width: 100%;
-          height: 100%;
+          min-height: 44px;
           display: block;
           overflow: hidden;
         }

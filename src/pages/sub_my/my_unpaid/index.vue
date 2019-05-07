@@ -99,7 +99,9 @@ export default {
       // 是否未生成订单
       isOrder: false,
       // 商品信息
-      orderData: {},
+      orderData: {
+        postage: 0
+      },
       remark: '',
       // 地址信息
       addressData: {
@@ -110,18 +112,20 @@ export default {
       },
       // 剩余支付时间
       surplusTime: '00:00:00',
+      // 单位
+      unit: '',
       // 是否下架
       isExpire: false
     }
   },
   onLoad(options) {
-    console.log('传递过来的参数：')
-    console.log(JSON.parse(options.orders));
-
     // 传入商品信息(未生成订单)
+    console.log(options)
     if (options.orders) {
       let orders = JSON.parse(options.orders);
-      console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount等参数')
+      console.log('传递过来的参数：')
+      console.log(orders)
+      console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount，unit等参数')
       this.isOrder = false;
       // 如果未生成订单不获取订单详情，使用传入的orders
       this.orderData = orders
@@ -136,13 +140,19 @@ export default {
         duration: 2000
       })
     }
-    console.log(options)
   },
   mounted() {
     if (this.isOrder) {
       console.log('已生成订单')
       // 如果生成订单获取订单详情，使用传入的orderId
       this.getOrderDetail(this.orderId).then(() => {
+        // 获取详情后计算地址邮费情况
+        const { goods_id, num, consignee_address } = this.orderData; // eslint-disable-line
+        this.getPostage({
+          id: goods_id,
+          num,
+          consignee_address
+        })
         // 获取成功后开启剩余支付时间倒计时
         this.timer = setInterval(() => {
           let timeArr = countDownTime(this.endTime);
@@ -171,6 +181,13 @@ export default {
       success(res) {
         _that.addressData = res.data;
         console.log(res.data)
+        // 获取详情后计算地址邮费情况
+        const { goods_id, num, } = _that.orderData; // eslint-disable-line
+        _that.getPostage({
+          id: goods_id,
+          num,
+          consignee_address: res.data.consignee_address
+        })
       },
       fail(err) {
         console.log(err)
@@ -189,8 +206,10 @@ export default {
         if (code === 200) {
           // 订单详情
           this.orderData = resource.order;
+          // 商品单位
+          this.orderData.unit = resource.goods.unit;
           // 备注
-          this.remark = resource.order.remark;
+          this.remark = resource.order.remark || '';
           // 地址信息
           this.addressData = {
             consignee: resource.order.consignee,
@@ -202,6 +221,31 @@ export default {
         } else {
           mpvue.showToast({
             title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 获取邮费接口
+     * @param {Object} params 参数
+     * @return: undefined
+     * @Date: 2019-05-07 17:16:29
+     */
+    getPostage(params = {}) {
+      return this.$http.request('get', 'logistics/getCharge', params).then(({ code, resource, message }) => {
+        console.log(resource)
+        if (code === 200) {
+          this.orderData.postage = resource;
+          this.orderData.amount = (Number(this.orderData.amount) + Number(resource)).toFixed(2);
+        } else if (code === 10403) {
+          // 地区不支持配送
+          this.orderData.noCharge = message;
+        } else {
+          mpvue.showToast({
+            title: message,
             icon: 'none',
             duration: 2000
           })
@@ -318,7 +362,12 @@ export default {
                 mpvue.showToast({
                   title: '支付失败',
                   icon: 'none',
-                  duration: 2000
+                  duration: 2000,
+                  success() {
+                    mpvue.navigateTo({
+                      url: '../my_order/main?current=unpaid'
+                    })
+                  }
                 })
               }
             })
