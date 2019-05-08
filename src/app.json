@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/my/main",
+
     "pages/start/main",
     "pages/home/main",
     "pages/ranking/main",
     "pages/manager/main",
-
+    "pages/my/main",
     "pages/productList/main",
     "pages/productDetail/main",
     "pages/tomorrowProducts/main",
