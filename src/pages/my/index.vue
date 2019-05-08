@@ -307,7 +307,10 @@
         <!--<yqyl-lunbo-images></yqyl-lunbo-images>-->
       <!--</div>-->
     <!--</section>-->
-    <yqyl-lunbo-images v-if="showYqylBox" @click="handleCloseYqylBox"></yqyl-lunbo-images>
+    <section  @click="handleCloseYqylBox">
+      <yqyl-lunbo-images v-if="showYqylBox"></yqyl-lunbo-images>
+    </section>
+
   </section>
 </template>
 
@@ -357,6 +360,7 @@ export default {
       //   title: '功能即将开放',
       //   icon: 'none'
       // })
+      // 隐藏底部tabBar
       mpvue.hideTabBar();
       this.showYqylBox = true;
       console.log('父组件响应')
