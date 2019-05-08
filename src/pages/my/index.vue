@@ -303,11 +303,11 @@
 
     <!--邀请有礼弹窗-->
     <!--<section class="yqyl-box"  v-if="showYqylBox" @click="handleCloseYqylBox">-->
-      <!--<div class="yqyl-content">-->
-        <!--<yqyl-lunbo-images></yqyl-lunbo-images>-->
-      <!--</div>-->
+    <!--<div class="yqyl-content">-->
+    <!--<yqyl-lunbo-images></yqyl-lunbo-images>-->
+    <!--</div>-->
     <!--</section>-->
-    <section  @click="handleCloseYqylBox">
+    <section @click="handleCloseYqylBox">
       <yqyl-lunbo-images v-if="showYqylBox"></yqyl-lunbo-images>
     </section>
 
@@ -355,7 +355,7 @@ export default {
   },
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
-    handleClickBtn () {
+    handleClickBtn() {
       // mpvue.showToast({
       //   title: '功能即将开放',
       //   icon: 'none'
@@ -366,7 +366,7 @@ export default {
       console.log('父组件响应')
     },
     // 点击蒙版层，关闭邀请有礼弹窗
-    handleCloseYqylBox () {
+    handleCloseYqylBox() {
       this.showYqylBox = false;
       mpvue.showTabBar();
     },
@@ -387,7 +387,13 @@ export default {
       await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }, { ISLOADINGHIDE: true }).then(({ code, resource }) => {
         // 重新存入
         if (code === 200) {
-          // 重新写入
+          // 如果未实名隐藏tabbar
+          if (resource.type && !resource.is_real_check) {
+            mpvue.hideTabBar();
+          } else {
+            mpvue.showTabBar();
+          }
+
           console.log(resource)
           // 如果分享人id和用户id是一致，同步信息
           if (this.sharerInfo.id === resource.id) {
@@ -840,9 +846,9 @@ img {
     top: 0rpx;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    .yqyl-content{
+    .yqyl-content {
       position: absolute;
       left: 0rpx;
       right: 0rpx;
