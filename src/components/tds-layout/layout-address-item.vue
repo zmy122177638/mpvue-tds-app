@@ -8,12 +8,18 @@
       class="address-normal"
       v-if="item.is_default"
     >默认</div>
-    <img
+    <!-- <img
       :src="'../../../static/images/select_'+(activeId === item.id?'on':'no')+'.png'"
       class="address-icon"
-    />
+    /> -->
     <div class="address-content">
-      <p class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}{{'ss'+activeId}}</p>
+      <div class="address-info">
+        <div class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}呜呜呜呜呜呜呜呜无无无无我问问</div>
+        <div
+          class="avtive-txt"
+          v-if="activeId == item.id"
+        >当前选择</div>
+      </div>
       <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
     </div>
     <img
@@ -87,10 +93,27 @@ export default {
     flex: 1;
     margin-right: 15px;
     overflow: hidden;
-    .address-name {
-      font-size: 15px;
+    .address-info {
+      display: flex;
+      align-items: center;
       line-height: 20px;
-      color: #282828;
+      .address-name {
+        margin-right: 5px;
+        font-size: 15px;
+        color: #282828;
+        max-width: 75%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .avtive-txt {
+        font-size: 12px;
+        width: 20%;
+        line-height: 15px;
+        text-align: center;
+        color: #ff6666;
+        border: 1px solid #ff6666;
+      }
     }
     .address-cc {
       margin-top: 10px;
