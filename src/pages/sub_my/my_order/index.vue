@@ -198,7 +198,14 @@ export default {
     handleSelChange(item) {
       console.log(item)
       // 使用订单状态判断切换不同page
-      if (item.status === 1) {
+      if (item.status === -1) {
+        mpvue.showToast({
+          title: '订单已失效',
+          icon: 'none',
+          duration: 2000
+        })
+        return false;
+      } else if (item.status === 1) {
         mpvue.navigateTo({
           url: '../my_unpaid/main?orderId=' + item.id
         })

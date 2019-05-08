@@ -29,11 +29,24 @@
     <div class="goods-pipe">
       <div class="goods-pipe-item">
         <div class="item-key">购买数量</div>
-        <div class="item-value">{{item.num}}</div>
+        <div class="item-value">{{item.num}}{{item.unit}}</div>
       </div>
       <div class="goods-pipe-item">
         <div class="item-key">配送方式</div>
-        <div class="item-value">快递(包邮)</div>
+
+        <div
+          class="item-value"
+          v-if="item.noDelivery"
+        >{{item.noDelivery}}</div>
+
+        <div
+          class="item-value"
+          v-else-if="item.postage <= 0"
+        >快递(包邮)</div>
+        <div
+          class="item-value"
+          v-else
+        >快递(<text style="color:#FF0A0A">￥{{item.postage}}</text>)</div>
       </div>
       <div class="goods-pipe-item">
         <div class="item-key">支付方式</div>

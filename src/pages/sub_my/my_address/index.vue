@@ -58,18 +58,19 @@ export default {
   onLoad(options) {
     // 获取传入值
     this.use = options.use || 'set';
+    this.activeId = options.id || '';
     console.log(this.use)
   },
   mounted() {
     this.getAddressList().then(() => {
       // 当前选中地址（默认）
-      this.addressList.find(item => {
-        if (item.is_default) {
-          this.activeId = item.id;
-        }
-      })
+      // this.addressList.find(item => {
+      //   if (item.is_default) {
+      //     this.activeId = item.id;
+      //   }
+      // })
       // 如果没有默认地址，选中第一个
-      this.activeId = this.activeId ? this.activeId : this.addressList[0].id
+      // this.activeId = this.activeId ? this.activeId : this.addressList[0].id
     });
   },
   methods: {
@@ -173,9 +174,9 @@ export default {
      * @Date: 2019-04-22 14:23:38
      */
     handleAddressItem(formData) {
-      this.activeId = formData.id;
       // 判断是否选择
       if (this.use === 'select') {
+        this.activeId = formData.id;
         // 地址拼接
         formData.consignee_address = formData.area.join(' ') + ' ' + formData.address;
         // 存入缓存
@@ -199,10 +200,10 @@ export default {
      * @Date: 2019-04-27 14:46:46
      */
     longpressAddressItem(item) {
-      this.activeId = item.id;
+      // this.activeId = item.id;
       let that = this;
       mpvue.showActionSheet({
-        itemList: ['删除'],
+        itemList: ['删除' + ' ' + item.consignee],
         itemColor: '#FF6666',
         success(res) {
           if (res.tapIndex === 0) {
@@ -210,6 +211,7 @@ export default {
           }
         },
         fail(res) {
+          that.activeId = '';
           console.log('取消删除')
         }
       })

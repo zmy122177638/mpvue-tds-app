@@ -76,7 +76,7 @@
           <cover-view class="cout-money">{{orderData.amount}}</cover-view>
         </cover-view>
         <cover-view
-          class="footer-btn"
+          :class="['footer-btn',{'noClick':orderData.noDelivery}]"
           @click="handleGotoBuy"
         >立即支付</cover-view>
       </cover-view>
@@ -99,7 +99,10 @@ export default {
       // 是否未生成订单
       isOrder: false,
       // 商品信息
-      orderData: {},
+      orderData: {
+        postage: 0,
+        noDelivery: ''
+      },
       remark: '',
       // 地址信息
       addressData: {
@@ -110,21 +113,23 @@ export default {
       },
       // 剩余支付时间
       surplusTime: '00:00:00',
+      // 单位
+      unit: '',
       // 是否下架
       isExpire: false
     }
   },
   onLoad(options) {
-    console.log('传递过来的参数：')
-    console.log(JSON.parse(options.orders));
-
     // 传入商品信息(未生成订单)
+    console.log(options)
     if (options.orders) {
       let orders = JSON.parse(options.orders);
-      console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount等参数')
+      console.log('传递过来的参数：')
+      console.log(orders)
+      console.log('orders必须传入goods_image_url，goods_name，spec_attr，num，amount，unit等参数')
       this.isOrder = false;
       // 如果未生成订单不获取订单详情，使用传入的orders
-      this.orderData = orders
+      this.orderData = orders;
     } else if (options.orderId) {
       this.isOrder = true;
       // 传入商品订单ID(已生成订单)
@@ -136,13 +141,19 @@ export default {
         duration: 2000
       })
     }
-    console.log(options)
   },
   mounted() {
     if (this.isOrder) {
       console.log('已生成订单')
       // 如果生成订单获取订单详情，使用传入的orderId
       this.getOrderDetail(this.orderId).then(() => {
+        // 获取详情后计算地址邮费情况
+        const { goods_id, num, consignee_address } = this.orderData; // eslint-disable-line
+        this.getPostage({
+          id: goods_id,
+          num,
+          consignee_address
+        })
         // 获取成功后开启剩余支付时间倒计时
         this.timer = setInterval(() => {
           let timeArr = countDownTime(this.endTime);
@@ -160,7 +171,15 @@ export default {
     } else {
       console.log('未生成订单')
       // 如果未生成订单获取默认地址
-      this.getAddressList();
+      this.getAddressList().then(() => {
+        // 获取详情后计算地址邮费情况
+        const { goods_id, num } = this.orderData; // eslint-disable-line
+        this.getPostage({
+          id: goods_id,
+          num,
+          consignee_address: this.addressData.consignee_address
+        })
+      });
     }
   },
   onShow() {
@@ -171,6 +190,17 @@ export default {
       success(res) {
         _that.addressData = res.data;
         console.log(res.data)
+        // 获取详情后计算地址邮费情况
+        const { goods_id, num } = _that.orderData; // eslint-disable-line
+        _that.getPostage({
+          id: goods_id,
+          num,
+          consignee_address: res.data.consignee_address
+        })
+        // 移除缓存selAddress
+        mpvue.removeStorage({
+          key: 'selAddress'
+        })
       },
       fail(err) {
         console.log(err)
@@ -189,8 +219,10 @@ export default {
         if (code === 200) {
           // 订单详情
           this.orderData = resource.order;
+          // 商品单位
+          this.orderData.unit = resource.goods.unit;
           // 备注
-          this.remark = resource.order.remark;
+          this.remark = resource.order.remark || '';
           // 地址信息
           this.addressData = {
             consignee: resource.order.consignee,
@@ -202,6 +234,41 @@ export default {
         } else {
           mpvue.showToast({
             title: '获取失败,请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    },
+
+    /**
+     * @description: 获取邮费接口
+     * @param {Object} params 参数
+     * @return: undefined
+     * @Date: 2019-05-07 17:16:29
+     */
+    getPostage(params = {}) {
+      if (this.isOrder) {
+        this.orderData.amount = (Number(this.orderData.amount) - Number(this.orderData.postage)).toFixed(2);
+      } else {
+        this.orderData.amount = Number(this.orderData.amount).toFixed(2);
+      }
+      this.$set(this.orderData, 'noDelivery', '')
+      this.$set(this.orderData, 'postage', 0)
+      // 保存商品价格
+      this.orderData.oldAmount = this.orderData.amount;
+      return this.$http.request('get', 'logistics/getCharge', params).then(({ code, resource, message }) => {
+        console.log(resource)
+        if (code === 200) {
+          this.orderData.postage = resource;
+          this.orderData.amount = (Number(this.orderData.amount) + Number(resource)).toFixed(2);
+        } else if (code === 10403) {
+          console.log(message)
+          // 地区不支持配送
+          this.orderData.noDelivery = message;
+        } else {
+          mpvue.showToast({
+            title: message,
             icon: 'none',
             duration: 2000
           })
@@ -237,8 +304,13 @@ export default {
      * @Date: 2019-04-27 19:51:19
      */
     navigateToAddress() {
+      // 重置
+      this.orderData.amount = this.orderData.oldAmount;
+      this.orderData.postage = 0;
+      this.orderData.noDelivery = '';
+      let that = this;
       mpvue.navigateTo({
-        url: '../my_address/main?use=select' // use=select 选择
+        url: '../my_address/main?use=select&id=' + that.addressData.id // use=select 选择
       })
     },
 
@@ -247,6 +319,16 @@ export default {
      * @Date: 2019-04-27 19:51:38
      */
     handleGotoBuy() {
+      // 如果该地区不配送，事件阻止
+      if (this.orderData.noDelivery) {
+        mpvue.showToast({
+          title: this.orderData.noDelivery,
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      }
+      console.log(this.remark)
       if (this.isOrder) {
         // 已生成订单（待支付）
         this.$http.request('put', 'orders/' + this.orderData.id, { ...this.addressData, remark: this.remark }).then(({ code, resource }) => {
@@ -318,7 +400,12 @@ export default {
                 mpvue.showToast({
                   title: '支付失败',
                   icon: 'none',
-                  duration: 2000
+                  duration: 2000,
+                  success() {
+                    mpvue.navigateTo({
+                      url: '../my_order/main?current=unpaid'
+                    })
+                  }
                 })
               }
             })
@@ -353,10 +440,6 @@ export default {
   },
 
   onUnload() {
-    // 移除缓存selAddress
-    mpvue.removeStorage({
-      key: 'selAddress'
-    })
     // 设置过期，清除定时器
     this.isExpire = false;
     clearInterval(this.timer)
@@ -485,25 +568,25 @@ export default {
       flex: 1;
       height: 49px;
       line-height: 49px;
+      display: flex;
+      align-items: center;
       padding-left: 15px;
       background-color: #ffffff;
       .cout-key {
         font-size: 12px;
         color: #ff0a0a;
-        display: inline;
         margin-right: 5px;
       }
 
       .cout-money-key {
         font-size: 14px;
         color: #ff0a0a;
-        display: inline;
+        margin-right: 2px;
       }
       .cout-money {
         font-size: 22px;
         color: #ff0a0a;
         font-weight: bold;
-        display: inline;
       }
     }
     .footer-btn {
@@ -514,6 +597,10 @@ export default {
       background-color: #ff6666;
       color: #ffffff;
       font-size: 18px;
+      &.noClick {
+        background-color: #dfdfdf;
+        color: #656565;
+      }
     }
   }
 }
