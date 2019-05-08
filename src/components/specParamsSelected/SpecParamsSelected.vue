@@ -179,6 +179,13 @@ export default {
       goodData.num = this.selectedNum;
       // 总金额
       goodData.amount = goodData.spu.price * goodData.num
+      // 要邮费的地区
+      // goodData.charge_zone = this.productData.charge_zone;
+      // // 不邮寄的地区
+      // goodData.unshipping_zone = this.productData.unshipping_zone;
+      // // 商品重量
+      // goodData.weight = this.productData.weight;
+
       return goodData;
     },
     // 提交订单

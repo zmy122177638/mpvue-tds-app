@@ -31,6 +31,7 @@
             <div class="type-item-t">{{item.ad_name}}</div>
           </div>
         </div>
+
         <div class="active-box">
           <div class="active-left">
             <p>最新</p>

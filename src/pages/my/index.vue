@@ -300,16 +300,26 @@
     </scroll-view>
     <!-- 认证弹窗 -->
     <Tds-attestation-popup v-model="isShowAttestPopup"></Tds-attestation-popup>
+
+    <!--邀请有礼弹窗-->
+    <!--<section class="yqyl-box"  v-if="showYqylBox" @click="handleCloseYqylBox">-->
+      <!--<div class="yqyl-content">-->
+        <!--<yqyl-lunbo-images></yqyl-lunbo-images>-->
+      <!--</div>-->
+    <!--</section>-->
+    <yqyl-lunbo-images v-if="showYqylBox" @click="handleCloseYqylBox"></yqyl-lunbo-images>
   </section>
 </template>
 
 <script>
 import kaidianYouliBtn from '@/components/kaidianYouliBtn/KaidianYouliBtn'
 import TdsAttestationPopup from '@/components/tds-popup/tds-attestation-popup.vue'
+import YqylLunboImages from '@/components/yqylLunboImages/YqylLunboImages.vue'
 export default {
   components: {
     kaidianYouliBtn,
-    TdsAttestationPopup
+    TdsAttestationPopup,
+    YqylLunboImages
   },
   data() {
     return {
@@ -318,7 +328,9 @@ export default {
         order_pending: {},
         // 本月销售数据
         current_month_shop: {}
-      }
+      },
+      // 是否显示邀请有礼弹出层
+      showYqylBox: false
     }
   },
   onShow(options) {
@@ -341,11 +353,18 @@ export default {
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
     handleClickBtn () {
-      mpvue.showToast({
-        title: '功能即将开放',
-        icon: 'none'
-      })
+      // mpvue.showToast({
+      //   title: '功能即将开放',
+      //   icon: 'none'
+      // })
+      mpvue.hideTabBar();
+      this.showYqylBox = true;
       console.log('父组件响应')
+    },
+    // 点击蒙版层，关闭邀请有礼弹窗
+    handleCloseYqylBox () {
+      this.showYqylBox = false;
+      mpvue.showTabBar();
     },
     // 获取用户信息
     async getMyInfo() {
@@ -806,6 +825,31 @@ img {
           background-color: #ff6666;
         }
       }
+    }
+  }
+
+  // 邀请有礼弹窗
+  .yqyl-box {
+    position: fixed;
+    left: 0rpx;
+    top: 0rpx;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    z-index: 1000;
+    .yqyl-content{
+      position: absolute;
+      left: 0rpx;
+      right: 0rpx;
+      top: 0rpx;
+      bottom: 0rpx;
+      width: 80%;
+      height: 90%;
+      margin: auto;
+      -webkit-border-radius: 12rpx;
+      -moz-border-radius: 12rpx;
+      border-radius: 12rpx;
+      border: 4rpx solid red;
     }
   }
 }

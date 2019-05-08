@@ -1,11 +1,10 @@
 {
   "pages": [
-
+    "pages/my/main",
     "pages/start/main",
     "pages/home/main",
     "pages/ranking/main",
     "pages/manager/main",
-    "pages/my/main",
 
     "pages/productList/main",
     "pages/productDetail/main",
@@ -44,9 +43,9 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#999",
+    "color": "#BCBCBC",
     "backgroundColor": "#fafafa",
-    "selectedColor": "#333",
+    "selectedColor": "#FF6666",
     "borderStyle": "white",
     "list": [{
       "text": "首页",

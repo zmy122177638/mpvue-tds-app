@@ -96,6 +96,7 @@ export default {
           isShare = false;
           break;
       }
+      // 如果带着uid(分享人id的参数)，则说明分享途径进入小程序
       if (this.query.uid) {
         isShare = true;
       }

@@ -175,6 +175,9 @@
       }
     },
     methods: {
+      handleAccountLoad () {
+        console.log('11111111111122222222222')
+      },
       // 页面初始化
       setPageDefault () {
         // 重置信息
@@ -305,7 +308,10 @@
       },
       // 根据id获得商品详情
       getProductData (id) {
-        this.$http.get('goods/detail', {id})
+        let data = {};
+        data.id = id;
+        data.pid = this.$store.state.sharerInfo.id;
+        this.$http.get('goods/detail', data)
           .then(res => {
             console.log('商品详情信息：');
             console.log(res);
