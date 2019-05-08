@@ -14,7 +14,7 @@
     /> -->
     <div class="address-content">
       <div class="address-info">
-        <div class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}呜呜呜呜呜呜呜呜无无无无我问问</div>
+        <div class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}</div>
         <div
           class="avtive-txt"
           v-if="activeId == item.id"
