@@ -46,41 +46,40 @@
             <div class="box-value">
               <textarea
                 :auto-height="false"
-                placeholder="请输入你的备注信息"
+                :auto-focus="remarkAutoFocus"
+                :placeholder="placeholder"
                 :contenteditable="true"
+                v-if="isInputRemark"
                 :value="remark"
-                @blur="(ev)=>{remark = ev.target.value}"
+                @blur="(ev)=>{remark = ev.target.value; isInputRemark = false; remarkAutoFocus = false;}"
                 name="textarea"
               />
+              <text class='remark' @click="()=>{ isInputRemark = true; remarkAutoFocus = true;}" v-else>{{remark || placeholder}}</text>
               </div>
             </div>
         </div>
       </div>
     </div>
     <!-- 悬浮 -->
-    <cover-view class="unpaid-fixed">
+    <div class="unpaid-fixed">
       <!-- 提示时间 -->
-      <cover-view class="unpaid-timer" v-if="isOrder">
-        <block v-if="isExpire">
-          <cover-view class="unpaid-txt">商品已下架</cover-view>
-        </block>
-        <block v-else>
-          <cover-view  class="unpaid-txt">剩余支付时间</cover-view> <cover-view class="unpaid-strong">{{surplusTime}}</cover-view>
-        </block>
-      </cover-view>
+      <div class="unpaid-timer" v-if="isOrder">
+        <div v-if="isExpire" class="unpaid-txt">商品已下架</div>
+        <div v-else class="unpaid-txt">剩余支付时间</div> <div class="unpaid-strong">{{surplusTime}}</div>
+      </div>
       <!-- 支付 -->
-      <cover-view class="unpaid-footer">
-        <cover-view class="footer-cout">
-          <cover-view class="cout-key">合计</cover-view>
-          <cover-view class="cout-money-key">￥</cover-view>
-          <cover-view class="cout-money">{{orderData.amount}}</cover-view>
-        </cover-view>
-        <cover-view
+      <div class="unpaid-footer">
+        <div class="footer-cout">
+          <div class="cout-key">合计</div>
+          <div class="cout-money-key">￥</div>
+          <div class="cout-money">{{orderData.amount}}</div>
+        </div>
+        <div
           :class="['footer-btn',{'noClick':orderData.noDelivery}]"
           @click="handleGotoBuy"
-        >立即支付</cover-view>
-      </cover-view>
-    </cover-view>
+        >立即支付</div>
+      </div>
+    </div>
 
   </section>
 </template>
@@ -116,7 +115,10 @@ export default {
       // 单位
       unit: '',
       // 是否下架
-      isExpire: false
+      isExpire: false,
+      placeholder: '请输入你的备注信息',
+      isInputRemark: false,
+      remarkAutoFocus: false
     }
   },
   onLoad(options) {
@@ -155,18 +157,7 @@ export default {
           consignee_address
         })
         // 获取成功后开启剩余支付时间倒计时
-        this.timer = setInterval(() => {
-          let timeArr = countDownTime(this.endTime);
-          if (timeArr) {
-            // 设置时间展示
-            this.surplusTime = timeArr[0] + ':' + timeArr[1] + ':' + timeArr[2];
-          } else {
-            // 设置过期，清除定时器
-            this.isExpire = true;
-            clearInterval(this.timer)
-            this.timer = null;
-          }
-        }, 1000)
+        this.countTimer()
       });
     } else {
       console.log('未生成订单')
@@ -431,6 +422,26 @@ export default {
         })
       }
       console.log('调起支付接口')
+    },
+
+    /**
+     * @description: 计时器
+     * @Date: 2019-05-08 20:28:35
+     */
+    countTimer() {
+      this.timer = setTimeout(() => {
+        let timeArr = countDownTime(this.endTime);
+        if (!timeArr) {
+          // 设置过期，清除定时器
+          this.isExpire = true;
+          clearTimeout(this.timer)
+          this.timer = null;
+        } else {
+          // 设置时间展示
+          this.surplusTime = timeArr[0] + ':' + timeArr[1] + ':' + timeArr[2];
+          this.countTimer();
+        }
+      }, 1000)
     }
   },
 
@@ -466,6 +477,7 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
+    z-index: 999;
     width: 100%;
   }
   .section-item {
@@ -509,18 +521,32 @@ export default {
 
   .remarks-box {
     display: flex;
-    justify-content: space-between;
-    font-size: 15px;
-    color: #282828;
+    .box-label {
+      font-size: 15px;
+      color: #282828;
+      line-height: 1.4;
+    }
     .box-value {
       margin-left: 15px;
       flex: 1;
+      height: 45px;
       overflow: hidden;
       textarea {
-        margin-top: -5px;
+        line-height: 1.4;
         width: 100%;
-        height: 52px;
-        line-height: 1.2;
+        height: 100%;
+        font-size: 15px;
+        color: #282828;
+      }
+      .remark {
+        display: block;
+        line-height: 1.4;
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+        color: #282828;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
       }
     }
   }
@@ -546,18 +572,20 @@ export default {
   // 剩余时间
   .unpaid-timer {
     height: 44px;
-    line-height: 44px;
     background-color: #ffefef;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .unpaid-txt {
-      display: inline;
       font-size: 16px;
       color: #282828;
     }
     .unpaid-strong {
-      display: inline;
+      font-size: 16px;
       color: #ff6666;
       margin-left: 5px;
+      overflow: initial;
     }
   }
 
@@ -587,6 +615,7 @@ export default {
         font-size: 22px;
         color: #ff0a0a;
         font-weight: bold;
+        overflow: initial;
       }
     }
     .footer-btn {
