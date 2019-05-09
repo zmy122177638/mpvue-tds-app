@@ -46,9 +46,7 @@
             <div class="goods-txt">价值</div>
           </div>
           <!-- <p class="goods-p">{{giftList[curIndex].desc}}</p> -->
-          <text class="goods-p">
-            {{giftList[curIndex].desc}}
-          </text>
+          <text class="goods-p">{{giftList[curIndex].desc}}</text>
         </div>
       </div>
 
@@ -514,6 +512,7 @@ export default {
     .goods-p {
       font-size: 15px;
       color: #282828;
+      display: block;
     }
   }
 }
