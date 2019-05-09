@@ -138,10 +138,19 @@ export default {
       console.log('跳转到详情');
       // 判断是否有权限跳转到详情购买商品
       if (this.$store.state.userInfo.type) {
-        mpvue.navigateTo({
-          // url: '../productDetail/main?goods_id=' + id
-          url: '/pages/productDetail/main?goods_id=' + id
-        })
+        if (this.$store.state.userInfo.id === this.$store.state.sharerInfo.id) {
+          // 分享人是自己，即在自己的小店中，则可以进入
+          mpvue.navigateTo({
+            // url: '../productDetail/main?goods_id=' + id
+            url: '/pages/productDetail/main?goods_id=' + id
+          })
+        } else {
+          // 分享人是其他人，则不能进入
+          mpvue.showToast({
+            title: '请回到自己的小店或重新扫码进入',
+            icon: 'none'
+          })
+        }
       } else {
         mpvue.showModal({
           title: '提示',

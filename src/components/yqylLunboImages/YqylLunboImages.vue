@@ -16,7 +16,7 @@
       >
         <block>
           <swiper-item v-for="(item,i) in imgUrls" :key="i" :item-id="i">
-            <image mode="widthFix" :src="item" @click="handlePreviewImg(i)"/>
+            <image mode="widthFix" :src="item" @click.stop="handlePreviewImg(i)"/>
           </swiper-item>
         </block>
       </swiper>
@@ -46,8 +46,8 @@
         swiperHeight: this.swiperH,
         // imgUrls: this.imgArr,
         imgUrls: [
-          'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3849309371,424136812&fm=26&gp=0.jpg',
-          'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2444811933,2481549014&fm=26&gp=0.jpg'
+          '/static/tempImg/img1.jpg',
+          '/static/tempImg/img2.jpg'
         ],
         // 是否显示指示点
         indicatorDots: false,
@@ -77,6 +77,7 @@
     },
     methods: {
       handlePreviewImg (i) {
+        this.current = i;
         mpvue.previewImage({
           urls: this.imgUrls,
           current: this.imgUrls[i]
@@ -104,13 +105,18 @@
     z-index: 1000;
     swiper{
       margin:8% auto;
-      /*height: 85%;*/
-      height: auto;
-      width: 80%;
+      height: 85%;
+      width: 86%;
       swiper-item{
         height: auto;
-        .image{
-          width: 100%;
+        -webkit-border-radius: 12rpx;
+        -moz-border-radius: 12rpx;
+        border-radius: 12rpx;
+        /*border: 1px solid red;*/
+        image{
+          width: 90%;
+          max-height: 100%;
+          margin-left: 5%;
           background: url("../../../static/images/BannerNull.png");
           background-size: 100% 100%;
           -webkit-border-radius: 12rpx;

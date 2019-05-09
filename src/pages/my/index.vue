@@ -336,8 +336,11 @@ export default {
       showYqylBox: false
     }
   },
-  onShow(options) {
+  onShow (options) {
+    console.log('显示show11111111111')
     this.getMyInfo();
+  },
+  mounted () {
   },
   computed: {
     // 用户信息
@@ -361,9 +364,15 @@ export default {
       //   icon: 'none'
       // })
       // 隐藏底部tabBar
-      mpvue.hideTabBar();
-      this.showYqylBox = true;
-      console.log('父组件响应')
+      mpvue.showLoading({
+        title: '正在生成图片...'
+      });
+      setTimeout(function () {
+        mpvue.hideTabBar();
+        this.showYqylBox = true;
+        mpvue.hideLoading();
+        console.log('父组件响应')
+      }.bind(this), 1000);
     },
     // 点击蒙版层，关闭邀请有礼弹窗
     handleCloseYqylBox() {
@@ -388,7 +397,7 @@ export default {
         // 重新存入
         if (code === 200) {
           // 如果未实名隐藏tabbar
-          if (resource.type && !resource.is_real_check) {
+          if (resource.type && !resource.is_real_check || this.showYqylBox) {
             mpvue.hideTabBar();
           } else {
             mpvue.showTabBar();

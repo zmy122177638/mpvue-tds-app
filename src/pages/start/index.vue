@@ -62,40 +62,41 @@ export default {
     },
     // 判断是否从用户分享中进入小程序
     isShareInto() {
+      // isShare 作为分享进入标识，传入分享goPath进入的页面
       let isShare = false;
-      switch (this.scene) {
-        case 1007:
-          // 单人聊天小程序分享打开
-          isShare = true;
-          break;
-        case 1008:
-          // 群聊小程序分享打开
-          isShare = true;
-          break;
-        case 1044:
-          // 群聊小程序分享打开(带shareTicket)
-          isShare = true;
-          break;
-        case 1012:
-          // 长按图片识别二维码打开小程序
-          isShare = true;
-          break;
-        case 1011:
-          // 扫描二维码打开小程序
-          isShare = true;
-          break;
-        case 1047:
-          // 扫描小程序码
-          isShare = true;
-          break;
-        case 1048:
-          // 长按图片识别小程序码
-          isShare = true;
-          break;
-        default:
-          isShare = false;
-          break;
-      }
+      // switch (this.scene) {
+      //   case 1007:
+      //     // 单人聊天小程序分享打开
+      //     isShare = true;
+      //     break;
+      //   case 1008:
+      //     // 群聊小程序分享打开
+      //     isShare = true;
+      //     break;
+      //   case 1044:
+      //     // 群聊小程序分享打开(带shareTicket)
+      //     isShare = true;
+      //     break;
+      //   case 1012:
+      //     // 长按图片识别二维码打开小程序
+      //     isShare = true;
+      //     break;
+      //   case 1011:
+      //     // 扫描二维码打开小程序
+      //     isShare = true;
+      //     break;
+      //   case 1047:
+      //     // 扫描小程序码
+      //     isShare = true;
+      //     break;
+      //   case 1048:
+      //     // 长按图片识别小程序码
+      //     isShare = true;
+      //     break;
+      //   default:
+      //     isShare = false;
+      //     break;
+      // }
       // 如果带着uid(分享人id的参数)，则说明分享途径进入小程序
       if (this.query.uid) {
         isShare = true;
@@ -111,10 +112,11 @@ export default {
         let shareBack = true;
         let goPath = this.query.goPath;
         goPath = goPath + '?shareBack=' + shareBack;
+        // 如果是商品分享，则带goods_id
         if (this.query.goods_id) {
-          // 如果是商品分享，则有goods_id
           goPath = goPath + '&goods_id=' + this.query.goods_id;
         }
+
         // 根据分享人uid信息请求分享人信息
         this.$http.get('user/getBaseInfo', { uid: this.query.uid })
           .then(res => {
