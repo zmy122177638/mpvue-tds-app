@@ -308,7 +308,7 @@
     <!--</div>-->
     <!--</section>-->
     <section @click="handleCloseYqylBox">
-      <yqyl-lunbo-images v-if="showYqylBox"></yqyl-lunbo-images>
+      <yqyl-lunbo-images v-if="showYqylBox" :imgArr="posterImages"></yqyl-lunbo-images>
     </section>
 
   </section>
@@ -333,11 +333,12 @@ export default {
         current_month_shop: {}
       },
       // 是否显示邀请有礼弹出层
-      showYqylBox: false
+      showYqylBox: false,
+      // 海报数组
+      posterImages: []
     }
   },
   onShow (options) {
-    console.log('显示show11111111111')
     this.getMyInfo();
   },
   mounted () {
@@ -359,20 +360,21 @@ export default {
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
     handleClickBtn() {
-      // mpvue.showToast({
-      //   title: '功能即将开放',
-      //   icon: 'none'
-      // })
-      // 隐藏底部tabBar
-      mpvue.showLoading({
-        title: '正在生成图片...'
-      });
-      setTimeout(function () {
-        mpvue.hideTabBar();
-        this.showYqylBox = true;
-        mpvue.hideLoading();
-        console.log('父组件响应')
-      }.bind(this), 1000);
+      console.log('生成海报')
+      let tempData = {};
+      // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
+      tempData.uid = this.$store.state.userInfo.id; // 可以不需要上传uid，后台根据token获取用户信息
+      tempData.path = 'pages/start/main';
+      tempData.goPath = ['/pages/openShop/main', '/pages/openShop/main'];
+      tempData.type = '2,3';
+      this.$http.get('goods/getShareImage', tempData, '正在生成海报...')
+        .then(res => {
+          console.log('获得的海报信息：');
+          console.log(res);
+          this.posterImages = res.resource;
+          mpvue.hideTabBar();
+          this.showYqylBox = true;
+        })
     },
     // 点击蒙版层，关闭邀请有礼弹窗
     handleCloseYqylBox() {

@@ -33,22 +33,19 @@
       swiperH: {
         type: String,
         default: '340rpx'
-      }
+      },
       // 数据数组
-      // imgArr: {
-      //   type: Array,
-      //   required: true
-      // }
+      imgArr: {
+        type: Array,
+        required: true
+      }
     },
     data () {
       return {
         // 设置swiper的高度
         swiperHeight: this.swiperH,
         // imgUrls: this.imgArr,
-        imgUrls: [
-          '/static/tempImg/img1.jpg',
-          '/static/tempImg/img2.jpg'
-        ],
+        imgUrls:this.imgArr,
         // 是否显示指示点
         indicatorDots: false,
         // 指示点颜色

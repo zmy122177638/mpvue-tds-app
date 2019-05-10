@@ -16,10 +16,10 @@ class Https {
   constructor() {
     // 服务器baseUrl
     // this.commonUrl = 'http://miniprogram.dev.com/api/v1/'; // 福军本地
-    this.commonUrl = 'http://tuan.baidichan.com/api/v1/'; // 测试服
-    // 必须：当前小程序的appid
+    this.commonUrl = 'https://tuan.baidichan.com/api/v1/'; // 测试服
+    // 必须：当前小程序的appid，测试
     this.appid = 'wx36728f07d8012894';
-    // 必须：小程序私钥secret
+    // 必须：小程序私钥secret，测试
     this.secret = '81314d87c17307bfe22996c48c1f4c3d';
     // token 和 openid,由登录成功后写入
     this.token = store.state.token;
@@ -102,9 +102,10 @@ class Https {
   }
 
   // get请求
-  get(url, data) {
+  get(url, data, tip = '') {
     mpvue.showLoading({
-      title: '加载中...' // 数据请求前loading，提高用户体验
+      title: tip !== '' ? tip : '加载中',
+      mask: true
     })
     // 设置头部
     return new Promise((resolve, reject) => {
@@ -117,6 +118,7 @@ class Https {
           'Content-Type': 'application/json'
         }, // 设置请求的 header
         success: function (res) {
+          console.log(res)
           // success
           setTimeout(function () {
             mpvue.hideLoading();
@@ -124,6 +126,13 @@ class Https {
           if (res.statusCode !== 200) {
             mpvue.showToast({
               title: '网络出错，稍后再试',
+              icon: 'none'
+            });
+            return false;
+          }
+          if (res.data.code !== 200) {
+            mpvue.showToast({
+              title: res.data.message || '未知错误',
               icon: 'none'
             });
             return false;
@@ -172,6 +181,13 @@ class Https {
           if (res.statusCode !== 200) {
             mpvue.showToast({
               title: '网络异常，稍后再试',
+              icon: 'none'
+            });
+            return false;
+          }
+          if (res.data.code !== 200) {
+            mpvue.showToast({
+              title: res.data.message || '未知错误',
               icon: 'none'
             });
             return false;

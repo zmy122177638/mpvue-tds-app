@@ -111,17 +111,22 @@ export default {
         // 分享进入跳转到其他页面后，跳转的页面根据 fx 判断后退按钮操作
         let shareBack = true;
         let goPath = this.query.goPath;
+        // 如果是邀请开店分享，则需要判断扫码用户是否已经为会员用户，如果是会员用户则直接跳转到主页面
+        if (goPath == '/pages/openShop/main' && that.$store.state.userInfo.type) {
+          // console.log('用户已经是会员，跳转到主页面')
+          goPath = '/pages/home/main';
+        }
         goPath = goPath + '?shareBack=' + shareBack;
         // 如果是商品分享，则带goods_id
         if (this.query.goods_id) {
           goPath = goPath + '&goods_id=' + this.query.goods_id;
         }
-
+        console.log(goPath);
         // 根据分享人uid信息请求分享人信息
         this.$http.get('user/getBaseInfo', { uid: this.query.uid })
           .then(res => {
-            console.log('分享人信息');
-            console.log(res.resource);
+            // console.log('分享人信息');
+            // console.log(res.resource);
             // 写入上级分享人信息
             that.$store.commit({
               type: 'writeSharerInfo',

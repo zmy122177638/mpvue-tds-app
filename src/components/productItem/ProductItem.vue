@@ -154,7 +154,7 @@ export default {
       } else {
         mpvue.showModal({
           title: '提示',
-          content: '先成为会员，点击确定去到充值页面',
+          content: '成为团大师团长，购物更省钱',
           success: function (res) {
             if (res.confirm) {
               // 弹出提示跳转到会员充值页面

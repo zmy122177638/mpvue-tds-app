@@ -109,8 +109,8 @@
     </section>
 
     <!--底部固定按钮栏-->
-    <section class="fixld-bottom">
-      <van-goods-action style="z-index: 19999;">
+    <section class="fixld-bottom" style="z-index: 9999;">
+      <van-goods-action style="z-index: 9999;">
         <van-goods-action-icon
           icon="wap-home"
           text="首页"
@@ -153,7 +153,7 @@
         shareBack: false,
         // 商品详情，格式如下
         productData: {},
-        // 判断是否为掌柜、团长
+        // 判断是否为vip
         isManager: this.$store.getters.isVip,
         // 商品规格上拉弹窗是否显示
         productTypeShow: false,
@@ -181,7 +181,8 @@
       // 页面初始化
       setPageDefault () {
         // 重置信息
-        console.log('商品详情页面重置信息：')
+        console.log('商品详情页面重置信息')
+        this.isManager = this.$store.getters.isVip; // 判断是否为vip
         this.productData = {};
         this.specSelected = {};
         this.posterImgUrl = {};
@@ -262,25 +263,20 @@
       // 生成分享海报按钮响应
       handleCreatePosterImg () {
         let that = this
-        console.log('向后台请求生成海报')
-        mpvue.showLoading({
-          title: '正在生成海报...'
-        })
         let tempData = {};
         // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
         tempData.type = 1;
         tempData.goods_id = this.productData.goods_id;
-        tempData.uid = this.$store.state.userInfo.id;
+        tempData.uid = this.$store.state.userInfo.id; // 可以不需要上传uid，后台根据token获取用户信息
         tempData.path = 'pages/start/main';
         tempData.goPath = '/pages/productDetail/main';
-        this.$http.get('goods/getShareImage', tempData)
+        this.$http.get('goods/getShareImage', tempData, '正在生成海报...')
           .then(res => {
             console.log('获得的海报信息：');
             console.log(res);
             that.shareBoxShow = false
             that.showPosterImg = true
             that.posterImgUrl = res.resource;
-            mpvue.hideLoading()
           })
       },
       // 点击查看海报预览图
@@ -562,7 +558,11 @@
         /*height: 300rpx;*/
         /*border: 1px solid red;*/
         margin-bottom: 30rpx;
+        position: relative;
+        z-index: 0;
         .video{
+          position: relative;
+          z-index: 0;
           width: 100%;
         }
       }
