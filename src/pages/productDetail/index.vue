@@ -81,7 +81,7 @@
                       open-type="share"
                       id="productShare"
               >
-                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+                <img src="../../../static/images/WeChat_iCon.png">
               </button>
             </div>
             <div class="share-item-b">分享微信好友</div>
@@ -92,7 +92,7 @@
                       :plain="true"
                       @click="handleCreatePosterImg"
               >
-                <img src="http://oss.baidichan.com/store/images/20190325/AMoQAqePdD8oD1AkY1yM5LlVv7q4ZSRT06DrsJu7.jpeg">
+                <img src="../../../static/images/Poster_iCon.png">
               </button>
             </div>
             <div class="share-item-b">生成分享海报</div>
