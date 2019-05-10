@@ -17,10 +17,7 @@
             class="receiver-info"
             @click="navigateToAddress()"
           >
-            <img
-              class="receiver-icon"
-              src="../../../../static/images/Dingwei_iCon.png"
-            >
+            <div class="receiver-icon"></div>
             <div class="receiver-name">{{addressData.consignee}}&nbsp;&nbsp;&nbsp;{{addressData.consignee_mobile}}</div>
             <div class="receiver-location">{{addressData.consignee_address}}</div>
           </div>
@@ -32,10 +29,7 @@
           @click="navigateToAddress()"
         >
           <div class="no-address">
-            <img
-              class="no-address-icon"
-              src="../../../../static/images/add.png"
-            >
+            <div class="no-address-icon"></div>
             <div class="no-address-txt">选择收货地址</div>
           </div>
         </div>
@@ -117,6 +111,7 @@ export default {
       unit: '',
       // 是否下架
       isExpire: false,
+      // 输入框
       placeholder: '请输入你的备注信息',
       isInputRemark: false,
       remarkAutoFocus: false
@@ -180,9 +175,13 @@ export default {
     mpvue.getStorage({
       key: 'selAddress',
       success(res) {
-        _that.addressData = res.data;
-        console.log(res.data)
+        // 重置
+        _that.orderData.amount = _that.orderData.oldAmount || _that.orderData.amount;
+        _that.orderData.postage = 0;
+        _that.orderData.noDelivery = '';
+
         // 获取详情后计算地址邮费情况
+        _that.addressData = res.data;
         const { goods_id, num } = _that.orderData; // eslint-disable-line
         _that.getPostage({
           id: goods_id,
@@ -298,10 +297,6 @@ export default {
      * @Date: 2019-04-27 19:51:19
      */
     navigateToAddress() {
-      // 重置
-      this.orderData.amount = this.orderData.oldAmount;
-      this.orderData.postage = 0;
-      this.orderData.noDelivery = '';
       let that = this;
       mpvue.navigateTo({
         url: '../my_address/main?use=select&id=' + that.addressData.id // use=select 选择
@@ -510,6 +505,8 @@ export default {
         position: absolute;
         left: 0;
         top: 4px;
+        background: url('../../../../static/images/Dingwei_iCon.png') no-repeat;
+        background-size: 100% 100%;
       }
       .receiver-name {
         font-size: 15px;
@@ -563,7 +560,8 @@ export default {
       width: 20px;
       height: 20px;
       margin-right: 10px;
-      display: block;
+      background: url('../../../../static/images/add.png') no-repeat;
+      background-size: 100% 100%;
     }
     .no-address-txt {
       font-size: 16px;
