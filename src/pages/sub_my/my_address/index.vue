@@ -15,10 +15,7 @@
       class="add-btn-box"
       @click="handleAddAddress()"
     >
-      <img
-        src="../../../../static/images/add.png"
-        class="add-icon"
-      >
+      <div class="add-icon"></div>
       <div class="add-txt">新增地址</div>
     </div>
     <!-- 弹窗 -->
@@ -277,7 +274,8 @@ export default {
       width: 20px;
       height: 20px;
       margin-right: 10px;
-      display: flex;
+      background: url('../../../../static/images/add.png') no-repeat;
+      background-size: 100% 100%;
     }
     .add-txt {
       font-size: 15px;

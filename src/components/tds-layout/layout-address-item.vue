@@ -20,13 +20,12 @@
           v-if="activeId == item.id"
         >当前选择</div>
       </div>
-      <p class="address-cc"><span class="address-tag">{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
+      <p class="address-cc"><span
+          class="address-tag"
+          v-if="item.tag"
+        >{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
     </div>
-    <img
-      class="address-more-icon"
-      src="../../../static/images/ToRightGray_iCon.png"
-      alt=""
-    >
+    <div class="address-more-icon"></div>
   </div>
 </template>
 
@@ -130,6 +129,8 @@ export default {
     width: 7px;
     height: 13px;
     display: block;
+    background: url('../../../static/images/ToRightGray_iCon.png') no-repeat;
+    background-size: 100% 100%;
   }
 }
 </style>
