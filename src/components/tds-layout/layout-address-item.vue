@@ -107,6 +107,7 @@ export default {
         white-space: nowrap;
       }
       .avtive-txt {
+        border-radius: 3px;
         font-size: 12px;
         width: 20%;
         line-height: 15px;
