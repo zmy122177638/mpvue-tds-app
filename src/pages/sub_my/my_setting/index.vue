@@ -103,8 +103,23 @@ export default {
       })
     },
     handleAuthorizeChange() {
+      let that = this;
       if (this.userInfo.type) {
-        this.isShow = !this.isShow;
+        mpvue.showLoading()
+        mpvue.previewImage({
+          current: that.userInfo.letter_of_authorization, // 当前显示图片的http链接
+          urls: [that.userInfo.letter_of_authorization], // 需要预览的图片http链接列表
+          fail() {
+            mpvue.showToast({
+              title: '网络异常，请重试',
+              icon: 'none',
+              duration: 2000
+            })
+          },
+          complete() {
+            mpvue.hideLoading()
+          }
+        })
       } else {
         mpvue.showToast({
           title: '未获得授权书，快去成为团长吧',
