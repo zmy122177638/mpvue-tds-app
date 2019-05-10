@@ -107,6 +107,7 @@ export default {
       addressData: {
         consignee: '',
         consignee_mobile: '',
+        consignee_address: '',
         area: [],
         address: ''
       },
@@ -276,10 +277,12 @@ export default {
     getAddressList() {
       return this.$http.request('get', 'addresses/default').then(({ code, resource }) => {
         if (code === 200) {
-          this.addressData = resource || {};
-          // 拼接地址
-          this.addressData.consignee_address = resource.area.join(' ') + ' ' + resource.address;
-          console.log(resource)
+          if (resource) {
+            // 有默认地址
+            this.addressData = resource;
+            // 拼接地址
+            this.addressData.consignee_address = resource.area.join(' ') + ' ' + resource.address;
+          }
         } else {
           mpvue.showToast({
             title: '获取失败,请重试',
