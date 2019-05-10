@@ -309,8 +309,8 @@
         data.pid = this.$store.state.sharerInfo.id;
         this.$http.get('goods/detail', data)
           .then(res => {
-            console.log('商品详情信息：');
-            console.log(res);
+            // console.log('商品详情信息：');
+            // console.log(res);
             this.productData = res.resource;
             // console.log(this.productsData)
             if (this.productData.type == 2) {
@@ -351,10 +351,10 @@
         success (res) {
           let model = res.model;
           if (model.search('iPhone X') != -1) {
-            console.log('是iPhone X111111111111111111111111')
+            // console.log('是iPhone X111111111111111111111111')
             that.isIPhoneX = true;
           } else {
-            console.log('不是是iPhone X22222222222222222222')
+            // console.log('不是是iPhone X22222222222222222222')
             that.isIPhoneX = false;
           }
         }
@@ -368,14 +368,7 @@
       if (options.shareBack) {
         this.shareBack = options.shareBack;
       }
-      console.log('根据传递的ID值请求商品详情：');
-      console.log(options);
-      // let id = options.goods_id;
       this.goods_id = options.goods_id;
-      // // console.log('根据商品结束时间，开始商品倒计时')
-      // setTimeout(function () {
-      //   this.getProductData(this.goods_id);
-      // }.bind(this), 1000)
     },
     onUnload () {
       console.log('停止商品倒计时')

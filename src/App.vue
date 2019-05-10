@@ -17,8 +17,8 @@ export default {
     //   this.$http.token = this.$store.state.token;
     //   console.log(this.$store.state.userInfo);
     // }
-    console.log('进入小程序的场景值：')
-    console.log(options.scene)
+    // console.log('进入小程序的场景值：')
+    // console.log(options.scene)
   },
   onShow(options) {
     // console.log('app onShow');

@@ -118,7 +118,6 @@ class Https {
           'Content-Type': 'application/json'
         }, // 设置请求的 header
         success: function (res) {
-          console.log(res)
           // success
           setTimeout(function () {
             mpvue.hideLoading();

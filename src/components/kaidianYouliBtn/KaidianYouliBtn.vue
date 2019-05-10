@@ -44,6 +44,10 @@ export default {
   methods: {
     // 开店有礼按钮响应
     handleGotoKaidian() {
+      // 判断是否为会员(用于会员用户手机卡顿时未及时隐藏开店有礼按钮响应错误)
+      if (this.$store.state.userInfo.type) {
+        return;
+      }
       mpvue.navigateTo({
         url: '/pages/openShop/main'
       })

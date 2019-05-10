@@ -121,7 +121,6 @@ export default {
         if (this.query.goods_id) {
           goPath = goPath + '&goods_id=' + this.query.goods_id;
         }
-        console.log(goPath);
         // 根据分享人uid信息请求分享人信息
         this.$http.get('user/getBaseInfo', { uid: this.query.uid })
           .then(res => {
@@ -232,15 +231,12 @@ export default {
   },
   onLoad(options) {
     this.query = {};
-    console.log('start页面参数：');
-    console.log(options);
+    // console.log('start页面参数：');
+    // console.log(options);
     //  获取app进入参数
-    console.log('app参数,query：');
-    console.log(wx.getLaunchOptionsSync());
     let appOption = wx.getLaunchOptionsSync();
     this.scene = appOption.scene;
     this.query = options;
-    console.log(this.query);
     this.authorUserInfo();
   },
   created() {

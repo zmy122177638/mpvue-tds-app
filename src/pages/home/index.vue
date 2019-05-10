@@ -182,12 +182,12 @@ export default {
   onShow() {
   },
   onLoad() {
-    console.log('用户登录信息--userInfo：');
-    console.log(this.$store.state.userInfo);
-    console.log('分享用户信息--sharerInfo：');
-    console.log(this.$store.state.sharerInfo);
-    console.log('用户登录信息--token：');
-    console.log(this.$store.state.token);
+    // console.log('用户登录信息--userInfo：');
+    // console.log(this.$store.state.userInfo);
+    // console.log('分享用户信息--sharerInfo：');
+    // console.log(this.$store.state.sharerInfo);
+    // console.log('用户登录信息--token：');
+    // console.log(this.$store.state.token);
     // console.log('获取菜单按钮位置信息：');
     // console.log(mpvue.getMenuButtonBoundingClientRect());
   },
@@ -203,7 +203,6 @@ export default {
   created() {
   },
   mounted () {
-    console.log('ddddddddddd')
     this.getHomePageSetting();
     this.getAllPruductsData();
     this.getNewActiveData();
@@ -266,8 +265,8 @@ export default {
     getAllPruductsData() {
       this.$http.get('goods/list')
         .then(res => {
-          console.log('返回的数据：');
-          console.log(res);
+          // console.log('返回的数据：');
+          // console.log(res);
           // 数据替换
           this.special = res.resource.special;
           this.regiment = res.resource.regiment;
@@ -299,7 +298,7 @@ export default {
 
     // 商品点击跳转到详情响应
     handleGoDetail(i) {
-      console.log('跳转到详情')
+      // console.log('跳转到详情')
       mpvue.navigateTo({
         url: '#?id=' + i
       })

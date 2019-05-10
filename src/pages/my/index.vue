@@ -369,8 +369,8 @@ export default {
       tempData.type = '2,3';
       this.$http.get('goods/getShareImage', tempData, '正在生成海报...')
         .then(res => {
-          console.log('获得的海报信息：');
-          console.log(res);
+          // console.log('获得的海报信息：');
+          // console.log(res);
           this.posterImages = res.resource;
           mpvue.hideTabBar();
           this.showYqylBox = true;
