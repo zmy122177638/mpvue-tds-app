@@ -31,7 +31,8 @@
         "my_info/main",
         "my_attestation/main",
         "my_attestation_no/main",
-        "my_info_input/main"
+        "my_info_input/main",
+        "my_address_status/main"
       ]
     }
   ],

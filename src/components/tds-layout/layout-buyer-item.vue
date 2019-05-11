@@ -44,10 +44,12 @@
             v-else
           >
             <div class="item-key">{{item.shipper_code}}：</div>
-            <div class="item-value">{{item.logistic_code}} <img
+            <div class="item-value">{{item.logistic_code}}
+              <div
                 class="vehicle-icon"
-                src="../../../static/images/Express44_iCon.png"
-              /></div>
+                @click="$emit('addressChange',item)"
+              ></div>
+            </div>
           </div>
           <!-- 
           <div
@@ -133,6 +135,9 @@ export default {
             vertical-align: middle;
             border-radius: 50%;
             box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+            background: url('../../../static/images/Express44_iCon.png')
+              no-repeat;
+            background-size: 100% 100%;
           }
         }
       }
