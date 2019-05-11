@@ -306,7 +306,7 @@
       getProductData (id) {
         let data = {};
         data.id = id;
-        data.pid = this.$store.state.sharerInfo.id;
+        data.pid = this.$store.state.sharerInfo.id || 0;
         this.$http.get('goods/detail', data)
           .then(res => {
             // console.log('商品详情信息：');
