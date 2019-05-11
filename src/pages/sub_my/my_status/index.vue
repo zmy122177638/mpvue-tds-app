@@ -5,7 +5,10 @@
 
       <!-- 商品信息 -->
       <Layout-goods-item :item="orderData"></Layout-goods-item>
-      <Layout-buyer-item :item="orderData"></Layout-buyer-item>
+      <Layout-buyer-item
+        :item="orderData"
+        @addressChange="addressChange"
+      ></Layout-buyer-item>
       <Layout-logistics-item
         @onService="handleService"
         :status="orderData.status"
@@ -92,6 +95,13 @@ export default {
       })
       // mpvue.navigateTo({ url: '../my_service/main?orderId=' + this.orderId })
     },
+
+    addressChange(item) {
+      mpvue.navigateTo({
+        url: '../my_address_status/main?id=' + item.logistic_code // 传递物流单号
+      })
+    },
+
     /**
      * @description: 修改收货地址
      * @Date: 2019-04-19 11:01:26
