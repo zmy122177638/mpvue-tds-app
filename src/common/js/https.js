@@ -251,6 +251,9 @@ class Https {
           if (res.statusCode === 200) {
             resolve(res.data);
           } else if (res.statusCode === 401) {
+            // 清除原有token
+            store.commit('writeToken', '')
+            // 跳转登录页重新获取
             mpvue.navigateTo({
               url: path.resolve(__dirname, '../../pages/start/main')
             })

@@ -65,6 +65,8 @@ export default {
           // 订单详情
           this.orderData = resource.order;
           this.stateList = resource.state;
+          // 商品单位
+          this.orderData.unit = resource.goods.unit;
           // 设置title
           mpvue.setNavigationBarTitle({
             title: '订单' + this.orderData.mini_status

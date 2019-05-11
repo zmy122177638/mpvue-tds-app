@@ -1,15 +1,24 @@
 <template>
   <section class="address-container">
-    <div class="address-list">
+    <div
+      class="address-list"
+      v-if="addressList.length > 0"
+    >
       <Layout-address-item
         v-for="(item,index) in addressList"
         :key="index"
         :item="item"
         :activeId="activeId"
+        :use="use"
         @click="handleAddressItem"
+        @editChange="handleAddressEdit"
         @longpress="longpressAddressItem"
       ></Layout-address-item>
     </div>
+    <div
+      class="no-data-point"
+      v-if="pointShow"
+    >您还没有收货地址，赶紧新增一个吧</div>
     <!-- 新增地址 -->
     <div
       class="add-btn-box"
@@ -42,6 +51,7 @@ export default {
       use: 'set',
       // 当前选中地址
       activeId: '',
+      pointShow: false,
       // 是否弹窗
       isShow: false,
       // 地址列表
@@ -72,6 +82,7 @@ export default {
         if (code === 200) {
           this.tagList = resource.tag_list;
           this.addressList = resource.list;
+          this.pointShow = !(resource.list.length > 0);
         } else {
           mpvue.showToast({
             title: '获取收货列表失败',
@@ -163,25 +174,39 @@ export default {
      */
     handleAddressItem(formData) {
       // 判断是否选择
+      let that = this;
       if (this.use === 'select') {
         this.activeId = formData.id;
-        // 地址拼接
-        formData.consignee_address = formData.area.join(' ') + ' ' + formData.address;
-        // 存入缓存
-        mpvue.setStorage({
-          key: 'selAddress',
-          data: formData,
-          success: function () {
-            mpvue.navigateBack(); // 返回上一个页面
+        mpvue.showModal({
+          title: '选择地址',
+          content: '是否使用改地址',
+          success(res) {
+            if (res.confirm) {
+              that.activeId = formData.id;
+              // 地址拼接
+              formData.consignee_address = formData.area.join(' ') + ' ' + formData.address;
+              // 存入缓存
+              mpvue.setStorage({
+                key: 'selAddress',
+                data: formData,
+                success: function () {
+                  mpvue.navigateBack(); // 返回上一个页面
+                }
+              })
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
           }
         })
-      } else {
-        this.formData = { ...formData, use: 'set' };
-        this.isShow = !this.isShow;
       }
       console.log(formData)
     },
 
+    handleAddressEdit(formData) {
+      this.activeId = formData.id;
+      this.formData = { ...formData, use: 'set' };
+      this.isShow = !this.isShow;
+    },
     /**
      * @description: 长按删除
      * @param {Object} item // 地址数据
@@ -255,6 +280,12 @@ export default {
   padding-bottom: 84px;
   .address-list {
     margin: 0 15px;
+  }
+  .no-data-point {
+    font-size: 14px;
+    color: #989898;
+    text-align: center;
+    padding: 20px 0;
   }
   .add-btn-box {
     position: fixed;

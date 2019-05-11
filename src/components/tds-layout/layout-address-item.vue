@@ -8,24 +8,26 @@
       class="address-normal"
       v-if="item.is_default"
     >默认</div>
-    <!-- <img
-      :src="'../../../static/images/select_'+(activeId === item.id?'on':'no')+'.png'"
-      class="address-icon"
-    /> -->
+
+    <div
+      v-if="use === 'select'"
+      :class="['address-icon',{'on':activeId === item.id}]"
+    ></div>
+
     <div class="address-content">
       <div class="address-info">
         <div class="address-name">{{item.consignee}}&nbsp;&nbsp;&nbsp;{{item.consignee_mobile}}</div>
-        <div
+        <!-- <div
           class="avtive-txt"
           v-if="activeId == item.id"
-        >当前选择</div>
+        >当前选择</div> -->
       </div>
       <p class="address-cc"><span
           class="address-tag"
           v-if="item.tag"
         >{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
     </div>
-    <div class="address-more-icon"></div>
+    <div class="address-more-icon" @click.stop="$emit('editChange',item)"></div>
   </div>
 </template>
 
@@ -41,6 +43,10 @@ export default {
     item: {
       type: Object,
       requeired: true
+    },
+    use: {
+      type: String,
+      default: 'set'
     }
   }
 }
@@ -86,7 +92,13 @@ export default {
     height: 22px;
     border-radius: 50%;
     margin-right: 12px;
+    background: url('../../../static/images/select_no.png') no-repeat;
+    background-size: 100% 100%;
     align-self: flex-start;
+    &.on {
+      background: url('../../../static/images/select_on.png') no-repeat;
+      background-size: 100% 100%;
+    }
   }
   .address-content {
     flex: 1;
@@ -126,10 +138,10 @@ export default {
     }
   }
   .address-more-icon {
-    width: 7px;
-    height: 13px;
+    width: 14px;
+    height: 15px;
     display: block;
-    background: url('../../../static/images/ToRightGray_iCon.png') no-repeat;
+    background: url('../../../static/images/Edit_iCon.png') no-repeat;
     background-size: 100% 100%;
   }
 }
