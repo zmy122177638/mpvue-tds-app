@@ -174,7 +174,6 @@ export default {
      */
     handleAddressItem(formData) {
       // 判断是否选择
-      let that = this;
       if (this.use === 'select') {
         this.activeId = formData.id;
         mpvue.showModal({
@@ -182,7 +181,6 @@ export default {
           content: '是否使用改地址',
           success(res) {
             if (res.confirm) {
-              that.activeId = formData.id;
               // 地址拼接
               formData.consignee_address = formData.area.join(' ') + ' ' + formData.address;
               // 存入缓存

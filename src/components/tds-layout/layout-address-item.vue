@@ -11,7 +11,7 @@
 
     <div
       v-if="use === 'select'"
-      :class="['address-icon',{'on':activeId === item.id}]"
+      :class="['address-icon',{'on':activeId == item.id}]"
     ></div>
 
     <div class="address-content">
@@ -27,7 +27,10 @@
           v-if="item.tag"
         >{{item.tag}}</span>{{item.area[0]+ ' ' + item.area[1]+ ' ' + item.area[2]+ ' ' + item.address}}</p>
     </div>
-    <div class="address-more-icon" @click.stop="$emit('editChange',item)"></div>
+    <div
+      class="address-more-icon"
+      @click.stop="$emit('editChange',item)"
+    ></div>
   </div>
 </template>
 
