@@ -74,7 +74,7 @@
               </div>
             </div>
             <div
-              class="progress-grade-item"
+              :class="['progress-grade-item',{'on':item.level <= infoData.vip_level}]"
               v-for="item in infoData.vip_rules"
               :key="item.level"
             >
@@ -357,13 +357,10 @@ export default {
     isShowAttestPopup() {
       return (this.$store.state.userInfo.type && !this.$store.state.userInfo.is_real_check)
     },
-    /**
-     * @description: 计算百分比
-     * @Date: 2019-05-11 15:58:35
-     */
+    // 计算百分比
     upgradePro() {
       const amount = this.infoData.amount;
-      const level = this.infoData.shop_level;
+      const level = this.infoData.vip_level;
       const vipList = this.infoData.vip_rules;
       const num = 100 / vipList.length;
       let result = 0;
@@ -685,7 +682,7 @@ img {
               position: absolute;
               top: -20px;
               left: 50%;
-              right:1px;
+              right: 1px;
               transform: translateX(-50%);
             }
           }
@@ -693,9 +690,12 @@ img {
         .progress-grade-item {
           width: 2px;
           height: 2px;
-          background-color: #ffffff;
+          background-color: #b1b1b1;
           border-radius: 50%;
           position: relative;
+          &.on {
+            background-color: #ffffff;
+          }
           .grade-txt {
             font-size: 10px;
             color: #b1b1b1;
