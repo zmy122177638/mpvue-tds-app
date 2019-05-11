@@ -75,6 +75,8 @@
       mesList: function (val) {
         this.messageList = val;
       }
+    },
+    mounted () {
     }
   }
 </script>

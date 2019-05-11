@@ -37,7 +37,7 @@
         </div>
         <header class="ban-header">商品详情</header>
         <div class="video-box" v-if="productData.video_url">
-          <video class="video"  :src="productData.video_url"></video>
+          <video class="video"  :src="productData.video_url" :custom-cache="false"></video>
         </div>
         <div class="img-list" v-if="productData.detail_image && productData.detail_image.length > 0">
           <block v-for="(item,i) in productData.detail_image" :key="i">
@@ -321,6 +321,12 @@
             }
           })
       }
+    },
+    // 监听页面滚动
+    onPageScroll (e) {
+      // if (e.scrollTop <= 100) {
+      //   console.log(e.scrollTop)
+      // }
     },
     // 分享监听
     onShareAppMessage (res) {

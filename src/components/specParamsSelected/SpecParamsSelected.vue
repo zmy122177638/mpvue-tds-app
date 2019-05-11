@@ -70,6 +70,7 @@
     </section>
     <section class="btn-box">
       <button
+        class="submit-btn"
         type="warn"
         @click="handleSubmitOrder"
       >提交订单</button>
@@ -105,6 +106,8 @@ export default {
     setDefaultSelected() {
       this.userSelected = [];
       this.userSelectedStr = '';
+      this.selectedNum = 1;
+      this.currentSpu = {};
       if (this.productData.goods_id) {
         // 以第一个spu作为默认
         this.currentSpu = this.productData.spu[0];
@@ -378,6 +381,10 @@ export default {
     box-sizing: border-box;
     padding: 0 20%;
     margin-bottom: 20rpx;
+    .submit-btn{
+      background: #ff6666;
+      color: #fff;
+    }
   }
 }
 </style>

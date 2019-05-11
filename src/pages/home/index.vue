@@ -480,4 +480,5 @@ export default {
     margin-top: -5rpx;
   }
 }
+
 </style>
