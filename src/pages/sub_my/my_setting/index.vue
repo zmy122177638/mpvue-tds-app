@@ -103,23 +103,24 @@ export default {
       })
     },
     handleAuthorizeChange() {
-      let that = this;
       if (this.userInfo.type) {
-        mpvue.showLoading()
-        mpvue.previewImage({
-          current: that.userInfo.letter_of_authorization, // 当前显示图片的http链接
-          urls: [that.userInfo.letter_of_authorization], // 需要预览的图片http链接列表
-          fail() {
-            mpvue.showToast({
-              title: '网络异常，请重试',
-              icon: 'none',
-              duration: 2000
-            })
-          },
-          complete() {
-            mpvue.hideLoading()
-          }
-        })
+        // 如果已经生成授权书
+        if (this.userInfo.letter_of_authorization) {
+          this.previewImageImg(this.userInfo.letter_of_authorization)
+        } else {
+          // 否则请求授权书接口
+          this.$http.request('get', 'user/getLetter').then(({ code, resource }) => {
+            if (code === 200) {
+              resource && this.previewImageImg(resource)
+            } else {
+              mpvue.showToast({
+                title: '获取授权书失败，请重试',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+          })
+        }
       } else {
         mpvue.showToast({
           title: '未获得授权书，快去成为团长吧',
@@ -127,6 +128,19 @@ export default {
           duration: 2000
         })
       }
+    },
+    previewImageImg(img) {
+      mpvue.previewImage({
+        current: img, // 当前显示图片的http链接
+        urls: [img], // 需要预览的图片http链接列表
+        fail() {
+          mpvue.showToast({
+            title: '图片地址异常，请重试',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
     }
   }
 }

@@ -54,36 +54,31 @@
         class="progress-container"
         v-else
       >
-        <div class="progress-assert">
-          <div class="progress-count">上月店铺等级<span class="progress-grade">{{infoData.current_month_shop.level}}</span></div>
+        <div :class="['progress-assert',{'on':upgradePro > 65}]">
+          <div class="progress-count">店铺等级<span class="progress-grade">{{infoData.shop_level}}</span></div>
         </div>
         <div class="progress-box">
           <div class="progress-pack">
             <div
               class="progress-active"
-              :style="'width:'+infoData.current_month_shop.level_current_percent+'%'"
+              :style="'width:'+upgradePro+'%'"
             >
-              <img
-                :src="infoData.headimgurl"
-                class="user-avator"
-                alt=""
-              >
-              <div class="user-money">￥{{infoData.current_month_shop.amount}}</div>
+              <div class="user-avator">
+                <img
+                  class="user-avator-img"
+                  :src="infoData.headimgurl"
+                  style="width:100%;height:100%"
+                  alt=""
+                >
+                <div class="user-money">￥{{infoData.current_month_shop.amount}}</div>
+              </div>
             </div>
-            <div class="progress-grade-item">
-              <div class="grade-txt">Lv.1</div>
-            </div>
-            <div class="progress-grade-item">
-              <div class="grade-txt">Lv.2</div>
-            </div>
-            <div class="progress-grade-item">
-              <div class="grade-txt">Lv.3</div>
-            </div>
-            <div class="progress-grade-item">
-              <div class="grade-txt">Lv.4</div>
-            </div>
-            <div class="progress-grade-item">
-              <div class="grade-txt">Lv.5</div>
+            <div
+              class="progress-grade-item"
+              v-for="item in infoData.vip_rules"
+              :key="item.level"
+            >
+              <div class="grade-txt">{{item.level}}</div>
             </div>
           </div>
         </div>
@@ -308,7 +303,10 @@
     <!--</div>-->
     <!--</section>-->
     <section @click="handleCloseYqylBox">
-      <yqyl-lunbo-images v-if="showYqylBox" :imgArr="posterImages"></yqyl-lunbo-images>
+      <yqyl-lunbo-images
+        v-if="showYqylBox"
+        :imgArr="posterImages"
+      ></yqyl-lunbo-images>
     </section>
 
   </section>
@@ -329,8 +327,11 @@ export default {
       infoData: {
         // 订单数
         order_pending: {},
+        vip_rules: [],
         // 本月销售数据
-        current_month_shop: {}
+        current_month_shop: {
+          level_current_percent: 0
+        }
       },
       // 是否显示邀请有礼弹出层
       showYqylBox: false,
@@ -338,10 +339,10 @@ export default {
       posterImages: []
     }
   },
-  onShow (options) {
+  onShow(options) {
     this.getMyInfo();
   },
-  mounted () {
+  mounted() {
   },
   computed: {
     // 用户信息
@@ -355,6 +356,27 @@ export default {
     // 是否完成开店任务，否则必须实名制
     isShowAttestPopup() {
       return (this.$store.state.userInfo.type && !this.$store.state.userInfo.is_real_check)
+    },
+    /**
+     * @description: 计算百分比
+     * @Date: 2019-05-11 15:58:35
+     */
+    upgradePro() {
+      const amount = this.infoData.amount;
+      const level = this.infoData.shop_level;
+      const vipList = this.infoData.vip_rules;
+      const num = 100 / vipList.length;
+      let result = 0;
+      vipList.forEach((item, index) => {
+        if (item.level === level) {
+          if (item.high) {
+            result = (index * num) + Math.floor((amount / item.high * num)) || 0;
+          } else {
+            result = 100;
+          }
+        }
+      })
+      return result;
     }
   },
   methods: {
@@ -600,8 +622,12 @@ img {
     padding: 20px 15px;
     .progress-assert {
       display: flex;
+      margin-bottom: -15px;
       align-items: center;
       justify-content: flex-end;
+      &.on {
+        justify-content: flex-start;
+      }
       .progress-count {
         font-size: 10px;
         color: #282828;
@@ -613,7 +639,7 @@ img {
       }
     }
     .progress-box {
-      padding: 22px 0;
+      padding: 28px 0 22px;
       .progress-pack {
         height: 8px;
         background-color: #f2f2f2;
@@ -647,14 +673,21 @@ img {
             box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
             background: url('../../../static/images/AvatarNull.png') no-repeat;
             background-size: 100% 100%;
-          }
-          .user-money {
-            font-size: 10px;
-            color: #ff6666;
-            font-weight: bold;
-            position: absolute;
-            top: -28px;
-            right: -14px;
+            .user-avator-img {
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+            .user-money {
+              font-size: 10px;
+              color: #ff6666;
+              font-weight: bold;
+              position: absolute;
+              top: -20px;
+              left: 50%;
+              right:1px;
+              transform: translateX(-50%);
+            }
           }
         }
         .progress-grade-item {
