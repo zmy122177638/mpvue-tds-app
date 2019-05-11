@@ -212,8 +212,8 @@ export default {
         tempData.iv = e.mp.detail.iv;
         this.$http.post('auth/editInfo', tempData)
           .then(res => {
-            // console.log('手机号授权：');
-            // console.log(res);
+            console.log('手机号授权：');
+            console.log(res);
             // 更新store中的userInfo
             this.$store.commit({
               type: 'writeUserInfo',
