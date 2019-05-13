@@ -206,6 +206,9 @@ export default {
     this.getHomePageSetting();
     this.getAllPruductsData();
     this.getNewActiveData();
+    setInterval(function () {
+      this.getNewActiveData();
+    }.bind(), 1000 * 60 * 10);
     this.isShowBackMyShopBtn();
   },
   methods: {
@@ -246,7 +249,7 @@ export default {
       // type== 1：引流，2,：团品，3：拼团，4：返场
       if (i === 0) {
         mpvue.showToast({
-          title: '此功能未开通',
+          title: '功能即将开放',
           icon: 'none'
         })
         return
@@ -280,8 +283,8 @@ export default {
     getHomePageSetting() {
       this.$http.get('conf/getIndexConf')
         .then(res => {
-          // console.log('首页设置信息：');
-          // console.log(res);
+          console.log('首页设置信息：');
+          console.log(res);
           this.linkImgUrls = res.resource.banner;
           this.typeInfoList = res.resource.lead;
         })
