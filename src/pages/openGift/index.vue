@@ -129,7 +129,6 @@
           >《团大师用户协议》</span> </p>
       </div>
     </div>
-
     <cover-view
       :class="['openGift-btn',{'on':isAgreement}]"
       @click="handlePayChange"
@@ -306,7 +305,9 @@ export default {
     },
     // 打开协议
     openAgreement() {
-      console.log('打开协议')
+      mpvue.navigateTo({
+        url: '../../pages/web-view/main?url=http://h5.tuands.cn/support/agreement-user.html'
+      })
     },
     // 成为团长
     handlePayChange() {

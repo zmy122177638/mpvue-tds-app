@@ -9,6 +9,7 @@
         :item="orderData"
         @addressChange="addressChange"
       ></Layout-buyer-item>
+      <!--  -->
       <Layout-logistics-item
         @onService="handleService"
         :status="orderData.status"
@@ -108,12 +109,11 @@ export default {
      */
     handleAddress() {
       this.isShow = !this.isShow;
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-      mpvue.stopPullDownRefresh()
     }
+  },
+  // 下拉刷新
+  onPullDownRefresh() {
+    mpvue.stopPullDownRefresh()
   }
 }
 </script>
