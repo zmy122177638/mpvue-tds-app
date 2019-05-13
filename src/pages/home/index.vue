@@ -443,6 +443,8 @@ export default {
     box-shadow: 0rpx 10rpx 20rpx rgba(255, 102, 102, 0.35);
     margin-top: 20rpx;
     margin-bottom: 20rpx;
+    background: url("../../../static/images/BannerNull.png");
+    background-size: 100% 100%;
     img {
       width: 100%;
       height: 100%;

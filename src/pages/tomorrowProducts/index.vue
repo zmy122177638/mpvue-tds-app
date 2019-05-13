@@ -1,10 +1,10 @@
 <template>
   <section class="container">
-    <section class="top">
+    <section class="top" v-if="sharerInfo.type">
       <tds-header></tds-header>
     </section>
     <section class="main">
-      <section class="top-kong"></section>
+      <section class="top-kong" v-if="sharerInfo.type"></section>
       <section class="img-list-box">
         <div class="img-list" v-if="dataList.length > 0">
           <block v-for="(item,i) in dataList" :key="i">
@@ -32,6 +32,16 @@
 
     components: {
       TdsHeader
+    },
+    computed: {
+      // 分享人信息
+      sharerInfo() {
+        return this.$store.state.sharerInfo
+      },
+      // 用户信息
+      userInfo () {
+        return this.$store.state.userInfo;
+      }
     },
 
     methods: {
