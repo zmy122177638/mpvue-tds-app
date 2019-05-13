@@ -206,6 +206,7 @@ export default {
     this.getHomePageSetting();
     this.getAllPruductsData();
     this.getNewActiveData();
+    // 每10分钟更新一次最新动态
     setInterval(function () {
       this.getNewActiveData();
     }.bind(), 1000 * 60 * 10);

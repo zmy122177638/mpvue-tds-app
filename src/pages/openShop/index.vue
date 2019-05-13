@@ -93,6 +93,7 @@ export default {
     }
   },
   onLoad(options) {
+    console.log(options)
     // 传递邀请码参数 inviterId
     if (options && options.inviterId) {
       this.inviterId = options.inviterId;

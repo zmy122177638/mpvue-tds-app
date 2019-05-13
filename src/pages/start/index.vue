@@ -121,11 +121,15 @@ export default {
         if (this.query.goods_id) {
           goPath = goPath + '&goods_id=' + this.query.goods_id;
         }
+        // console.log('进入参数：')
+        // console.log(this.query)
         // 根据分享人uid信息请求分享人信息
         this.$http.get('user/getBaseInfo', { uid: this.query.uid })
           .then(res => {
-            // console.log('分享人信息');
-            // console.log(res.resource);
+            console.log('分享人信息');
+            console.log(res.resource);
+            // 带上分享人邀请码
+            goPath = goPath + '&inviterId=' + res.resource.invite_code;
             // 写入上级分享人信息
             that.$store.commit({
               type: 'writeSharerInfo',
@@ -161,7 +165,7 @@ export default {
           mpvue.hideLoading();
           // console.log('sessionKey未过期')
           // 如果登录态未过期，还要考虑用户登录信息是否拿到，如果没有拿到，则需要重新授权登录
-          if (that.$store.state.token) {
+          if (that.$store.state.userInfo.id) {
             that.hasOpenId = true;
             // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
             if (that.userInfo.mobile_phone) {
