@@ -154,10 +154,10 @@ export default {
      */
     bindRegionChange(e) {
       // 该地区不支持
-      let filterArr = ['澳门特别行政区', '香港特别行政区'];
+      let filterArr = ['澳门特别行政区', '香港特别行政区', '台湾省'];
       if (filterArr.some(item => item === e.target.value[0])) {
         mpvue.showToast({
-          title: '港澳地区不支持配送',
+          title: '港澳台地区不支持配送',
           icon: 'none',
           duration: 1000
         })
