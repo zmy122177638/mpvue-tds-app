@@ -84,8 +84,17 @@
           <div class="item-right">{{item.score}}</div>
         </div>
       </div>
-      <div :class="['ranking-ponint',{'on':queryData.category === 'shop'}]">
+      <div
+        v-if="rankingList.length > 0"
+        :class="['ranking-ponint',{'on':queryData.category === 'shop'}]"
+      >
         {{queryData.category === 'shop'?'仅显示前十名小店排行':'仅显示前十名商品排行'}}
+      </div>
+      <div
+        v-if="isNodata"
+        :class="['ranking-ponint',{'on':queryData.category === 'shop'}]"
+      >
+        暂无数据
       </div>
       <!-- 悬浮店铺排名 -->
       <div
@@ -115,7 +124,9 @@ export default {
       // 排行列表
       rankingList: [],
       // 我的排行
-      my_ranking: {}
+      my_ranking: {},
+      // 无数据
+      isNodata: false
     }
   },
 
@@ -142,6 +153,7 @@ export default {
           } else if (queryData.category === 'goods') {
             this.rankingList = resource;
           }
+          this.isNodata = this.rankingList.length < 1;
         } else {
           mpvue.showToast({
             title: '获取排行失败，请重试',

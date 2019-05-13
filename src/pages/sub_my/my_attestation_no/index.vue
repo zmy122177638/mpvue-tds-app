@@ -45,6 +45,12 @@
           placeholder="请输入证件号码"
         >
       </div>
+
+      <div class="point-box">
+        <div class="point-t">提示：</div>
+        <div class="point-p"><span class="p-key">1、</span>请填写与当前微信一致的实名认证信息，否则将会导致无法提现！</div>
+        <div class="point-p"><span class="p-key">2、</span>请关注微信公众号：团大师，否则将会导致无法接收消息提醒</div>
+      </div>
       <div
         class="form-subimt"
         @click="submit()"
@@ -144,6 +150,8 @@ export default {
 <style scoped lang="scss">
 .form-wrap {
   padding-top: 15px;
+  display: flex;
+  flex-direction: column;
   .form-item {
     padding: 20px 30px;
     margin-bottom: 10px;
@@ -169,7 +177,7 @@ export default {
     }
   }
   .form-subimt {
-    margin: 40px;
+    margin: 30px 40px 40px;
     background-color: #ff6666;
     box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
     border-radius: 22px;
@@ -179,6 +187,27 @@ export default {
     font-weight: bold;
     color: #ffffff;
     text-align: center;
+  }
+}
+.point-box {
+  margin: 15px 15px 0;
+  .point-t {
+    font-size: 12px;
+    line-height: 22px;
+    color: #ff6666;
+  }
+  .point-p {
+    font-size: 12px;
+    line-height: 22px;
+    color: #ff6666;
+    padding-left: 18px;
+    position: relative;
+    .p-key {
+      position: absolute;
+      left: 0;
+      top: 0;
+      line-height: 22px;
+    }
   }
 }
 </style>

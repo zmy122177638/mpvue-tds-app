@@ -18,15 +18,15 @@
         <div class="buyer-pipe">
           <div class="buyer-pipe-item">
             <div class="item-key">收货姓名：</div>
-            <div class="item-value">{{item.consignee}}</div>
+            <div class="item-value">{{item.consignee || '请联系客服设置收货信息'}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">联系手机：</div>
-            <div class="item-value">{{item.consignee_mobile}}</div>
+            <div class="item-value">{{item.consignee_mobile || '请联系客服设置收货信息'}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">收货地址：</div>
-            <div class="item-value">{{item.consignee_address}}</div>
+            <div class="item-value">{{item.consignee_address || '请联系客服设置收货信息'}}</div>
           </div>
           <div class="buyer-pipe-item">
             <div class="item-key">备注信息：</div>

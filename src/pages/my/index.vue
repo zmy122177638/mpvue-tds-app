@@ -330,6 +330,9 @@ export default {
         vip_rules: [],
         // 本月销售数据
         current_month_shop: {
+          amount: 0,
+          level: '',
+          levelNum: 1,
           level_current_percent: 0
         }
       },
@@ -359,12 +362,12 @@ export default {
     },
     // 计算百分比
     upgradePro() {
-      const amount = this.infoData.amount;
-      const level = this.infoData.vip_level;
-      const vipList = this.infoData.vip_rules || [];
+      const amount = this.infoData.current_month_shop.amount;
+      const level = this.infoData.current_month_shop.levelNum;
+      const vipList = this.infoData.vip_rules;
       const num = 100 / vipList.length;
       let result = 0;
-      vipList.forEach((item, index) => {
+      vipList.find((item, index) => {
         if (item.level === level) {
           if (item.high) {
             result = (index * num) + Math.floor((amount / item.high * num)) || 0;
@@ -403,10 +406,10 @@ export default {
     // 获取用户信息
     async getMyInfo() {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
+        console.log(resource)
         if (code === 200) {
-          this.infoData = resource;
+          this.infoData = { ...this.infoData, ...resource };
           this.infoData.current_month_shop.levelNum = Number(this.infoData.current_month_shop.level.match(/[0-9]+/ig)[0]);
-          console.log(resource)
         } else {
           mpvue.showToast({
             title: '获取失败',

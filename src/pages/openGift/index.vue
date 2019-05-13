@@ -238,7 +238,7 @@ export default {
       this.$http.request('get', 'upgrades').then(({ code, resource }) => {
         console.log(resource)
         if (code === 200) {
-          this.giftList = resource;
+          this.giftList = resource.length > 0 ? resource : this.giftList;
         } else {
           mpvue.showToast({
             title: '获取失败,请重试',
@@ -476,6 +476,7 @@ export default {
     background-color: #f6f8fa;
     border-radius: 6px;
     position: relative;
+    min-height: 200px;
     .goods-absbox {
       display: flex;
       background-color: #ff6666;
