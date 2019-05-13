@@ -74,7 +74,7 @@
               </div>
             </div>
             <div
-              :class="['progress-grade-item',{'on':item.level <= infoData.vip_level}]"
+              :class="['progress-grade-item',{'on':item.level <= infoData.current_month_shop.levelNum}]"
               v-for="item in infoData.vip_rules"
               :key="item.level"
             >
@@ -405,6 +405,7 @@ export default {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
         if (code === 200) {
           this.infoData = resource;
+          this.infoData.current_month_shop.levelNum = Number(this.infoData.current_month_shop.level.match(/[0-9]+/ig)[0]);
           console.log(resource)
         } else {
           mpvue.showToast({
