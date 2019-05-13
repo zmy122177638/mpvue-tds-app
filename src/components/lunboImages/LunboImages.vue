@@ -129,7 +129,10 @@
 
 <style scoped lang="scss">
   .child-container{
+    border-top: 20rpx solid #fff;
     position: relative;
+    background: url("../../../static/images/BannerNull.png");
+    background-size: 100% 100%;
     .custom-dot{
       position: absolute;
       bottom: 20rpx;
