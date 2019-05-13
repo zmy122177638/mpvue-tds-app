@@ -70,10 +70,10 @@
     </section>
     <section class="btn-box">
       <button
-        class="submit-btn"
+        :class="spuNumZero?'submit-btn-grey':'submit-btn'"
         type="warn"
         @click="handleSubmitOrder"
-      >提交订单</button>
+      >{{spuNumZero?'库存不足':'提交订单'}}</button>
     </section>
   </section>
 </template>
@@ -98,7 +98,9 @@ export default {
       // 购买数量,默认为1
       selectedNum: 1,
       // 当前用户选择的spu
-      currentSpu: {}
+      currentSpu: {},
+      // 当前用户选择的spu商品库存是否为0
+      spuNumZero: false
     }
   },
   methods: {
@@ -142,8 +144,13 @@ export default {
           this.currentSpu = value;
         }
       }.bind(this))
-      // console.log('当前spu:');
-      // console.log(this.currentSpu);
+      // 判断该spu商品库存是否为0
+      if (this.currentSpu.stock === 0) {
+        console.log('该商品库存不足')
+        this.spuNumZero = true;
+      } else {
+        this.spuNumZero = false;
+      }
     },
     // 用户选择不同spec选项时响应， params : i：父级数组下标，j:二级数组下标，val：二级数组下标对应的值
     handleSelected(i, j, val) {
@@ -193,8 +200,16 @@ export default {
     },
     // 提交订单
     handleSubmitOrder () {
-      let obj = this.setgoodData();
-      this.$emit('submit-order', obj)
+      if (this.spuNumZero) {
+        // mpvue.showToast({
+        //   title: '商品库存不足',
+        //   icon: 'none'
+        // })
+        return false;
+      } else {
+        let obj = this.setgoodData();
+        this.$emit('submit-order', obj)
+      }
     }
   },
   watch: {
@@ -384,6 +399,13 @@ export default {
     .submit-btn{
       background: #ff6666;
       color: #fff;
+    }
+    .submit-btn-grey{
+      background: #ccc;
+      color: #656565;
+    }
+    .submit-btn-grey::after,.submit-btn-grey::before{
+      border: none;
     }
   }
 }

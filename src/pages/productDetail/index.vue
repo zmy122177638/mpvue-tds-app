@@ -305,12 +305,13 @@
       // 根据id获得商品详情
       getProductData (id) {
         let data = {};
+        data.isShare = this.shareBack;  // 分享进入为true
         data.id = id;
         data.pid = this.$store.state.sharerInfo.id || 0;
         this.$http.get('goods/detail', data)
           .then(res => {
-            // console.log('商品详情信息：');
-            // console.log(res);
+            console.log('商品详情信息：');
+            console.log(res);
             this.productData = res.resource;
             // console.log(this.productsData)
             if (this.productData.type == 2) {

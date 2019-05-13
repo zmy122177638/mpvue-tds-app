@@ -16,11 +16,15 @@ class Https {
   constructor() {
     // 服务器baseUrl
     // this.commonUrl = 'http://miniprogram.dev.com/api/v1/'; // 福军本地
-    this.commonUrl = 'https://tuan.baidichan.com/api/v1/'; // 测试服
+    // this.commonUrl = 'https://tuan.baidichan.com/api/v1/'; // 测试服
+    this.commonUrl = 'https://xcx.tuands.cn/api/v1/'; // 正式服
     // 必须：当前小程序的appid，测试
     this.appid = 'wx36728f07d8012894';
     // 必须：小程序私钥secret，测试
     this.secret = '81314d87c17307bfe22996c48c1f4c3d';
+
+    this.appid = 'wx3ca38c34169ff2b6';
+    this.secret = '09b28d8f938e110ee765bfab4a11998f';
     // token 和 openid,由登录成功后写入
     this.token = store.state.token;
   }
