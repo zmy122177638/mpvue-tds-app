@@ -4,7 +4,9 @@
       <tds-header></tds-header>
     </section>
     <section class="top-kong"  v-if="sharerInfo.type"></section>
-    <tomorrow-image :img_url="topImg"></tomorrow-image>
+    <section @click="handleTomorrowPage">
+      <tomorrow-image :img_url="topImg"></tomorrow-image>
+    </section>
     <section class="item-list">
       <div v-if="isNoData" class="no-data">暂无数据</div>
       <block v-for="(item,i) in productsData" :key="i">
@@ -56,6 +58,14 @@
       }
     },
     methods: {
+      // 今日团品图片点击跳转到明日预告
+      handleTomorrowPage () {
+        if (this.type == 2) {
+          mpvue.navigateTo({
+            url: '/pages/tomorrowProducts/main'
+          })
+        }
+      },
       // 初始化页面参数
       setDefault () {
         console.log('页面重置')
@@ -103,7 +113,7 @@
       switch (options.type) {
         case '1':
           wx.setNavigationBarTitle({
-            title: '引流特供'
+            title: '团长特供'
           })
           break
         case '2':

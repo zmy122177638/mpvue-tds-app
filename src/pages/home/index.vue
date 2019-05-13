@@ -209,7 +209,7 @@ export default {
     // 每10分钟更新一次最新动态
     setInterval(function () {
       this.getNewActiveData();
-    }.bind(), 1000 * 60 * 10);
+    }.bind(this), 1000 * 60 * 10);
     this.isShowBackMyShopBtn();
   },
   methods: {
