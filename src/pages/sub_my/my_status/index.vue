@@ -108,6 +108,11 @@ export default {
      */
     handleAddress() {
       this.isShow = !this.isShow;
+    },
+
+    // 下拉刷新
+    onPullDownRefresh() {
+      mpvue.stopPullDownRefresh()
     }
   }
 }

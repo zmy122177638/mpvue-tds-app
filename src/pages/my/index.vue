@@ -78,7 +78,7 @@
               v-for="item in infoData.vip_rules"
               :key="item.level"
             >
-              <div class="grade-txt">{{item.level}}</div>
+              <div class="grade-txt">LV.{{item.level}}</div>
             </div>
           </div>
         </div>
