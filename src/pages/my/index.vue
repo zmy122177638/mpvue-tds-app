@@ -361,7 +361,7 @@ export default {
     upgradePro() {
       const amount = this.infoData.amount;
       const level = this.infoData.vip_level;
-      const vipList = this.infoData.vip_rules;
+      const vipList = this.infoData.vip_rules || [];
       const num = 100 / vipList.length;
       let result = 0;
       vipList.forEach((item, index) => {
