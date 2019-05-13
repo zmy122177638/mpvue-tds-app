@@ -19,10 +19,10 @@ class Https {
     // this.commonUrl = 'https://tuan.baidichan.com/api/v1/'; // 测试服
     this.commonUrl = 'https://xcx.tuands.cn/api/v1/'; // 正式服
     // 必须：当前小程序的appid，测试
-    this.appid = 'wx36728f07d8012894';
+    // this.appid = 'wx36728f07d8012894';
     // 必须：小程序私钥secret，测试
-    this.secret = '81314d87c17307bfe22996c48c1f4c3d';
-
+    // this.secret = '81314d87c17307bfe22996c48c1f4c3d';
+    // 正式服appid和secret
     this.appid = 'wx3ca38c34169ff2b6';
     this.secret = '09b28d8f938e110ee765bfab4a11998f';
     // token 和 openid,由登录成功后写入
@@ -36,17 +36,15 @@ class Https {
     let codeInfo = await this.login();
     let userInfo = await this.getUserInfo();
     // 获取到code和userInfo之后调起请求，返回openId/token
-    console.log('用户授权登录获取的信息：codeInfo、userInfo：')
-    console.log(codeInfo);
-    console.log(userInfo);
+    // console.log('用户授权登录获取的信息：codeInfo、userInfo：')
+    // console.log(codeInfo);
+    // console.log(userInfo);
     // 根据code、encryptedData、iv三个参数项后台请求open_id以及用户信息
     let tempData = {};
     tempData.code = codeInfo.code;
     tempData.enc_data = userInfo.encryptedData;
     tempData.iv = userInfo.iv;
     let requestData = await this.post('auth/login', tempData);
-    // console.log('服务器后台登录成功，数据：');
-    // console.log(requestData);
     // console.log('走了授权登录流程，更新了token');
     this.token = requestData.data.token;
     mpvue.hideLoading();
@@ -122,6 +120,8 @@ class Https {
           'Content-Type': 'application/json'
         }, // 设置请求的 header
         success: function (res) {
+          // console.log('返回数据：');
+          // console.log(res);
           // success
           setTimeout(function () {
             mpvue.hideLoading();
@@ -135,7 +135,7 @@ class Https {
           }
           if (res.data.code !== 200) {
             mpvue.showToast({
-              title: res.data.message || '未知错误',
+              title: res.data.message || res.data.msg || '未知错误',
               icon: 'none'
             });
             return false;
@@ -179,6 +179,8 @@ class Https {
           'content-type': 'application/x-www-form-urlencoded'
         }, // 设置请求的 header
         success: function (res) {
+          console.log('返回数据：');
+          console.log(res);
           // success
           mpvue.hideLoading();
           if (res.statusCode !== 200) {
@@ -190,7 +192,7 @@ class Https {
           }
           if (res.data.code !== 200) {
             mpvue.showToast({
-              title: res.data.message || '未知错误',
+              title: res.data.message || res.data.msg || '未知错误',
               icon: 'none'
             });
             return false;
