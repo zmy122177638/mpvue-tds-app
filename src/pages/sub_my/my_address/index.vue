@@ -101,8 +101,12 @@ export default {
      */
     addAddressItem(params) {
       return this.$http.request('post', 'addresses', params).then((res) => {
+        console.log(res)
         if (res.code === 200) {
-          this.getAddressList();
+          this.getAddressList().then(() => {
+            // 新增地址默认提示选择
+            this.handleAddressItem(res.resource)
+          });
           mpvue.showToast({
             title: '新增成功',
             icon: 'success',
@@ -178,7 +182,7 @@ export default {
         this.activeId = formData.id;
         mpvue.showModal({
           title: '选择地址',
-          content: '是否使用改地址',
+          content: '是否使用该地址',
           success(res) {
             if (res.confirm) {
               // 地址拼接
