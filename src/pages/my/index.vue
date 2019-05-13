@@ -384,7 +384,7 @@ export default {
       // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
       tempData.uid = this.$store.state.userInfo.id; // 可以不需要上传uid，后台根据token获取用户信息
       tempData.path = 'pages/start/main';
-      tempData.goPath = ['/pages/openShop/main', '/pages/openShop/main'];
+      tempData.goPath = ['/pages/openShop/main', '/pages/openShop/main']; // 跳转到充值页面
       tempData.type = '2,3';
       this.$http.get('goods/getShareImage', tempData, '正在生成海报...')
         .then(res => {

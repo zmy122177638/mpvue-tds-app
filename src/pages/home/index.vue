@@ -265,7 +265,7 @@ export default {
     getAllPruductsData() {
       this.$http.get('goods/list')
         .then(res => {
-          // console.log('返回的数据：');
+          // console.log('四种类型数据列表：');
           // console.log(res);
           // 数据替换
           this.special = res.resource.special;
