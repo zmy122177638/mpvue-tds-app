@@ -175,8 +175,26 @@
       }
     },
     methods: {
-      handleAccountLoad () {
-        console.log('11111111111122222222222')
+      // 判断用户是否为会员，如果非会员，则无法进行购买操作
+      userIsVip () {
+        // 判断是否有权限跳转到详情购买商品
+        if (this.$store.state.userInfo.type) {
+          return true;
+        } else {
+          mpvue.showModal({
+            title: '提示',
+            content: '成为团大师团长，购物更省钱',
+            success: function (res) {
+              if (res.confirm) {
+                // 弹出提示跳转到会员充值页面
+                mpvue.navigateTo({
+                  url: '/pages/openShop/main'
+                })
+              }
+            }
+          })
+        }
+        return false;
       },
       // 页面初始化
       setPageDefault () {
@@ -295,6 +313,9 @@
       handleSubmitOrder (options) {
         console.log('订单信息：');
         console.log(options);
+        if (!this.userIsVip()) {
+          return false;
+        }
         let data = JSON.stringify(options);
         // 跳转到未付款订单页面
         mpvue.navigateTo({
@@ -380,6 +401,13 @@
     onUnload () {
       console.log('停止商品倒计时')
       clearInterval(this.timeIntval);
+    },
+    onShow () {
+
+      this.productTypeShow = false;
+      this.shareBoxShow = false;
+      this.showPosterImg = false;
+      this.shareBack = false;
     },
     created () {
     },
