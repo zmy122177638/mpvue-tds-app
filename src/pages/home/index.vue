@@ -340,6 +340,7 @@ export default {
     background-color: #fff;
   }
   .ban-1 {
+    border-top: 20rpx solid #fff;
     width: 100%;
     height: auto;
     background: #fff;
