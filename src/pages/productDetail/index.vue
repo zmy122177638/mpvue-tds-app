@@ -37,7 +37,7 @@
         </div>
         <header class="ban-header">商品详情</header>
         <div class="video-box" v-if="productData.video_url">
-          <video class="video"  :src="productData.video_url" :custom-cache="false"></video>
+          <video class="video"  :src="productData.video_url" :custom-cache="false" poster="https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=626279907,1514034287&fm=173&app=49&f=JPEG?w=218&h=146&s=8D0883553251547714B8A56803006013"></video>
         </div>
         <div class="img-list" v-if="productData.detail_image && productData.detail_image.length > 0">
           <block v-for="(item,i) in productData.detail_image" :key="i">
