@@ -1,8 +1,9 @@
 <template>
   <section class="container">
-    <section>
+    <!--<section class="top-back-box"  :class="isIPhoneX?'top-back-box-iphoneX':'top-back-box'" :style="'background:rgba(255,255,255,' +currentOpacity+ ')'">-->
+    <section class="top-back-box">
       <!--<van-icon name="arrow-left" class="go-back" @click="handleGoBack" />-->
-      <img src="../../../static/images/Return_iCon.png" :class="isIPhoneX?'go-back-iphoneX':'go-back'" @click="handleGoBack" />
+      <img src="../../../static/images/Return_iCon.png" class="go-back" :class="isIPhoneX?'go-back-iphoneX':'go-back'" @click="handleGoBack" />
     </section>
     <section class="lunbo-box">
       <lunbo-images
@@ -147,6 +148,8 @@
     },
     data () {
       return {
+        // 顶部导航当前背景颜色的透明度
+        currentOpacity: 0,
         // 传递过来的goods_id
         goods_id: 0,
         // shareBack 表示是否为分享中打开登录后进入该页面,false表示正常的进入，则正常的后退
@@ -234,7 +237,8 @@
       },
       // 顶部返回上一页按钮响应
       handleGoBack () {
-        console.log('如果是分享进入，则需要点击回退按钮返回到首页中');
+        // console.log('如果是分享进入，则需要点击回退按钮返回到首页中');
+        // console.log(this.shareBack )
         if (this.shareBack) {
           mpvue.reLaunch({
             url: '../home/main'
@@ -326,7 +330,7 @@
       // 根据id获得商品详情
       getProductData (id) {
         let data = {};
-        data.isShare = this.shareBack;  // 分享进入为true
+        data.isShare = this.shareBack;
         data.id = id;
         data.pid = this.$store.state.sharerInfo.id || 0;
         this.$http.get('goods/detail', data)
@@ -346,8 +350,14 @@
     },
     // 监听页面滚动
     onPageScroll (e) {
-      // if (e.scrollTop <= 100) {
-      //   console.log(e.scrollTop)
+      // if (e.scrollTop > 200 && this.currentOpacity == 1) {
+      //   return false;
+      // }
+      // if (e.scrollTop <= 200) {
+      //   this.currentOpacity = e.scrollTop / 100 / 1.9;
+      //   console.log(this.currentOpacity);
+      // } else {
+      //   this.currentOpacity = 1;
       // }
     },
     // 分享监听
@@ -373,12 +383,22 @@
     },
     // 页面加载监听
     onLoad (options) {
+      // 如果是从分享进入，则为true;
+      if (options.shareBack) {
+        this.shareBack = options.shareBack;
+      }
       let that = this;
+      // console.log('options：');
+      // console.log(options);
       // iphoneX 兼容
       mpvue.getSystemInfo({
         success (res) {
           let model = res.model;
-          if (model.search('iPhone X') != -1) {
+          console.log('手机类型：');
+          console.log(model);
+          // 刘海机型判断
+          // JSN-AL00a：荣耀8X机型 || model.search('JSN-AL00a') != -1
+          if (model.search('iPhone X') != -1 || model.search('JSN-AL00a') != -1) {
             // console.log('是iPhone X111111111111111111111111')
             that.isIPhoneX = true;
           } else {
@@ -392,10 +412,7 @@
       // mpvue.showShareMenu({
       //   withShareTicket: true
       // })
-      // 如果是从分享进入，则为true;
-      if (options.shareBack) {
-        this.shareBack = options.shareBack;
-      }
+
       this.goods_id = options.goods_id;
     },
     onUnload () {
@@ -403,11 +420,9 @@
       clearInterval(this.timeIntval);
     },
     onShow () {
-
       this.productTypeShow = false;
       this.shareBoxShow = false;
       this.showPosterImg = false;
-      this.shareBack = false;
     },
     created () {
     },
@@ -450,6 +465,38 @@
     /*border: 1px solid red;*/
     padding: 20rpx 30rpx;
   }
+
+  /* 下滑显隐*/
+  /*.top-back-box{*/
+    /*!*border: 1px solid red;*!*/
+    /*position: fixed;*/
+    /*left: 0rpx;*/
+    /*top: 0rpx;*/
+    /*height: 58rpx;*/
+    /*width: 100%;*/
+    /*z-index: 1000;*/
+    /*padding-top: 46rpx;*/
+    /*.go-back{*/
+      /*height: 30rpx;*/
+      /*width: 18rpx;*/
+      /*padding: 15rpx 30rpx 15rpx 20rpx;*/
+    /*}*/
+  /*}*/
+  /*.top-back-box-iphoneX{*/
+    /*!*border: 1px solid red;*!*/
+    /*position: fixed;*/
+    /*left: 0rpx;*/
+    /*top: 0rpx;*/
+    /*height: 72rpx;*/
+    /*width: 100%;*/
+    /*z-index: 1000;*/
+    /*padding-top: 90rpx;*/
+    /*.go-back{*/
+      /*height: 30rpx;*/
+      /*width: 18rpx;*/
+      /*padding: 20rpx 30rpx 20rpx 25rpx;*/
+    /*}*/
+  /*}*/
 
   .ban-header{
     margin-top: 10rpx;

@@ -135,6 +135,7 @@ export default {
               type: 'writeSharerInfo',
               sharerInfo: res.resource
             });
+            console.log(goPath);
             mpvue.reLaunch({
               url: goPath
             })
@@ -238,8 +239,8 @@ export default {
   },
   onLoad(options) {
     this.query = {};
-    // console.log('start页面参数：');
-    // console.log(options);
+    console.log('start页面参数：');
+    console.log(options);
     //  获取app进入参数
     let appOption = wx.getLaunchOptionsSync();
     this.scene = appOption.scene;
