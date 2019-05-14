@@ -45,13 +45,13 @@
         // 设置swiper的高度
         swiperHeight: this.swiperH,
         // imgUrls: this.imgArr,
-        imgUrls:this.imgArr,
+        imgUrls: this.imgArr,
         // 是否显示指示点
-        indicatorDots: false,
+        indicatorDots: true,
         // 指示点颜色
-        indicatorColor: '#ff0000',
+        indicatorColor: '#ccc',
         // 活动的指示点颜色
-        indicatorActiveColor: '#00ff00',
+        indicatorActiveColor: '#fff',
         // 当前所在滑块
         current: 0,
         // 是否自动播放
@@ -59,7 +59,7 @@
         // 切换间隔时间
         interval: 5000,
         // 滑动动画时长
-        duration: 1000,
+        duration: 500,
         // 是否采用衔接滑动
         circular: false,
         // 滑动方向是否为纵向

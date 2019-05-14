@@ -166,12 +166,14 @@ export default {
           // console.log('sessionKey未过期')
           // 如果登录态未过期，还要考虑用户登录信息是否拿到，如果没有拿到，则需要重新授权登录
           if (that.$store.state.userInfo.id) {
-            that.hasOpenId = true;
-            // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
-            if (that.userInfo.mobile_phone) {
-              // 用户手机号存在，说明用户信息完整
-              that.goPage();
-            }
+            that.goPage();
+            // 手机号验证第一版不进行处理，隐藏
+            // that.hasOpenId = true;
+            // // 还需要判断用户是否已经填写手机号，这步判断是为了防止用户授权登录后退出重新登录而跳过手机验证
+            // if (that.userInfo.mobile_phone) {
+            //   // 用户手机号存在，说明用户信息完整
+            //   that.goPage();
+            // }
           } else {
             console.log('sessionKey虽然没失效，但是授权登录失败,需要重新授权')
           }
@@ -198,12 +200,13 @@ export default {
           type: 'writeUserInfo',
           userInfo: res.data.user
         });
+        this.goPage();
         //  判断手机号是否已经存在
-        if (res.data.user.mobile_phone) {
-          this.goPage();
-        } else {
-          this.hasOpenId = true;
-        }
+        // if (res.data.user.mobile_phone) {
+        //   this.goPage();
+        // } else {
+        //   this.hasOpenId = true;
+        // }
       });
     },
 
