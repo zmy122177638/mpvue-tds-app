@@ -59,7 +59,7 @@
         // 切换间隔时间
         interval: 5000,
         // 滑动动画时长
-        duration: 1000,
+        duration: 500,
         // 是否采用衔接滑动
         circular: false,
         // 滑动方向是否为纵向
