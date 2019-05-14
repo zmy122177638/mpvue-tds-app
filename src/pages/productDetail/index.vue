@@ -124,7 +124,7 @@
           @contact="handleServiceCall"
         />
         <van-goods-action-button
-          v-if="isManager"
+          v-if="isManager && proType == 2"
           text="立即分享"
           type="warning"
           @click="handleGoShare"
@@ -148,6 +148,8 @@
     },
     data () {
       return {
+        // 跳入的商品type
+        proType: 2,
         // 顶部导航当前背景颜色的透明度
         currentOpacity: 0,
         // 传递过来的goods_id
@@ -388,6 +390,7 @@
         this.shareBack = options.shareBack;
       }
       let that = this;
+      this.proType = options.type;
       // console.log('options：');
       // console.log(options);
       // iphoneX 兼容
