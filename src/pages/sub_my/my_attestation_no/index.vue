@@ -34,6 +34,7 @@
           type="text"
           :value="formData.name"
           @input="getNameChange"
+          @blur="nameRulesBlur"
           placeholder="请输入姓名"
         >
       </div>
@@ -42,6 +43,7 @@
           type="idcard"
           :value="formData.id"
           @input="getIdChange"
+          @blur="idRulesBlur"
           placeholder="请输入证件号码"
         >
       </div>
@@ -52,9 +54,16 @@
         <div class="point-p"><span class="p-key">2、</span>请关注微信公众号：团大师，否则将会导致无法接收消息提醒</div>
       </div>
       <div
-        class="form-subimt"
-        @click="submit()"
+        v-if="!isGetNumber"
+        :class="['form-subimt',{'on':!isClickFlag}]"
+        @click="submit"
       >立即认证</div>
+      <button
+        v-else
+        open-type="getPhoneNumber"
+        @getphonenumber="submit"
+        :class="['form-subimt',{'on':!isClickFlag}]"
+      >立即认证</button>
     </div>
 
   </section>
@@ -72,7 +81,13 @@ export default {
         activeIndex: 0,
         name: '',
         id: ''
-      }
+      },
+      // 姓名是否验证成功
+      isRulesGetName: false,
+      // 身份证是否验证成功
+      isRulesGetId: false,
+      // 手机号加密
+      encryptedData: ''
     }
   },
   computed: {
@@ -81,6 +96,14 @@ export default {
     },
     sharerInfo() {
       return this.$store.state.sharerInfo
+    },
+    // 是否可点击状态
+    isClickFlag() {
+      return this.formData.id && this.formData.name;
+    },
+    // 是否获取手机号按钮
+    isGetNumber() {
+      return this.isRulesGetName && this.isRulesGetId;
     }
   },
 
@@ -92,14 +115,37 @@ export default {
     getNameChange(ev) {
       this.formData.name = ev.target.value;
     },
+    nameRulesBlur(ev) {
+      if (!/^[\u4e00-\u9fa5]{2,6}$/.test(ev.target.value)) {
+        this.isRulesGetName = false;
+      } else {
+        this.isRulesGetName = true;
+      }
+    },
     getIdChange(ev) {
       this.formData.id = ev.target.value;
     },
-    submit() {
+    idRulesBlur(ev) {
+      const { pass } = IdCodeValid(ev.target.value);
+      if (!pass) {
+        this.isRulesGetId = false;
+      } else {
+        this.isRulesGetId = true;
+      }
+    },
+    submit(e) {
+      if (!this.isClickFlag) { return; }
       const { name, id } = this.formData;
       if (!name) {
         mpvue.showToast({
-          title: '请输入姓名',
+          title: '请输入你的姓名',
+          icon: 'none',
+          duration: 2000
+        })
+        return;
+      } else if (!/^[\u4e00-\u9fa5]{2,6}$/.test(name)) {
+        mpvue.showToast({
+          title: '请输入你的真实姓名',
           icon: 'none',
           duration: 2000
         })
@@ -122,26 +168,59 @@ export default {
           return;
         }
       }
-      this.$http.request('put', 'user/idCard', { id_card: id, user_name: name }).then(({ code, resource, message }) => {
-        if (code === 200) {
-          mpvue.showToast({
-            title: '认证成功',
-            icon: 'success',
-            duration: 2000,
-            success() {
-              mpvue.redirectTo({
-                url: '../my_info/main'
+
+      console.log(e)
+
+      if (e && e.mp && e.mp.detail && e.mp.detail.encryptedData) {
+        // 更新手机号
+        let params = {
+          enc_data: e.mp.detail.encryptedData,
+          iv: e.mp.detail.iv
+        }
+        this.$http.request('post', 'auth/editInfo', params)
+          .then(res => {
+            if (res.code === 200) {
+              // 更新store中的userInfo
+              this.$store.commit({
+                type: 'writeUserInfo',
+                userInfo: res.data
+              });
+              // 实名认证
+              this.$http.request('put', 'user/idCard', { id_card: id, user_name: name }).then(({ code, resource, message }) => {
+                if (code === 200) {
+                  mpvue.showToast({
+                    title: '认证成功',
+                    icon: 'success',
+                    duration: 2000,
+                    success() {
+                      mpvue.redirectTo({
+                        url: '../my_info/main'
+                      })
+                    }
+                  })
+                } else {
+                  mpvue.showToast({
+                    title: message,
+                    icon: 'none',
+                    duration: 2000
+                  })
+                }
+              })
+            } else {
+              mpvue.showToast({
+                title: '认证失败,请重新认证',
+                icon: 'none',
+                duration: 2000
               })
             }
           })
-        } else {
-          mpvue.showToast({
-            title: message,
-            icon: 'none',
-            duration: 2000
-          })
-        }
-      })
+      } else {
+        mpvue.showToast({
+          title: '认证失败,请重新认证',
+          icon: 'none',
+          duration: 2000
+        })
+      }
     }
   }
 }
@@ -187,6 +266,11 @@ export default {
     font-weight: bold;
     color: #ffffff;
     text-align: center;
+    &.on {
+      background-color: #dfdfdf;
+      color: #656565;
+      box-shadow: none;
+    }
   }
 }
 .point-box {
