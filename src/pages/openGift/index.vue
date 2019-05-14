@@ -306,7 +306,7 @@ export default {
     // 打开协议
     openAgreement() {
       mpvue.navigateTo({
-        url: '../../pages/web-view/main?url=http://h5.tuands.cn/support/agreement-user.html'
+        url: '../../pages/web-view/main?url=https://xcx.tuands.cn/support/agreement-user.html'
       })
     },
     // 成为团长
