@@ -90,7 +90,7 @@ export default {
      */
     handleService() {
       mpvue.showToast({
-        title: '暂未开放',
+        title: '功能即将开放,如有疑问请联系客服',
         icon: 'none',
         duration: 2000
       })
