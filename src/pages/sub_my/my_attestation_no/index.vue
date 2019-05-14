@@ -34,7 +34,6 @@
           type="text"
           :value="formData.name"
           @input="getNameChange"
-          @blur="nameRulesBlur"
           placeholder="请输入姓名"
         >
       </div>
@@ -43,7 +42,6 @@
           type="idcard"
           :value="formData.id"
           @input="getIdChange"
-          @blur="idRulesBlur"
           placeholder="请输入证件号码"
         >
       </div>
@@ -114,8 +112,6 @@ export default {
     },
     getNameChange(ev) {
       this.formData.name = ev.target.value;
-    },
-    nameRulesBlur(ev) {
       if (!/^[\u4e00-\u9fa5]{2,6}$/.test(ev.target.value)) {
         this.isRulesGetName = false;
       } else {
@@ -124,8 +120,6 @@ export default {
     },
     getIdChange(ev) {
       this.formData.id = ev.target.value;
-    },
-    idRulesBlur(ev) {
       const { pass } = IdCodeValid(ev.target.value);
       if (!pass) {
         this.isRulesGetId = false;

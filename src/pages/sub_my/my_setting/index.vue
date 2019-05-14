@@ -21,7 +21,7 @@
           <div class="item-label">手机号码</div>
         </div>
         <div class="item-right">
-          <div class="item-value">{{userInfo.mobile_phone}}</div>
+          <div class="item-value">{{userInfo.mobile_phone || ''}}</div>
           <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
@@ -33,7 +33,7 @@
           <div class="item-label">我的邀请人</div>
         </div>
         <div class="item-right">
-          <div class="item-value">{{userInfo.upper_name}}</div>
+          <div class="item-value">{{userInfo.upper_name || ''}}</div>
           <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
@@ -45,7 +45,7 @@
           <div class="item-label">绑定微信</div>
         </div>
         <div class="item-right">
-          <div class="item-value">{{userInfo.nickname}}</div>
+          <div class="item-value">{{userInfo.nickname || ''}}</div>
           <!-- <img
             src="../../../../static/images/ToRightGray_iCon.png"
             class="item-more-icon"
