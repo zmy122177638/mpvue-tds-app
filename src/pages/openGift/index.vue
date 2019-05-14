@@ -183,6 +183,7 @@ export default {
     if (options && options.inviterId) {
       // 禁止切换邀请人
       this.isInputInviter = false;
+      this.inviteNum = options.inviterId;
       // 获取携带人信息
       this.getcodeInfo(options.inviterId)
     }
