@@ -190,8 +190,8 @@ export default {
     // 用户点击授权按钮响应
     handleGetUserInfo(e) {
       this.$http.loginFlow().then(res => {
-        console.log('async返回的内容');
-        console.log(res)
+        // console.log('async返回的内容');
+        // console.log(res)
         // 微信授权成功，向store写入token和用户信息
         this.$store.commit({
           type: 'writeToken',
