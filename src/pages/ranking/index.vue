@@ -81,14 +81,17 @@
               >{{item.vip_level}}</div>
             </div>
           </div>
-          <div class="item-right">{{item.score}}</div>
+          <div
+            class="item-right"
+            v-if="queryData.category === 'shop'"
+          >{{item.score}}</div>
         </div>
       </div>
       <div
         v-if="rankingList.length > 0"
         :class="['ranking-ponint',{'on':queryData.category === 'shop'}]"
       >
-        {{queryData.category === 'shop'?'仅显示前十名小店排行':'仅显示前十名商品排行'}}
+        {{queryData.category === 'shop'?'仅显示前二十名小店排行':'仅显示前二十名商品排行'}}
       </div>
       <div
         v-if="isNodata"
@@ -176,6 +179,14 @@ export default {
       if (category === 'goods') {
         timeDay = 'month';
       } else if (category === 'shop' && timeDay === 'month') {
+        if (!this.userInfo.type) {
+          mpvue.showToast({
+            title: '你还没有小店哦,赶紧去开店吧',
+            icon: 'none',
+            duration: 2000
+          })
+          return;
+        }
         timeDay = 'yesterday'
       }
       this.queryData = { category, timeDay };
