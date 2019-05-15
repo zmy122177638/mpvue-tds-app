@@ -145,11 +145,19 @@ export default {
           url: '/pages/productDetail/main?goods_id=' + id + '&type=' + this.itemData.type
         })
       } else {
-        // 分享人是其他人，则不能进入
-        mpvue.showToast({
-          title: '返回我的小店或重新扫码进入',
-          icon: 'none'
-        })
+        if (this.userInfoType) {
+          // 分享人是其他人，则不能进入-------是会员
+          mpvue.showToast({
+            title: '点击返回我的小店',
+            icon: 'none'
+          })
+        } else {
+          // 分享人是其他人，则不能进入-----------不是会员
+          mpvue.showToast({
+            title: '扫该商品二维码进入',
+            icon: 'none'
+          })
+        }
       }
     },
     // 返场投票点击
