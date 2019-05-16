@@ -142,7 +142,7 @@ export default {
                 sharerInfo: res.resource
               });
             } else {
-              // 写入上级分享人信息
+              // 上级分享人为自己
               that.$store.commit({
                 type: 'writeSharerInfo',
                 sharerInfo: this.$store.state.userInfo
