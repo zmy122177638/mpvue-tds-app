@@ -1,6 +1,6 @@
 <template>
   <section class="shop-container">
-    <TdsNavbar></TdsNavbar>
+    <TdsNavbar title="开店有礼"></TdsNavbar>
     <!-- 开店卡片 -->
     <div class="shop-card">
       <div class="shop-card-ct">

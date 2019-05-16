@@ -8,7 +8,10 @@
       class="navbar-title-box"
       :style="'height:' + 44 + 'px;'"
     >
-      <div class="page-goBack"></div>
+      <div
+        class="page-goBack"
+        @click="goBack"
+      ></div>
       <div class="page-title">{{title}}</div>
     </div>
   </section>
@@ -32,6 +35,11 @@ export default {
       console.log(this.$store.state.systemInfo)
       console.log(menu)
       return this.$store.state.systemInfo.screenWidth * 88 / 750;
+    }
+  },
+  methods: {
+    goBack() {
+      mpvue.navigateBack({ delta: 1 })
     }
   }
 }
