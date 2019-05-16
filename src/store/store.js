@@ -13,7 +13,9 @@ const store = new Vuex.Store({
     // 用户信息
     userInfo: {},
     // 分享人信息，如果没有上级分享人(即不是别人分享入口进入的，则分享人信息为当前用户信息)
-    sharerInfo: {}
+    sharerInfo: {},
+    // 系统信息
+    systemInfo: {}
   },
   mutations: {
     // 写入用户登录信息
@@ -30,6 +32,9 @@ const store = new Vuex.Store({
     // 写入分享人信息
     writeSharerInfo(state, data) {
       state.sharerInfo = data.sharerInfo;
+    },
+    getSystemInfo(state, systemInfo) {
+      state.systemInfo = systemInfo;
     }
   },
   getters: {

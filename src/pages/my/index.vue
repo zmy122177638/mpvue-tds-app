@@ -40,7 +40,7 @@
             src="../../../static/images/LOGO3.png"
           />
           <div class="my-upgrade-ct">
-            <div class="my-upgrade-t">成为团大师团长</div>
+            <div class="my-upgrade-t">成为团大师VIP团长</div>
             <div class="my-upgrade-f">自购省钱，开团赚钱</div>
           </div>
         </div>
