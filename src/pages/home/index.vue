@@ -212,6 +212,27 @@ export default {
     }.bind(this), 1000 * 60 * 10);
     this.isShowBackMyShopBtn();
   },
+  // 分享监听
+  onShareAppMessage (res) {
+    // console.log('进入分享逻辑111111111')
+    // console.log(res)
+    let uid = this.$store.state.userInfo.id;
+    return {
+      title: this.productData.goods_name,
+      // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
+      // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
+      path: 'pages/start/main?goPath=/pages/productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
+      imageUrl: this.productData.small_image[0],
+      // 回调函数在2018.10之后的新版本中不再有任何回调
+      success(res) {
+        console.log('分享成功')
+      },
+      fail(e) {
+        console.log('分享失败')
+        // 转发失败
+      }
+    }
+  },
   methods: {
     // 判断是否显示返回我的小店按钮
     isShowBackMyShopBtn() {
@@ -299,7 +320,6 @@ export default {
           this.newActiveData = res.resource;
         })
     },
-
     // 商品点击跳转到详情响应
     handleGoDetail(i) {
       // console.log('跳转到详情')
