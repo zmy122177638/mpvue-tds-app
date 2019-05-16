@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "开店有礼",
-  "backgroundColor": "#ffffff"
+  "backgroundColor": "#ffffff",
+  "navigationStyle": "custom",
+  "disableScroll": true
 }

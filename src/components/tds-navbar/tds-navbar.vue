@@ -6,23 +6,32 @@
     ></div>
     <div
       class="navbar-title-box"
-      :style="'height:' + titleHeight + 'px;'"
+      :style="'height:' + 44 + 'px;'"
     >
-      <div class="page-title">自定义navbar</div>
+      <div class="page-goBack"></div>
+      <div class="page-title">{{title}}</div>
     </div>
-    <solt></solt>
   </section>
 </template>
 
 <script>
 // 自定义头部组件
 export default {
+  props: {
+    title: {
+      type: String,
+      default: '标题'
+    }
+  },
   computed: {
-    statusHeight () {
+    statusHeight() {
       return this.$store.state.systemInfo.statusBarHeight
     },
-    titleHeight () {
-      return this.$store.state.systemInfo.screenWidth * 88 / 750
+    titleHeight() {
+      let menu = mpvue.getMenuButtonBoundingClientRect();
+      console.log(this.$store.state.systemInfo)
+      console.log(menu)
+      return this.$store.state.systemInfo.screenWidth * 88 / 750;
     }
   }
 }
@@ -31,6 +40,7 @@ export default {
 <style lang="scss" scoped>
 .navbar-container {
   background-color: #ffffff;
+  position: sticky;
   .navbar-status-box {
     width: 100%;
     background-color: transparent;
@@ -40,10 +50,25 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 40px;
+    box-sizing: border-box;
+    position: relative;
     .page-title {
       font-size: 19px;
       color: #282828;
       font-weight: bold;
+    }
+    .page-goBack {
+      width: 10px;
+      height: 18px;
+      background: url('../../../static/images/Return_iCon.png') no-repeat;
+      background-size: 100% 100%;
+      position: absolute;
+      z-index: 99;
+      top: 50%;
+      left: 11.5px;
+      cursor: pointer;
+      transform: translateY(-50%);
     }
   }
 }

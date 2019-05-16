@@ -19,6 +19,14 @@ export default {
     // }
     // console.log('进入小程序的场景值：')
     // console.log(options.scene)
+
+    // 获取系统信息
+    let that = this;
+    mpvue.getSystemInfo({
+      success(res) {
+        that.$store.commit('getSystemInfo', res)
+      }
+    })
   },
   onShow(options) {
     // console.log('app onShow');
