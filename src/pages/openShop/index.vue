@@ -30,7 +30,7 @@
       </div>
     </div>
     <!-- 权益 -->
-    <div class="equity-section">
+    <div :class="['equity-section',{'share':shareBack}]">
       <div class="equity-title">团长特权</div>
       <ul class="equity-list">
         <li class="equity-item">
@@ -79,6 +79,16 @@
         </li>
       </ul>
     </div>
+    <!-- goback -->
+    <div
+      class="fonter-box"
+      v-if="shareBack"
+    >
+      <div
+        class="goBack"
+        @click="goHome"
+      >去首页看看</div>
+    </div>
   </section>
 </template>
 
@@ -89,20 +99,33 @@ export default {
   data() {
     return {
       // 邀请码
-      inviterId: ''
+      inviterId: '',
+      shareBack: ''
     }
   },
   onLoad(options) {
     console.log(options)
     // 传递邀请码参数 inviterId
-    if (options && options.inviterId) {
+    if (options.inviterId) {
       this.inviterId = options.inviterId;
     }
+    if (options.shareBack) {
+      this.shareBack = options.shareBack === 'true';
+      let routes = getCurrentPages(); // eslint-disable-line
+      let app = getApp(); // eslint-disable-line
+      console.log(routes, app)
+    }
+    console.log(this.shareBack)
   },
   methods: {
     openShopChange() {
       mpvue.navigateTo({
         url: `../openGift/main${this.inviterId ? `?inviterId=${this.inviterId}` : ''}`
+      })
+    },
+    goHome() {
+      mpvue.switchTab({
+        url: `../home/main`
       })
     }
   }
@@ -111,11 +134,12 @@ export default {
 
 <style scoped lang="scss">
 .shop-container {
-  height: 100%;
   width: 100%;
+  min-height: 100%;
   background-color: #ffffff;
 }
 .shop-card {
+  background-color: #ffffff;
   padding: 15px;
   .shop-card-ct {
     width: 100%;
@@ -192,15 +216,19 @@ export default {
   }
 }
 .equity-section {
+  background-color: #ffffff;
+  &.share {
+    padding-bottom: 50px;
+  }
   .equity-title {
-    padding: 15px 0 20px;
+    padding: 15px 0 25px;
     text-align: center;
     font-size: 18px;
     font-weight: bold;
     color: #282828;
   }
   .equity-list {
-    padding: 0 30px 40px;
+    padding: 0 30px 28px;
     .equity-item {
       margin-bottom: 30px;
       display: flex;
@@ -234,5 +262,26 @@ export default {
       }
     }
   }
+}
+.fonter-box {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px 0;
+}
+
+.goBack {
+  width: 114px;
+  height: 29px;
+  line-height: 29px;
+  margin: 0 auto;
+  box-shadow: 0px 5px 10px rgba(255, 102, 102, 0.35);
+  background-color: #ff6666;
+  border-radius: 17px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 15px;
 }
 </style>
