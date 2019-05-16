@@ -478,7 +478,6 @@ export default {
     background-color: #f6f8fa;
     border-radius: 6px;
     position: relative;
-    min-height: 200px;
     .goods-absbox {
       display: flex;
       background-color: #ff6666;
