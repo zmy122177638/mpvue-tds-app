@@ -350,6 +350,11 @@
           })
       }
     },
+    computed: {
+      statusHeight () {
+        return this.$store.state.systemInfo.statusBarHeight
+      }
+    },
     // 监听页面滚动
     onPageScroll (e) {
       // if (e.scrollTop > 200 && this.currentOpacity == 1) {
