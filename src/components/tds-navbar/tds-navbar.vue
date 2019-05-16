@@ -24,6 +24,10 @@ export default {
     title: {
       type: String,
       default: '标题'
+    },
+    isGoBack: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -39,7 +43,11 @@ export default {
   },
   methods: {
     goBack() {
-      mpvue.navigateBack({ delta: 1 })
+      if (this.isGoBack) {
+        mpvue.navigateBack({ delta: 1 })
+      } else {
+        mpvue.switchTab({ url: '../../pages/home/main' })
+      }
     }
   }
 }

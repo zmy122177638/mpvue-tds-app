@@ -1,6 +1,9 @@
 <template>
   <section class="shop-container">
-    <TdsNavbar title="开店有礼"></TdsNavbar>
+    <TdsNavbar
+      title="开店有礼"
+      :isGoBack="!shareBack"
+    ></TdsNavbar>
     <!-- 开店卡片 -->
     <div class="shop-card">
       <div class="shop-card-ct">
@@ -103,7 +106,8 @@ export default {
       this.inviterId = options.inviterId;
     }
     if (options.shareBack) {
-      this.shareBack = options.shareBack === 'true';
+      let routers = getCurrentPages();
+      this.shareBack = options.shareBack === 'true' && routers.length > 0;
     }
   },
   methods: {
