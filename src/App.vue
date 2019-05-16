@@ -17,8 +17,14 @@ export default {
     //   this.$http.token = this.$store.state.token;
     //   console.log(this.$store.state.userInfo);
     // }
-    // console.log('进入小程序的场景值：')
-    // console.log(options.scene)
+    // mpvue.checkSession({
+    //   success: function () {
+    //     console.log('App.vue session_key 有效')
+    //   },
+    //   fail: function () {
+    //     console.log('App.vue session_key 有效')
+    //   }
+    // });
   },
   onShow(options) {
     // console.log('app onShow');
