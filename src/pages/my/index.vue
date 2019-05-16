@@ -40,7 +40,7 @@
             src="../../../static/images/LOGO3.png"
           />
           <div class="my-upgrade-ct">
-            <div class="my-upgrade-t">成为团大师尊享团长</div>
+            <div class="my-upgrade-t">成为团大师团长</div>
             <div class="my-upgrade-f">自购省钱，开团赚钱</div>
           </div>
         </div>
@@ -434,7 +434,7 @@ export default {
         // 重新存入
         if (code === 200) {
           // 如果未实名隐藏tabbar
-          if (resource.type && !resource.is_real_check || this.showYqylBox) {
+          if ((resource.type && !resource.is_real_check) || this.showYqylBox) {
             mpvue.hideTabBar();
           } else {
             mpvue.showTabBar();
@@ -617,12 +617,12 @@ img {
         }
       }
       .my-upgrade-btn {
-        width: 83px;
-        height: 24px;
-        line-height: 24px;
+        width: 94px;
+        height: 29px;
+        line-height: 29px;
         text-align: center;
         color: #ff6666;
-        font-size: 12px;
+        font-size: 14px;
         background-color: #ffffff;
         border-radius: 12.5px;
       }

@@ -36,9 +36,9 @@
       <div class="openGift-goods">
         <div class="openGift-active">已选择</div>
         <div class="goods-name">
-          <div>【</div>
+          <div></div>
           <div class="goods-hide">{{giftList[curIndex].goods_name}}</div>
-          <div>】</div>
+          <div></div>
         </div>
         <div class="goods-detail">
           <div class="goods-absbox">
