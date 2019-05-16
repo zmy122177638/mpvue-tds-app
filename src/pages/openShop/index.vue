@@ -106,8 +106,7 @@ export default {
       this.inviterId = options.inviterId;
     }
     if (options.shareBack) {
-      let routers = getCurrentPages();
-      this.shareBack = options.shareBack === 'true' && routers.length > 0;
+      this.shareBack = options.shareBack === 'true';
     }
   },
   methods: {

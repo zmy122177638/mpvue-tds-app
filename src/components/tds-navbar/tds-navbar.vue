@@ -33,13 +33,13 @@ export default {
   computed: {
     statusHeight() {
       return this.$store.state.systemInfo.statusBarHeight
-    },
-    titleHeight() {
-      let menu = mpvue.getMenuButtonBoundingClientRect();
-      console.log(this.$store.state.systemInfo)
-      console.log(menu)
-      return this.$store.state.systemInfo.screenWidth * 88 / 750;
     }
+    // titleHeight() {
+    //   let menu = mpvue.getMenuButtonBoundingClientRect();
+    //   console.log(this.$store.state.systemInfo)
+    //   console.log(menu)
+    //   return this.$store.state.systemInfo.screenWidth * 88 / 750;
+    // }
   },
   methods: {
     goBack() {
@@ -75,14 +75,15 @@ export default {
       font-weight: bold;
     }
     .page-goBack {
-      width: 10px;
-      height: 18px;
+      width: 28px;
+      height: 28px;
       background: url('../../../static/images/Return_iCon.png') no-repeat;
-      background-size: 100% 100%;
+      background-size: 10px 18px;
+      background-position: center center;
       position: absolute;
       z-index: 99;
       top: 50%;
-      left: 11.5px;
+      left: 5px;
       cursor: pointer;
       transform: translateY(-50%);
     }
