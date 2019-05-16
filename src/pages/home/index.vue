@@ -216,21 +216,26 @@ export default {
   onShareAppMessage (res) {
     // console.log('进入分享逻辑111111111')
     // console.log(res)
-    let uid = this.$store.state.userInfo.id;
-    return {
-      title: this.productData.goods_name,
-      // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
-      // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
-      path: 'pages/start/main?goPath=/pages/productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
-      imageUrl: this.productData.small_image[0],
-      // 回调函数在2018.10之后的新版本中不再有任何回调
-      success(res) {
-        console.log('分享成功')
-      },
-      fail(e) {
-        console.log('分享失败')
-        // 转发失败
+    if (this.$store.getters.isVip) {
+      console.log('是会员，可转发')
+      let uid = this.$store.state.userInfo.id;
+      return {
+        title: '我正在团大师开店赚钱',
+        // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
+        // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
+        path: 'pages/start/main?goPath=/pages/home/main&uid=' + uid,
+        // 回调函数在2018.10之后的新版本中不再有任何回调
+        success(res) {
+          console.log('分享成功')
+        },
+        fail(e) {
+          console.log('分享失败')
+          // 转发失败
+        }
       }
+    } else {
+      console.log('非会员，不转发')
+      return {};
     }
   },
   methods: {
