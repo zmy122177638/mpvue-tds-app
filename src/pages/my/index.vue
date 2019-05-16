@@ -339,13 +339,25 @@ export default {
       // 是否显示邀请有礼弹出层
       showYqylBox: false,
       // 海报数组
-      posterImages: []
+      posterImages: [],
+      // 是否为APP跳转到小程序或分享进入
+      shareBack: false
     }
   },
   onShow(options) {
     this.getMyInfo();
   },
+  onLoad (options) {
+    if (options.shareBack) {
+      this.shareBack = options.shareBack;
+    }
+  },
   mounted() {
+    // //   // 判断如果是分享进入，则显示弹窗请求海报,要经过登录也判断登录用户是否相同，以及当前用户是否为会员，如果不是会员，则不显示
+    // if (this.shareBack) {
+    //   this.handleClickBtn();
+    //   this.shareBack = false;
+    // }
   },
   computed: {
     // 用户信息
@@ -478,7 +490,6 @@ export default {
       })
     }
   }
-
 }
 </script>
 

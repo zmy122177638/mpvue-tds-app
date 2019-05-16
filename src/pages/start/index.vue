@@ -112,14 +112,20 @@ export default {
         let shareBack = true;
         let goPath = this.query.goPath;
         // 如果是邀请开店分享，则需要判断扫码用户是否已经为会员用户，如果是会员用户则直接跳转到主页面
-        if (goPath == '/pages/openShop/main' && that.$store.state.userInfo.type) {
+        if (this.query.goPath == '/pages/openShop/main' && that.$store.state.userInfo.type) {
           // console.log('用户已经是会员，跳转到主页面')
           goPath = '/pages/home/main';
         }
         goPath = goPath + '?shareBack=' + shareBack;
-        // 如果是商品分享，则带goods_id
+        // 如果是商品分享，则带goods_id和商品type
         if (this.query.goods_id) {
           goPath = goPath + '&goods_id=' + this.query.goods_id;
+          goPath = goPath + '&type=' + this.query.type; // 用于判断是否为团品
+        }
+        // 如果跳转到列表页面
+        if (this.query.goPath == '/pages/productList/main') {
+          goPath = goPath + '&position=' + this.query.position;
+          goPath = goPath + '&type=' + this.query.type;
         }
         // console.log('进入参数：')
         // console.log(this.query)
@@ -245,6 +251,7 @@ export default {
     let appOption = wx.getLaunchOptionsSync();
     this.scene = appOption.scene;
     this.query = options;
+    // 监测session_key是否有效
     this.authorUserInfo();
   },
   created() {
