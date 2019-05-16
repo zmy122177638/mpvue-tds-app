@@ -23,8 +23,8 @@ class Https {
     // 必须：小程序私钥secret，测试
     // this.secret = '81314d87c17307bfe22996c48c1f4c3d';
     // 正式服appid和secret
-    this.appid = 'wx3ca38c34169ff2b6';
-    this.secret = '09b28d8f938e110ee765bfab4a11998f';
+    // this.appid = 'wx3ca38c34169ff2b6';
+    // this.secret = '09b28d8f938e110ee765bfab4a11998f';
     // token 和 openid,由登录成功后写入
     this.token = store.state.token;
   }

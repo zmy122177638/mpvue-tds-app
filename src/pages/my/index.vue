@@ -348,16 +348,17 @@ export default {
     this.getMyInfo();
   },
   onLoad (options) {
+    // 判断是否从其他地方进入(分享、APP跳转等，即非小程序内部跳转打开)
     if (options.shareBack) {
       this.shareBack = options.shareBack;
     }
   },
   mounted() {
-    // //   // 判断如果是分享进入，则显示弹窗请求海报,要经过登录也判断登录用户是否相同，以及当前用户是否为会员，如果不是会员，则不显示
-    // if (this.shareBack) {
-    //   this.handleClickBtn();
-    //   this.shareBack = false;
-    // }
+    // 判断如果是分享进入，则显示弹窗请求海报,要经过登录也判断登录用户是否相同，以及当前用户是否为会员，如果不是会员，则不显示
+    if (this.shareBack && this.userInfo.type) {
+      this.handleClickBtn();
+      this.shareBack = false;
+    }
   },
   computed: {
     // 用户信息

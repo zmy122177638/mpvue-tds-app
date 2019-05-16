@@ -12,6 +12,9 @@ export default {
      */
   },
   onLaunch(options) {
+    // console.log('APP onLaunch 中打印token 和 userInfo:');
+    // console.log(this.$store.state.token);
+    // console.log(this.$store.state.userInfo);
     // 如果token
     // if (this.$store.state.token) {
     //   this.$http.token = this.$store.state.token;
