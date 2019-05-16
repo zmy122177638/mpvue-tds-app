@@ -111,12 +111,12 @@ export default {
         // 分享进入跳转到其他页面后，跳转的页面根据 fx 判断后退按钮操作
         let shareBack = true;
         let goPath = this.query.goPath;
+        goPath = goPath + '?shareBack=' + shareBack;
         // 如果是邀请开店分享，则需要判断扫码用户是否已经为会员用户，如果是会员用户则直接跳转到主页面
         if (this.query.goPath == '/pages/openShop/main' && that.$store.state.userInfo.type) {
           // console.log('用户已经是会员，跳转到主页面')
           goPath = '/pages/home/main';
         }
-        goPath = goPath + '?shareBack=' + shareBack;
         // 如果是商品分享，则带goods_id和商品type
         if (this.query.goods_id) {
           goPath = goPath + '&goods_id=' + this.query.goods_id;
@@ -127,8 +127,6 @@ export default {
           goPath = goPath + '&position=' + this.query.position;
           goPath = goPath + '&type=' + this.query.type;
         }
-        // console.log('进入参数：')
-        // console.log(this.query)
         // 根据分享人uid信息请求分享人信息
         this.$http.get('user/getBaseInfo', { uid: this.query.uid })
           .then(res => {
@@ -136,11 +134,20 @@ export default {
             console.log(res.resource);
             // 带上分享人邀请码
             goPath = goPath + '&inviterId=' + res.resource.invite_code;
-            // 写入上级分享人信息
-            that.$store.commit({
-              type: 'writeSharerInfo',
-              sharerInfo: res.resource
-            });
+            // 判断上级分享用户是否为普通用户
+            if (res.resource.type) {
+              // 写入上级分享人信息
+              that.$store.commit({
+                type: 'writeSharerInfo',
+                sharerInfo: res.resource
+              });
+            } else {
+              // 写入上级分享人信息
+              that.$store.commit({
+                type: 'writeSharerInfo',
+                sharerInfo: this.$store.state.userInfo
+              });
+            }
             console.log(goPath);
             mpvue.reLaunch({
               url: goPath
