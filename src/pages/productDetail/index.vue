@@ -179,19 +179,6 @@
         // 判断是否有权限跳转到详情购买商品
         if (this.$store.state.userInfo.type) {
           return true;
-        } else {
-          mpvue.showModal({
-            title: '提示',
-            content: '成为团大师团长，购物更省钱',
-            success: function (res) {
-              if (res.confirm) {
-                // 弹出提示跳转到会员充值页面
-                mpvue.navigateTo({
-                  url: '/pages/openShop/main'
-                })
-              }
-            }
-          })
         }
         return false;
       },
@@ -313,15 +300,29 @@
       handleSubmitOrder (options) {
         console.log('订单信息：');
         console.log(options);
-        if (!this.userIsVip()) {
+        // 如果不是会员
+        if (this.userIsVip() || this.shareBack) {
+          let data = JSON.stringify(options);
+          // 跳转到未付款订单页面
+          mpvue.navigateTo({
+            url: '../sub_my/my_unpaid/main?orders=' + data
+          })
+          this.productTypeShow = false
+        } else {
+          mpvue.showModal({
+            title: '提示',
+            content: '成为团大师团长，购物更省钱',
+            success: function (res) {
+              if (res.confirm) {
+                // 弹出提示跳转到会员充值页面
+                mpvue.navigateTo({
+                  url: '/pages/openShop/main'
+                })
+              }
+            }
+          })
           return false;
         }
-        let data = JSON.stringify(options);
-        // 跳转到未付款订单页面
-        mpvue.navigateTo({
-          url: '../sub_my/my_unpaid/main?orders=' + data
-        })
-        this.productTypeShow = false
       },
       // 根据id获得商品详情
       getProductData (id) {
