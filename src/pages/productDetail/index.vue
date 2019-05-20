@@ -128,7 +128,7 @@
           @click="handleGoShare"
         />
         <van-goods-action-button
-          text="立即购买"
+          :text="isManager ? '自购' : '立即购买'"
           @click="handleGoBuy"
         />
       </van-goods-action>
@@ -362,7 +362,7 @@
         title: this.productData.goods_name,
         // path: 'pages/productDetail/main?goods_id=' + this.productData.goods_id,
         // 如果需要登录权限才能进入到购买页面，则需要跳转到登录页面判断登录信息，然后才能跳转到商品详情页面
-        path: 'pages/start/main?goPath=/pages/productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id,
+        path: 'pages/start/main?goPath=/pages/productDetail/main&uid=' + uid + '&goods_id=' + this.productData.goods_id + 'type=' + this.productData.type,
         imageUrl: this.productData.small_image[0],
         // 回调函数在2018.10之后的新版本中不再有任何回调
         success(res) {

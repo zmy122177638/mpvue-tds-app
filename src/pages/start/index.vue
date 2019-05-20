@@ -127,32 +127,45 @@ export default {
           goPath = goPath + '&position=' + this.query.position;
           goPath = goPath + '&type=' + this.query.type;
         }
-        // 根据分享人uid信息请求分享人信息
-        this.$http.get('user/getBaseInfo', { uid: this.query.uid })
-          .then(res => {
-            console.log('分享人信息');
-            console.log(res.resource);
-            // 带上分享人邀请码
-            goPath = goPath + '&inviterId=' + res.resource.invite_code;
-            // 判断上级分享用户是否为普通用户
-            if (res.resource.type) {
-              // 写入上级分享人信息
-              that.$store.commit({
-                type: 'writeSharerInfo',
-                sharerInfo: res.resource
-              });
-            } else {
-              // 上级分享人为自己
-              that.$store.commit({
-                type: 'writeSharerInfo',
-                sharerInfo: this.$store.state.userInfo
-              });
-            }
-            console.log(goPath);
-            mpvue.reLaunch({
-              url: goPath
-            })
+        // 如果当前用户是VIP，则分享人改为当前用户
+        if (this.$store.getters.isVip) {
+          console.log('当前用户是vip，分享人改为当前用户');
+          // 上级分享人为自己
+          that.$store.commit({
+            type: 'writeSharerInfo',
+            sharerInfo: this.$store.state.userInfo
+          });
+          mpvue.reLaunch({
+            url: goPath
           })
+        } else {
+          // 根据分享人uid信息请求分享人信息
+          this.$http.get('user/getBaseInfo', { uid: this.query.uid })
+            .then(res => {
+              console.log('分享人信息');
+              console.log(res.resource);
+              // 带上分享人邀请码
+              goPath = goPath + '&inviterId=' + res.resource.invite_code;
+              // 判断上级分享用户是否为普通用户,如果为VIP，写入分享人信息，否则写入当前用户信息
+              if (res.resource.type) {
+                // 写入上级分享人信息
+                that.$store.commit({
+                  type: 'writeSharerInfo',
+                  sharerInfo: res.resource
+                });
+              } else {
+                // 上级分享人为自己
+                that.$store.commit({
+                  type: 'writeSharerInfo',
+                  sharerInfo: this.$store.state.userInfo
+                });
+              }
+              console.log(goPath);
+              mpvue.reLaunch({
+                url: goPath
+              })
+            })
+        }
       } else {
         console.log('非分享点击进入，跳转到主页面');
         // 当前用户信息作为上级分享人信息

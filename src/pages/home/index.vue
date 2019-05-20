@@ -314,8 +314,8 @@ export default {
     getNewActiveData() {
       this.$http.get('getReleaseInfo')
         .then(res => {
-          // console.log('最新动态信息：');
-          // console.log(res);
+          console.log('最新动态信息：');
+          console.log(res);
           this.newActiveData = res.resource;
         })
     },

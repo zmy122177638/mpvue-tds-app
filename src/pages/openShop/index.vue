@@ -29,7 +29,7 @@
             class="shop-btn"
             @click="openShopChange"
           >立即开店</div>
-          <p class="shop-ponit">开通团大师团长，预计可节省 ￥1826</p>
+          <p class="shop-ponit">开通团大师团长，自购省钱，分享赚钱</p>
         </div>
       </div>
     </div>
