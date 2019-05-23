@@ -4,27 +4,19 @@
 
     <!-- 轮播图 -->
     <div class="home_wrap">
-      <swiper
-        class="home_swiper"
-        :previous-margin="previousMargin"
-        :next-margin="nextMargin"
-        :circular="circular"
-        @change="handleChange($event)"
-      >
-        <block
-          v-for="(item, index) in giftList"
-          :key="index"
-        >
+      <swiper class="home_swiper"
+              :previous-margin="previousMargin"
+              :next-margin="nextMargin"
+              :circular="circular"
+              @change="handleChange($event)">
+        <block v-for="(item, index) in giftList"
+               :key="index">
           <swiper-item>
-            <div
-              :class="curIndex===index ? 'active_item' : 'item'"
-              :animation="index == curIndex ? animationData : animationData2"
-            >
-              <img
-                :src="item.goods_img_url"
-                class="goods-img"
-                alt=""
-              >
+            <div :class="curIndex===index ? 'active_item' : 'item'"
+                 :animation="index == curIndex ? animationData : animationData2">
+              <img :src="item.goods_img_url"
+                   class="goods-img"
+                   alt="">
             </div>
           </swiper-item>
         </block>
@@ -54,16 +46,12 @@
       <div class="openGift-equity">
         <div class="openGift-p-title">八大特权</div>
         <div class="equity-list">
-          <div
-            class="equity-item"
-            v-for="(item,index) in equityList"
-            :key="index"
-          >
-            <img
-              :src="item.icon"
-              class="item-icon"
-              alt=""
-            >
+          <div class="equity-item"
+               v-for="(item,index) in equityList"
+               :key="index">
+            <img :src="item.icon"
+                 class="item-icon"
+                 alt="">
             <p class="item-txt">{{item.label}}</p>
           </div>
         </div>
@@ -74,71 +62,53 @@
         <div class="openGift-p-title">我的邀请人</div>
         <div class="openGift-invite-box">
 
-          <div
-            class="invite-info"
-            @click="checkoutInput"
-            v-if="isShowInfo"
-          >
-            <img
-              :src="inviteData.headimgurl"
-              class="info-img"
-              alt=""
-            >
+          <div class="invite-info"
+               @click="checkoutInput"
+               v-if="isShowInfo">
+            <img :src="inviteData.headimgurl"
+                 class="info-img"
+                 alt="">
             <p class="info-name">{{inviteData.nickname}}</p>
           </div>
 
-          <div
-            class="invite-info"
-            v-else
-          >
-            <input
-              type="text"
-              :focus="autoFocus"
-              class="input-invite"
-              :value="inviteNum"
-              @input="(ev)=>{inviteNum = ev.target.value}"
-              placeholder="请输入邀请码"
-              @blur="getcodeInfo(inviteNum)"
-            >
+          <div class="invite-info"
+               v-else>
+            <input type="text"
+                   :focus="autoFocus"
+                   class="input-invite"
+                   :value="inviteNum"
+                   @input="(ev)=>{inviteNum = ev.target.value}"
+                   placeholder="请输入邀请码"
+                   @blur="getcodeInfo(inviteNum)">
           </div>
 
         </div>
       </div>
 
       <div class="openGift-checkout">
-        <img
-          src="../../../static/images/check_no.png"
-          class="checkout-icon"
-          v-if="!isAgreement"
-          @click="isAgreement = !isAgreement"
-          alt=""
-        >
-        <img
-          src="../../../static/images/check_on.png"
-          class="checkout-icon"
-          v-else
-          @click="isAgreement = !isAgreement"
-          alt=""
-        >
-        <p
-          class="checkout-txt"
-          @click="isAgreement = !isAgreement"
-        >我已阅读并同意<span
-            class="argument"
-            @click.stop="openAgreement"
-          >《团大师用户协议》</span> </p>
+        <img src="../../../static/images/check_no.png"
+             class="checkout-icon"
+             v-if="!isAgreement"
+             @click="isAgreement = !isAgreement"
+             alt="">
+        <img src="../../../static/images/check_on.png"
+             class="checkout-icon"
+             v-else
+             @click="isAgreement = !isAgreement"
+             alt="">
+        <p class="checkout-txt"
+           @click="isAgreement = !isAgreement">我已阅读并同意<span class="argument"
+                @click.stop="openAgreement">《团大师用户协议》</span> </p>
       </div>
     </div>
-    <cover-view
-      :class="['openGift-btn',{'on':isAgreement}]"
-      @click="handlePayChange"
-    >立即成为团长</cover-view>
+    <cover-view :class="['openGift-btn',{'on':isAgreement}]"
+                @click="handlePayChange">立即成为团长</cover-view>
   </section>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       curIndex: 0,
       giftList: [
@@ -169,31 +139,36 @@ export default {
       isShowInfo: false,
       // 是否同意协议
       isAgreement: false,
-      // 邀请码
-      inviteNum: '',
       // 邀请人信息
       inviteData: {},
       // 是否可更换邀请人
-      isInputInviter: true
+      isInputInviter: true,
+      // 邀请码
+      inviteNum: ''
     }
   },
-  onLoad(options) {
-    console.log(options)
+  computed: {
+    // 邀请码
+    inviteCode () {
+      return this.$store.state.sharerInfo.invite_code;
+    }
+  },
+  onLoad () {
     // 如果携带邀请码执行
-    if (options && options.inviterId) {
+    if (this.inviteCode) {
       // 禁止切换邀请人
       this.isInputInviter = false;
-      this.inviteNum = options.inviterId;
+      this.inviteNum = this.inviteCode;
       // 获取携带人信息
-      this.getcodeInfo(options.inviterId)
+      this.getcodeInfo(this.inviteNum)
     }
   },
-  onShow() {
+  onShow () {
     let that = this;
     // 获取selAddress
     mpvue.getStorage({
       key: 'selAddress',
-      success(res) {
+      success (res) {
         // 如果地址返回成功
         if (res && res.data) {
           console.log(res.data)
@@ -203,7 +178,7 @@ export default {
                 title: '地址设置成功，礼包正在等待发货',
                 icon: 'success',
                 duration: 2000,
-                success() {
+                success () {
                   mpvue.switchTab({
                     url: '../my/main'
                   })
@@ -220,12 +195,12 @@ export default {
           })
         }
       },
-      fail(err) {
+      fail (err) {
         console.log(err)
       }
     })
   },
-  mounted() {
+  mounted () {
     this.getGiftList();
   },
 
@@ -234,7 +209,7 @@ export default {
      * @description: 获取开店礼包
      * @Date: 2019-04-29 19:22:55
      */
-    getGiftList() {
+    getGiftList () {
       this.$http.request('get', 'upgrades').then(({ code, resource }) => {
         console.log(resource)
         if (code === 200) {
@@ -253,7 +228,7 @@ export default {
      * @param {String} inviteNum  邀请码
      * @Date: 2019-04-29 19:22:33
      */
-    getcodeInfo(inviteNum) {
+    getcodeInfo (inviteNum) {
       if (inviteNum) {
         this.$http.request('get', 'upgrades/' + inviteNum).then(({ code, resource }) => {
           console.log(resource)
@@ -271,7 +246,7 @@ export default {
       }
     },
     // 切换输入
-    checkoutInput() {
+    checkoutInput () {
       // 可编辑下执行
       if (this.isInputInviter) {
         this.isShowInfo = false;
@@ -279,13 +254,13 @@ export default {
       }
     },
     // swiper切换
-    handleChange(e) {
+    handleChange (e) {
       this.curIndex = e.mp.detail.current
       this.changeActive()
       this.changeNormal()
     },
     // 收缩
-    changeNormal() {
+    changeNormal () {
       var animation2 = mpvue.createAnimation({
         duration: 500,
         timingFunction: 'ease'
@@ -295,7 +270,7 @@ export default {
       this.animationData2 = animation2.export()
     },
     // 展开
-    changeActive() {
+    changeActive () {
       var animation = mpvue.createAnimation({
         duration: 500,
         timingFunction: 'ease'
@@ -305,13 +280,13 @@ export default {
       this.animationData = animation.export()
     },
     // 打开协议
-    openAgreement() {
+    openAgreement () {
       mpvue.navigateTo({
         url: '../../pages/web-view/main?url=https://xcx.tuands.cn/support/agreement-user.html'
       })
     },
     // 成为团长
-    handlePayChange() {
+    handlePayChange () {
       if (this.isAgreement) {
         if (!this.inviteNum) {
           mpvue.showToast({
@@ -334,19 +309,19 @@ export default {
           if (code === 200) {
             mpvue.requestPayment({
               ...resource,
-              success(res) {
+              success (res) {
                 mpvue.showToast({
                   title: '支付成功',
                   icon: 'success',
                   duration: 2000,
-                  success() {
+                  success () {
                     // 逻辑验证
                     mpvue.showModal({
                       title: '提示',
                       content: '前往选择开店礼包收货地址',
                       confirmText: '立即前往',
                       showCancel: false,
-                      success(res) {
+                      success (res) {
                         if (res.confirm) {
                           mpvue.navigateTo({
                             url: '../../pages/sub_my/my_address/main?use=select'
@@ -358,7 +333,7 @@ export default {
                   }
                 })
               },
-              fail(res) {
+              fail (res) {
                 mpvue.showToast({
                   title: '支付失败',
                   icon: 'none',
@@ -385,7 +360,7 @@ export default {
       }
     }
   },
-  onUnload() {
+  onUnload () {
     // 移除缓存selAddress
     mpvue.removeStorage({
       key: 'selAddress'
@@ -559,12 +534,12 @@ export default {
   }
   .invite-info {
     width: 255px;
-    height: 64px;
     background-color: #f6f8fa;
     border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
     margin: auto;
     .input-invite {
       padding: 0 10px;
@@ -584,6 +559,7 @@ export default {
       font-size: 15px;
       font-weight: bold;
       color: #282828;
+      max-width: calc(100% - 59px);
     }
   }
 }
