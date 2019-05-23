@@ -130,7 +130,6 @@
       <span class="return-bg"></span>
       返回我的小店
     </section>
-
   </section>
 </template>
 
@@ -166,7 +165,9 @@ export default {
       // 爆品返场
       encore: {},
       // 是否显示返回我的小店按钮
-      showBackMyShopBtn: false
+      showBackMyShopBtn: false,
+      // 是否为iphoneX
+      isIPhoneX: false,
     }
   },
   computed: {
@@ -190,6 +191,12 @@ export default {
     // console.log(this.$store.state.token);
     // console.log('获取菜单按钮位置信息：');
     // console.log(mpvue.getMenuButtonBoundingClientRect());
+  //  判断是否为iphoneX
+    let systemInfo = mpvue.getSystemInfoSync();
+    if (systemInfo.model.indexOf('iPhone X') > -1) {
+      this.isIPhoneX = true;
+      console.log('是 iPhone X')
+    }
   },
   onPullDownRefresh () {
     this.getHomePageSetting();

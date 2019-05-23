@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="productDetail-container">
     <section class="top-back-box" :style="'padding-top:' + statusHeight + 'px;'">
       <img src="../../../static/images/Return_iCon.png" class="go-back" @click="handleGoBack" />
     </section>
@@ -111,8 +111,10 @@
     <section class="fixld-bottom" style="z-index: 9999;">
       <van-goods-action style="z-index: 9999;">
         <van-goods-action-icon
-          icon="wap-home"
-          text="首页"
+          icon="star"
+          text="点赞"
+          icon-class="cyb-icon"
+          text-class="cyb-icon"
           @click="handleGoHome"
         />
         <van-goods-action-icon
@@ -232,12 +234,9 @@
           })
         }
       },
-      // 底部返回首页按钮响应
+      // 底部点赞响应
       handleGoHome () {
-        console.log('返回首页')
-        mpvue.reLaunch({
-          url: '../home/main'
-        })
+
       },
       // 联系客服按钮响应
       handleServiceCall (e) {
@@ -409,263 +408,268 @@
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
   @import "../../common/scss/index.scss";
-
-    .kong{
-    height: 100rpx;
-  }
-  .top-back-box{
-    /*border: 1px solid red;*/
-    position: absolute;
-    left: 0rpx;
-    top: 0rpx;
-    height: 44px;
-    width: 100%;
-    z-index: 1000;
-    .go-back{
-      /*border: 1px solid red;*/
-      padding: 12rpx 30rpx;
-      font-size: 36rpx;
-      height: 34rpx;
-      width: 20rpx;
-      margin-top: 15rpx
+  .productDetail-container{
+    .cyb-icon{
+      color: #FF6666 !important;
     }
-  }
-
-  .ban-header{
-    margin-top: 10rpx;
-    font-size: 44rpx;
-    line-height: 130rpx;
-    font-weight: bold;
-    border-top: 1px solid transparent;
-  }
-
-  .lunbo-box{
-    width: 100%;
-    height: 562rpx;
-  }
-
-  .main{
-    width: 100%;
-    height: auto;
-    background: #fff;
-    padding-bottom: 20rpx;
-    padding-top: 30rpx;
-    .content{
-      @include common-width;
-
-      .d-head{
-        font-size: 36rpx;
-        font-weight: bold;
-        margin-bottom: 20rpx;
-      }
-
-      .d-price{
-        color: #A5A5A5;
-        line-height: 60rpx;
-        .n{
-          font-weight: bold;
-          font-size:40rpx;
-          color:rgba(255,10,10,1);
-          margin-right: 20rpx;
-          span{
-            font-size: 28rpx;
-          }
-        }
-        .o{
-          font-weight: bold;
-          text-decoration: line-through;
-          font-weight: bold;
-          color:rgba(177,177,177,1);
-          span{
-            font-size: 23rpx;
-          }
-        }
-        .sale-num{
-          float: right;
-        }
-      }
-
-      .d-discounts{
-        margin: 25rpx 0rpx;
-        .d-d-msg{
-          display: inline-block;
-          font-size: 24rpx;
-          padding: 5rpx 25rpx;
-          background:rgba(255,102,102,.1);
-          color:#FF0A0A;
-          margin-right: 20rpx;
-          -webkit-border-radius: 12rpx;
-          -moz-border-radius: 12rpx;
-          border-radius: 12rpx;
-          margin-bottom: 15rpx;
-        }
-      }
-
-      .d-sale-time{
-        height: 70rpx;
-        color:rgba(40,40,40,1);
-        margin-top: 25rpx;
-        margin-bottom:20rpx;
-        .des{
-          font-weight: bold;
-        }
-        .time{
-          display: inline-block;
-          height: 45rpx;
-          width: 45rpx;
-          line-height: 45rpx;
-          font-weight: 100;
-          text-align: center;
-          background:rgba(255,102,102,1);
-          -webkit-border-radius: 14rpx;
-          -moz-border-radius: 14rpx;
-          border-radius: 14rpx;
-          margin-right: 8rpx;
-          font-size: 24rpx;
-          color: #fff;
-        }
-      }
-
-      .d-type-selecte{
-        height: 88rpx;
-        background:rgba(246,248,250,1);
-        -webkit-border-radius: 10rpx;
-        -moz-border-radius: 10rpx;
-        border-radius: 10rpx;
-        line-height: 88rpx;
-        font-weight: bold;
-        padding: 0 4%;
-        margin-top: 25rpx;
-        .d-tpye-s-l{
-          display: inline-block;
-        }
-        .d-tpye-s-r{
-          display: inline-block;
-          width: 84%;
-          float: right;
-          color: #B1B1B1;
-          text-align: right;
-          .shenglue{
-            max-width: 90%;
-            vertical-align: middle;
-            display: inline-block;
-            overflow: hidden;
-            -ms-text-overflow: ellipsis;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-        &:hover{
-           background: rgba(236,238,240,1);
-         }
-      }
-
-      .video-box{
-        width: 100%;
-        /*height: 300rpx;*/
-        /*height: 300rpx;*/
+    .kong{
+      height: 100rpx;
+    }
+    .top-back-box{
+      /*border: 1px solid red;*/
+      position: absolute;
+      left: 0rpx;
+      top: 0rpx;
+      height: 44px;
+      width: 100%;
+      z-index: 1000;
+      .go-back{
         /*border: 1px solid red;*/
-        margin-bottom: 30rpx;
-        position: relative;
-        z-index: 0;
-        .video{
+        padding: 12rpx 30rpx;
+        font-size: 36rpx;
+        height: 34rpx;
+        width: 20rpx;
+        margin-top: 15rpx
+      }
+    }
+
+    .ban-header{
+      margin-top: 10rpx;
+      font-size: 44rpx;
+      line-height: 130rpx;
+      font-weight: bold;
+      border-top: 1px solid transparent;
+    }
+
+    .lunbo-box{
+      width: 100%;
+      height: 562rpx;
+    }
+
+    .main{
+      width: 100%;
+      height: auto;
+      background: #fff;
+      padding-bottom: 20rpx;
+      padding-top: 30rpx;
+      .content{
+        @include common-width;
+
+        .d-head{
+          font-size: 36rpx;
+          font-weight: bold;
+          margin-bottom: 20rpx;
+        }
+
+        .d-price{
+          color: #A5A5A5;
+          line-height: 60rpx;
+          .n{
+            font-weight: bold;
+            font-size:40rpx;
+            color:rgba(255,10,10,1);
+            margin-right: 20rpx;
+            span{
+              font-size: 28rpx;
+            }
+          }
+          .o{
+            font-weight: bold;
+            text-decoration: line-through;
+            font-weight: bold;
+            color:rgba(177,177,177,1);
+            span{
+              font-size: 23rpx;
+            }
+          }
+          .sale-num{
+            float: right;
+          }
+        }
+
+        .d-discounts{
+          margin: 25rpx 0rpx;
+          .d-d-msg{
+            display: inline-block;
+            font-size: 24rpx;
+            padding: 5rpx 25rpx;
+            background:rgba(255,102,102,.1);
+            color:#FF0A0A;
+            margin-right: 20rpx;
+            -webkit-border-radius: 12rpx;
+            -moz-border-radius: 12rpx;
+            border-radius: 12rpx;
+            margin-bottom: 15rpx;
+          }
+        }
+
+        .d-sale-time{
+          height: 70rpx;
+          color:rgba(40,40,40,1);
+          margin-top: 25rpx;
+          margin-bottom:20rpx;
+          .des{
+            font-weight: bold;
+          }
+          .time{
+            display: inline-block;
+            height: 45rpx;
+            width: 45rpx;
+            line-height: 45rpx;
+            font-weight: 100;
+            text-align: center;
+            background:rgba(255,102,102,1);
+            -webkit-border-radius: 14rpx;
+            -moz-border-radius: 14rpx;
+            border-radius: 14rpx;
+            margin-right: 8rpx;
+            font-size: 24rpx;
+            color: #fff;
+          }
+        }
+
+        .d-type-selecte{
+          height: 88rpx;
+          background:rgba(246,248,250,1);
+          -webkit-border-radius: 10rpx;
+          -moz-border-radius: 10rpx;
+          border-radius: 10rpx;
+          line-height: 88rpx;
+          font-weight: bold;
+          padding: 0 4%;
+          margin-top: 25rpx;
+          .d-tpye-s-l{
+            display: inline-block;
+          }
+          .d-tpye-s-r{
+            display: inline-block;
+            width: 84%;
+            float: right;
+            color: #B1B1B1;
+            text-align: right;
+            .shenglue{
+              max-width: 90%;
+              vertical-align: middle;
+              display: inline-block;
+              overflow: hidden;
+              -ms-text-overflow: ellipsis;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+          }
+          &:hover{
+            background: rgba(236,238,240,1);
+          }
+        }
+
+        .video-box{
+          width: 100%;
+          /*height: 300rpx;*/
+          /*height: 300rpx;*/
+          /*border: 1px solid red;*/
+          margin-bottom: 30rpx;
           position: relative;
           z-index: 0;
-          width: 100%;
+          .video{
+            position: relative;
+            z-index: 0;
+            width: 100%;
+          }
         }
-      }
-      .img-list{
-        width: 100%;
-        image{
+        .img-list{
           width: 100%;
+          image{
+            width: 100%;
+          }
         }
+
       }
-
     }
-  }
-  .hw-pt{
-    @include common-width;
-    margin-top: 10rpx;
-  }
-
-  .share-box{
-    @include common-width;
-    .share-header{
-      text-align: center;
-      font-size: 40rpx;
-      font-weight: bold;
-      height: 90rpx;
-      line-height: 90rpx;
-      margin-top: 30rpx;
+    .hw-pt{
+      @include common-width;
+      margin-top: 10rpx;
     }
-    .share-item-box{
-      height: 180rpx;
-      margin-bottom: 40rpx;
-      display: -webkit-flex;
-      display: flex;
-      margin-top: 30rpx;
-      .share-item{
-        -webkit-flex: 1;
-        flex: 1;
+
+    .share-box{
+      @include common-width;
+      .share-header{
         text-align: center;
-        .share-item-t{
-          height: 135rpx;
-          .share-btn{
-            width: 60%;
-            padding: 0rpx;
-            border: none;
+        font-size: 40rpx;
+        font-weight: bold;
+        height: 90rpx;
+        line-height: 90rpx;
+        margin-top: 30rpx;
+      }
+      .share-item-box{
+        height: 180rpx;
+        margin-bottom: 40rpx;
+        display: -webkit-flex;
+        display: flex;
+        margin-top: 30rpx;
+        .share-item{
+          -webkit-flex: 1;
+          flex: 1;
+          text-align: center;
+          .share-item-t{
+            height: 135rpx;
+            .share-btn{
+              width: 60%;
+              padding: 0rpx;
+              border: none;
+            }
+            img{
+              width: 100rpx;
+              height: 100rpx;
+              margin-top: 10rpx;
+              -webkit-border-radius: 50%;
+              -moz-border-radius: 50%;
+              border-radius: 50%;
+            }
           }
-          img{
-            width: 100rpx;
-            height: 100rpx;
-            margin-top: 10rpx;
-            -webkit-border-radius: 50%;
-            -moz-border-radius: 50%;
-            border-radius: 50%;
+          .share-item-b{
+            font-size: 24rpx;
           }
-        }
-        .share-item-b{
-          font-size: 24rpx;
         }
       }
     }
-  }
 
-  .haibao-img{
-    position: fixed;
-    top: 0rpx;
-    left: 0rpx;
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,.5);
-    image{
-      position: absolute;
-      left: 0rpx;
-      right: 0rpx;
+    .haibao-img{
+      position: fixed;
       top: 0rpx;
-      bottom: 0rpx;
-      width: 80%;
-      margin: auto;
-      -webkit-border-radius: 12rpx;
-      -moz-border-radius: 12rpx;
-      border-radius: 12rpx;
-    }
-    .haibao-img-p{
-      position: absolute;
       left: 0rpx;
-      bottom: 3%;
+      z-index: 1000;
       width: 100%;
-      text-align: center;
-      color: #FFFFFF;
-      font-size: 30rpx;
-      letter-spacing: 4rpx;
+      height: 100%;
+      background: rgba(0,0,0,.5);
+      image{
+        position: absolute;
+        left: 0rpx;
+        right: 0rpx;
+        top: 0rpx;
+        bottom: 0rpx;
+        width: 80%;
+        margin: auto;
+        -webkit-border-radius: 12rpx;
+        -moz-border-radius: 12rpx;
+        border-radius: 12rpx;
+      }
+      .haibao-img-p{
+        position: absolute;
+        left: 0rpx;
+        bottom: 3%;
+        width: 100%;
+        text-align: center;
+        color: #FFFFFF;
+        font-size: 30rpx;
+        letter-spacing: 4rpx;
+      }
+    }
+
+    .btn-class{
+      margin-left: 50rpx;
     }
   }
 
-  .btn-class{
-    margin-left: 50rpx;
-  }
 </style>
