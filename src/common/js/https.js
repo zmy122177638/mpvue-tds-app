@@ -45,7 +45,9 @@ class Https {
     tempData.enc_data = userInfo.encryptedData;
     tempData.iv = userInfo.iv;
     let requestData = await this.post('auth/login', tempData);
-    // console.log('走了授权登录流程，更新了token');
+    // console.log('用户登录信息111111111111：');
+    // console.log(requestData);
+    console.log('走了授权登录流程，更新了token');
     this.token = requestData.data.token;
     mpvue.hideLoading();
     return requestData
@@ -211,6 +213,30 @@ class Https {
         complete: function () {
           // complete
           mpvue.hideLoading();
+        }
+      })
+    })
+  }
+
+  // 微信公众号授权登录接口
+  getWx(url, data) {
+    // 设置头部
+    return new Promise((resolve, reject) => {
+      mpvue.request({
+        url: this.commonUrl + url,
+        data: data,
+        method: 'GET',
+        header: {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json'
+        }, // 设置请求的 header
+        success: function (res) {
+          resolve(res.data);
+        },
+        fail: function (error) {
+          reject(error);
+        },
+        complete: function () {
         }
       })
     })

@@ -209,6 +209,12 @@ export default {
     // 用户点击授权按钮响应
     handleGetUserInfo(e) {
       this.$http.loginFlow().then(res => {
+        // 公众号授权登录---未调试成功
+        // this.$http.getWx('auth/wechatAuth/' + res.data.user.id)
+        //   .then(msg => {
+        //     console.log('公众号登录流程：')
+        //     console.log(msg);
+        //   });
         // console.log('async返回的内容');
         // console.log(res)
         // 微信授权成功，向store写入token和用户信息

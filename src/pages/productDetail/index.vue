@@ -1,6 +1,6 @@
 <template>
   <section class="productDetail-container">
-    <section class="top-back-box" :style="'padding-top:' + statusHeight + 'px;'">
+    <section :class="isScrollActive?'top-back-box active':'top-back-box'" :style="'padding-top:' + statusHeight + 'px;'">
       <img src="../../../static/images/Return_iCon.png" class="go-back" @click="handleGoBack" />
     </section>
     <section class="lunbo-box">
@@ -111,10 +111,22 @@
     <section class="fixld-bottom" style="z-index: 9999;">
       <van-goods-action style="z-index: 9999;">
         <van-goods-action-icon
-          icon="star"
+          v-if="isSupport == 2"
+          icon="thumb-circle-o"
+          text="点赞"
+        />
+        <van-goods-action-icon
+          v-else-if="isSupport == 1"
+          icon="thumb-circle-o"
           text="点赞"
           icon-class="cyb-icon"
           text-class="cyb-icon"
+          @click="handleGoHome"
+        />
+        <van-goods-action-icon
+          v-else-if="isSupport == 0"
+          icon="thumb-circle-o"
+          text="点赞"
           @click="handleGoHome"
         />
         <van-goods-action-icon
@@ -148,6 +160,8 @@
     },
     data () {
       return {
+        // 根据滚动，自定义导航栏是否变化
+        isScrollActive: false,
         // 跳入的商品type
         proType: 2,
         // 传递过来的goods_id
@@ -172,7 +186,9 @@
         timeOut: true,
         p_h: '',
         p_m: '',
-        p_s: ''
+        p_s: '',
+        // 当前用户是否对当前商品点赞：0=未点赞，1=已点赞，2=无状态(默认)
+        isSupport: 2
       }
     },
     methods: {
@@ -188,6 +204,7 @@
       setPageDefault () {
         // 重置信息
         console.log('商品详情页面重置信息')
+        this.isScrollActive = false;
         this.isManager = this.$store.getters.isVip; // 判断是否为vip
         this.productData = {};
         this.specSelected = {};
@@ -196,6 +213,7 @@
         this.p_h = '';
         this.p_m = '';
         this.p_s = '';
+        this.isSupport = 2;
       },
       // 倒计时显示
       setEndTime () {
@@ -236,7 +254,17 @@
       },
       // 底部点赞响应
       handleGoHome () {
-
+        if (this.isSupport == 1) {
+          // console.log('已对该商品点赞')
+          return false;
+        }
+        this.$http.post('support/supportGoods', {goods_id: this.productData.goods_id})
+          .then(res => {
+            // console.log('点赞返回：');
+            // console.log(res);
+            this.isSupport = 1;
+            this.productData.support = 1;
+          })
       },
       // 联系客服按钮响应
       handleServiceCall (e) {
@@ -334,6 +362,7 @@
             console.log('商品详情信息：');
             console.log(res);
             this.productData = res.resource;
+            this.isSupport = res.resource.support;
             // console.log(this.productsData)
             if (this.productData.type == 2) {
               this.setEndTime();
@@ -351,6 +380,12 @@
     },
     // 监听页面滚动
     onPageScroll (e) {
+      if (e.scrollTop <= 150 && this.isScrollActive === true) {
+        this.isScrollActive = false;
+      }
+      if (e.scrollTop > 150 && this.isScrollActive === false) {
+        this.isScrollActive = true;
+      }
     },
     // 分享监听
     onShareAppMessage (res) {
@@ -387,7 +422,6 @@
       // mpvue.showShareMenu({
       //   withShareTicket: true
       // })
-
       this.goods_id = options.goods_id;
     },
     onUnload () {
@@ -419,12 +453,19 @@
     }
     .top-back-box{
       /*border: 1px solid red;*/
-      position: absolute;
+      position: fixed;
       left: 0rpx;
       top: 0rpx;
       height: 44px;
       width: 100%;
       z-index: 1000;
+      background: rgba(255,255,255,0);
+      box-shadow: 0rpx 2rpx 2rpx 2rpx rgba(240,240,240,0);
+      transition: all 0.3s;
+      &.active{
+        background: rgba(255,255,255,1);
+        box-shadow: 0rpx 2rpx 2rpx 2rpx rgba(240,240,240,1);
+      }
       .go-back{
         /*border: 1px solid red;*/
         padding: 12rpx 30rpx;
