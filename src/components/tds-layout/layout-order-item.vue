@@ -1,18 +1,14 @@
 <template>
-  <div
-    class="order-item"
-    @click="$emit('click',item)"
-  >
+  <div class="order-item"
+       @click="$emit('click',item)">
     <div class="order-title">
       <div class="order-num">订单号：{{item.order_no}}</div>
-      <div class="order-status">{{item.mini_status}}</div>
+      <div :class="['order-status',{'no':item.status===-1}]">{{item.mini_status}}</div>
     </div>
     <div class="order-goods">
-      <img
-        :src="item.goods_image_url"
-        class="goods-img"
-        alt=""
-      >
+      <img :src="item.goods_image_url"
+           class="goods-img"
+           alt="">
       <div class="goods-info">
         <div class="goods-name">{{item.goods_name}}</div>
         <div class="goods-money">￥<span>{{item.amount}}</span></div>
@@ -50,6 +46,9 @@ export default {
     .order-status {
       font-size: 14px;
       color: #ff6666;
+      &.no{
+        color:#c7c7c7;
+      }
     }
   }
   .order-goods {

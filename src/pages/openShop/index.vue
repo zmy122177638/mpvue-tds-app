@@ -95,16 +95,11 @@ export default {
   data() {
     return {
       // 邀请码
-      inviterId: '',
       shareBack: ''
     }
   },
   onLoad(options) {
-    console.log(options)
-    // 传递邀请码参数 inviterId
-    if (options.inviterId) {
-      this.inviterId = options.inviterId;
-    }
+    // 是否分享进入
     if (options.shareBack) {
       this.shareBack = options.shareBack === 'true';
     }
@@ -112,7 +107,7 @@ export default {
   methods: {
     openShopChange() {
       mpvue.navigateTo({
-        url: `../openGift/main${this.inviterId ? `?inviterId=${this.inviterId}` : ''}`
+        url: '../openGift/main'
       })
     },
     goHome() {

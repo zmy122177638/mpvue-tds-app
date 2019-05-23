@@ -1,83 +1,61 @@
 <template>
   <section class="my-container">
     <!-- 开店 -->
-    <kaidianYouliBtn
-      :isYqylShow="true"
-      :userIsVip="userInfo.type"
-      @click-btn="handleClickBtn"
-    >
+    <kaidianYouliBtn :isYqylShow="true"
+                     :userIsVip="userInfo.type"
+                     @click-btn="handleClickBtn">
     </kaidianYouliBtn>
     <!-- 用户信息 -->
     <div :class="['my-info-box',{'vip':userInfo.vip_level}]">
       <div :class="['my-info',{'vip':userInfo.vip_level}]">
         <div class="my-info-left">
-          <img
-            :src="userInfo.headimgurl"
-            class="my-img"
-            alt=""
-          >
+          <img :src="userInfo.headimgurl"
+               class="my-img"
+               alt="">
           <div class="my-show">
             <div class="my-name">{{userInfo.nickname}}</div>
-            <div
-              class="my-status"
-              v-if="!userInfo.vip_level"
-            >普通用户</div>
-            <div
-              :class="['my-status-icon','vip0'+userInfo.vip_level]"
-              v-else
-            ></div>
+            <div class="my-status"
+                 v-if="!userInfo.vip_level">普通用户</div>
+            <div :class="['my-status-icon','vip0'+userInfo.vip_level]"
+                 v-else></div>
           </div>
         </div>
       </div>
       <!-- 升级 -->
-      <div
-        class="my-upgrade"
-        v-if="!infoData.vip_level"
-      >
+      <div class="my-upgrade"
+           v-if="!infoData.vip_level">
         <div class="upgrade-left">
-          <img
-            class="my-upgrade-icon"
-            src="../../../static/images/LOGO3.png"
-          />
+          <img class="my-upgrade-icon"
+               src="../../../static/images/LOGO3.png" />
           <div class="my-upgrade-ct">
             <div class="my-upgrade-t">成为团大师VIP团长</div>
             <div class="my-upgrade-f">自购省钱，开团赚钱</div>
           </div>
         </div>
-        <div
-          class="my-upgrade-btn"
-          @click="navigateToGift"
-        >立即开通</div>
+        <div class="my-upgrade-btn"
+             @click="navigateToGift">立即开通</div>
       </div>
       <!-- progress -->
-      <div
-        class="progress-container"
-        v-else
-      >
+      <div class="progress-container"
+           v-else>
         <div :class="['progress-assert',{'on':upgradePro > 65}]">
           <div class="progress-count">店铺等级<span class="progress-grade">{{infoData.shop_level}}</span></div>
         </div>
         <div class="progress-box">
           <div class="progress-pack">
-            <div
-              class="progress-active"
-              :style="'width:'+upgradePro+'%'"
-            >
+            <div class="progress-active"
+                 :style="'width:'+upgradePro+'%'">
               <div class="user-avator">
-                <img
-                  class="user-avator-img"
-                  :src="infoData.headimgurl"
-                  style="width:100%;height:100%"
-                  alt=""
-                >
+                <img class="user-avator-img"
+                     :src="infoData.headimgurl"
+                     style="width:100%;height:100%"
+                     alt="">
                 <div class="user-money">￥{{infoData.current_month_shop.amount}}</div>
               </div>
             </div>
-            <div
-              :class="['progress-grade-item',{'on':item.level <= infoData.current_month_shop.levelNum}]"
-              v-for="item in infoData.vip_rules"
-              :key="item.level"
-            >
+            <div :class="['progress-grade-item',{'on':item.level <= infoData.current_month_shop.levelNum}]"
+                 v-for="item in infoData.vip_rules"
+                 :key="item.level">
               <div class="grade-txt">LV.{{item.level}}</div>
             </div>
           </div>
@@ -85,33 +63,23 @@
       </div>
     </div>
 
-    <scroll-view
-      scroll-y
-      class="scroll-content"
-    >
+    <scroll-view scroll-y
+                 class="scroll-content">
       <!-- 活动 -->
       <div class="my-activity">
-        <div
-          class="my-activity-item"
-          @click="handlePoint()"
-        >
-          <img
-            class="item-icon"
-            src="../../../static/images/Qiandao_iCon.png"
-          >
+        <div class="my-activity-item"
+             @click="handlePoint()">
+          <img class="item-icon"
+               src="../../../static/images/Qiandao_iCon.png">
           <div class="item-cont">
             <div class="item-title">签到有奖</div>
             <div class="item-point">签到赚积分</div>
           </div>
         </div>
-        <div
-          class="my-activity-item"
-          @click="handlePoint()"
-        >
-          <img
-            class="item-icon"
-            src="../../../static/images/Jifen_iCon.png"
-          >
+        <div class="my-activity-item"
+             @click="handlePoint()">
+          <img class="item-icon"
+               src="../../../static/images/Jifen_iCon.png">
           <div class="item-cont">
             <div class="item-title">我的积分</div>
             <div class="item-point">积分抽奖买买买</div>
@@ -123,87 +91,57 @@
       <div class="my-order-box">
         <div class="my-order-title">
           <div class="my-order-hh">我的订单</div>
-          <div
-            class="my-order-all"
-            @click="navigaToOrder('all')"
-          >查看全部订单</div>
+          <div class="my-order-all"
+               @click="navigaToOrder('all')">查看全部订单</div>
         </div>
         <div class="my-order-model">
-          <div
-            class="my-order-item"
-            @click="navigaToOrder('unpaid')"
-          >
+          <div class="my-order-item"
+               @click="navigaToOrder('unpaid')">
             <div class="img-figure">
-              <span
-                class="item-num"
-                v-if="infoData.order_pending.unpaid > 0"
-              >{{infoData.order_pending.unpaid}}</span>
-              <img
-                class="item-icon"
-                src="../../../static/images/Pay_iCon.png"
-              >
+              <span class="item-num"
+                    v-if="infoData.order_pending.unpaid > 0">{{infoData.order_pending.unpaid}}</span>
+              <img class="item-icon"
+                   src="../../../static/images/Pay_iCon.png">
             </div>
 
             <div class="item-name">待付款</div>
           </div>
-          <div
-            class="my-order-item"
-            @click="navigaToOrder('paid')"
-          >
+          <div class="my-order-item"
+               @click="navigaToOrder('paid')">
             <div class="img-figure">
-              <span
-                class="item-num"
-                v-if="infoData.order_pending.paid > 0"
-              >{{infoData.order_pending.paid}}</span>
-              <img
-                class="item-icon"
-                src="../../../static/images/Shipment_iCon.png"
-              >
+              <span class="item-num"
+                    v-if="infoData.order_pending.paid > 0">{{infoData.order_pending.paid}}</span>
+              <img class="item-icon"
+                   src="../../../static/images/Shipment_iCon.png">
             </div>
             <div class="item-name">待发货</div>
           </div>
-          <div
-            class="my-order-item"
-            @click="navigaToOrder('shipped')"
-          >
+          <div class="my-order-item"
+               @click="navigaToOrder('shipped')">
             <div class="img-figure">
-              <span
-                class="item-num"
-                v-if="infoData.order_pending.shipped > 0"
-              >{{infoData.order_pending.shipped}}</span>
-              <img
-                class="item-icon"
-                src="../../../static/images/Collection_iCon.png"
-              >
+              <span class="item-num"
+                    v-if="infoData.order_pending.shipped > 0">{{infoData.order_pending.shipped}}</span>
+              <img class="item-icon"
+                   src="../../../static/images/Collection_iCon.png">
             </div>
             <div class="item-name">待收货</div>
           </div>
-          <div
-            class="my-order-item"
-            @click="navigaToOrder('finish')"
-          >
+          <div class="my-order-item"
+               @click="navigaToOrder('finish')">
             <div class="img-figure">
               <!-- <span class="item-num">{{infoData.order_pending.finish}}</span> -->
-              <img
-                class="item-icon"
-                src="../../../static/images/Completed_iCon.png"
-              >
+              <img class="item-icon"
+                   src="../../../static/images/Completed_iCon.png">
             </div>
             <div class="item-name">已完成</div>
           </div>
-          <div
-            class="my-order-item"
-            @click="navigaToOrder('refund')"
-          >
+          <div class="my-order-item"
+               @click="navigaToOrder('refund')">
             <div class="img-figure">
-              <span
-                class="item-num"
-                v-if="infoData.order_pending.refund > 0"
-              >{{infoData.order_pending.refund}}</span>
-              <img
-                class="item-icon"
-                src="../../../static/images/Refund_iCon.png"
-              >
+              <span class="item-num"
+                    v-if="infoData.order_pending.refund > 0">{{infoData.order_pending.refund}}</span>
+              <img class="item-icon"
+                   src="../../../static/images/Refund_iCon.png">
             </div>
             <div class="item-name">退款退货</div>
           </div>
@@ -243,51 +181,35 @@
             <div class="item-fn-icon"></div>
           </div>
         </div> -->
-        <div
-          class="my-nav-item"
-          @click="handlePoint()"
-        >
+        <div class="my-nav-item"
+             @click="handlePoint()">
           <div class="item-left">
-            <img
-              class="item-icon"
-              src="../../../static/images/WodePintuan_iCon.png"
-            >
+            <img class="item-icon"
+                 src="../../../static/images/WodePintuan_iCon.png">
             <div class="item-title">我的拼团</div>
           </div>
         </div>
-        <div
-          class="my-nav-item"
-          @click="navigaToAddress()"
-        >
+        <div class="my-nav-item"
+             @click="navigaToAddress()">
           <div class="item-left">
-            <img
-              class="item-icon"
-              src="../../../static/images/Address_iCon.png"
-            >
+            <img class="item-icon"
+                 src="../../../static/images/Address_iCon.png">
             <div class="item-title">收货地址</div>
           </div>
         </div>
-        <button
-          class="my-nav-item"
-          open-type="contact"
-        >
+        <button class="my-nav-item"
+                open-type="contact">
           <div class="item-left">
-            <img
-              class="item-icon"
-              src="../../../static/images/ContactUs_iCon.png"
-            >
+            <img class="item-icon"
+                 src="../../../static/images/ContactUs_iCon.png">
             <div class="item-title">在线客服</div>
           </div>
         </button>
-        <div
-          class="my-nav-item"
-          @click="navigaToSetting()"
-        >
+        <div class="my-nav-item"
+             @click="navigaToSetting()">
           <div class="item-left">
-            <img
-              class="item-icon"
-              src="../../../static/images/Setting_iCon.png"
-            >
+            <img class="item-icon"
+                 src="../../../static/images/Setting_iCon.png">
             <div class="item-title">系统设置</div>
           </div>
         </div>
@@ -303,10 +225,8 @@
     <!--</div>-->
     <!--</section>-->
     <section @click="handleCloseYqylBox">
-      <yqyl-lunbo-images
-        v-if="showYqylBox"
-        :imgArr="posterImages"
-      ></yqyl-lunbo-images>
+      <yqyl-lunbo-images v-if="showYqylBox"
+                         :imgArr="posterImages"></yqyl-lunbo-images>
     </section>
 
   </section>
@@ -322,7 +242,7 @@ export default {
     TdsAttestationPopup,
     YqylLunboImages
   },
-  data() {
+  data () {
     return {
       infoData: {
         // 订单数
@@ -344,7 +264,7 @@ export default {
       shareBack: false
     }
   },
-  onShow(options) {
+  onShow (options) {
     this.getMyInfo();
   },
   onLoad (options) {
@@ -353,7 +273,7 @@ export default {
       this.shareBack = options.shareBack;
     }
   },
-  mounted() {
+  mounted () {
     // 判断如果是分享进入，则显示弹窗请求海报,要经过登录也判断登录用户是否相同，以及当前用户是否为会员，如果不是会员，则不显示
     if (this.shareBack && this.userInfo.type) {
       this.handleClickBtn();
@@ -362,19 +282,19 @@ export default {
   },
   computed: {
     // 用户信息
-    userInfo() {
+    userInfo () {
       return this.$store.state.userInfo
     },
     // 分享人信息
-    sharerInfo() {
+    sharerInfo () {
       return this.$store.state.sharerInfo
     },
     // 是否完成开店任务，否则必须实名制
-    isShowAttestPopup() {
+    isShowAttestPopup () {
       return (this.$store.state.userInfo.type && !this.$store.state.userInfo.is_real_check)
     },
     // 计算百分比
-    upgradePro() {
+    upgradePro () {
       const amount = this.infoData.current_month_shop.amount;
       const level = this.infoData.current_month_shop.levelNum;
       const vipList = this.infoData.vip_rules;
@@ -394,7 +314,7 @@ export default {
   },
   methods: {
     // 点击邀请有礼按钮响应，开店有礼不响应，组件内直接跳转页面
-    handleClickBtn() {
+    handleClickBtn () {
       console.log('生成海报')
       let tempData = {};
       // 海报生成 type =1 表示生成商品海报，=2 表示生成内部召集令海报，=3 表示生成我的邀请码海报
@@ -412,17 +332,18 @@ export default {
         })
     },
     // 点击蒙版层，关闭邀请有礼弹窗
-    handleCloseYqylBox() {
+    handleCloseYqylBox () {
       this.showYqylBox = false;
       mpvue.showTabBar();
     },
     // 获取用户信息
-    async getMyInfo() {
+    async getMyInfo () {
       await this.$http.request('get', 'user/userCenterWechat').then(({ code, resource }) => {
         console.log(resource)
         if (code === 200) {
           this.infoData = { ...this.infoData, ...resource };
-          this.infoData.current_month_shop.levelNum = Number(this.infoData.current_month_shop.level.match(/[0-9]+/ig)[0]);
+          // 当前等级数字
+          this.infoData.current_month_shop.levelNum = (this.infoData.current_month_shop.level && Number(this.infoData.current_month_shop.level.match(/[0-9]+/ig)[0])) || 1;
         } else {
           mpvue.showToast({
             title: '获取失败',
@@ -430,7 +351,8 @@ export default {
             duration: 2000
           })
         }
-      })
+      });
+
       await this.$http.request('get', 'user/getBaseInfo', { uid: this.infoData.id }, { ISLOADINGHIDE: true }).then(({ code, resource }) => {
         // 重新存入
         if (code === 200) {
@@ -458,32 +380,32 @@ export default {
         }
       })
     },
-    navigateToGift() {
+    navigateToGift () {
       mpvue.navigateTo({
         url: '../openShop/main'
       })
     },
-    navigaToOrder(current) {
+    navigaToOrder (current) {
       mpvue.navigateTo({
         url: './../sub_my/my_order/main?current=' + current
       })
     },
-    navigaToTeam(current) {
+    navigaToTeam (current) {
       mpvue.navigateTo({
         url: './../sub_my/my_team/main?current=' + current
       })
     },
-    navigaToAddress() {
+    navigaToAddress () {
       mpvue.navigateTo({
         url: './../sub_my/my_address/main'
       })
     },
-    navigaToSetting() {
+    navigaToSetting () {
       mpvue.navigateTo({
         url: './../sub_my/my_setting/main'
       })
     },
-    handlePoint() {
+    handlePoint () {
       mpvue.showToast({
         title: '功能即将开放',
         icon: 'none',
