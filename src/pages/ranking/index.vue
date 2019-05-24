@@ -163,10 +163,10 @@ export default {
       console.log(this.queryData)
       this.getShopRanking(this.queryData);
 
-      // this.scrollTopNum = 0
-      // this.$nextTick(() => {
-      //   this.scrollTopNum = ''
-      // })
+      this.scrollTopNum = 0
+      this.$nextTick(() => {
+        this.scrollTopNum = ''
+      })
     }
   }
 }
