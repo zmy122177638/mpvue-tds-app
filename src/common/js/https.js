@@ -217,31 +217,6 @@ class Https {
       })
     })
   }
-
-  // 微信公众号授权登录接口
-  getWx(url, data) {
-    // 设置头部
-    return new Promise((resolve, reject) => {
-      mpvue.request({
-        url: this.commonUrl + url,
-        data: data,
-        method: 'GET',
-        header: {
-          'Authorization': 'Bearer ' + this.token,
-          'Content-Type': 'application/json'
-        }, // 设置请求的 header
-        success: function (res) {
-          resolve(res.data);
-        },
-        fail: function (error) {
-          reject(error);
-        },
-        complete: function () {
-        }
-      })
-    })
-  }
-
   /**
    * @description: common接口
    * @param {String} method 方法名

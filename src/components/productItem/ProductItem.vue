@@ -180,6 +180,9 @@ export default {
       this.i = nVal
     }
   },
+  created () {
+    // clearInterval(this.timeIntval);
+  },
   mounted () {
     // 只有团品才需要倒计时
     if (this.type == 2) {
@@ -189,12 +192,12 @@ export default {
         this.setEndTime();
       }.bind(this), 1000);
     }
-  }
+  },
   // 组件销毁时，清除计时器
-  // destroyed () {
-  //   console.log('销毁')
-  //   clearInterval(this.timeIntval);
-  // }
+  destroyed () {
+    console.log('销毁')
+    clearInterval(this.timeIntval);
+  }
 
 }
 </script>
